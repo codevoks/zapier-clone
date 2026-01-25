@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { safeParseSignUp } from '@repo/validation'
+import { hashPassword, signJwt, JwtPayLoad } from '@repo/auth'
 import { findUser, createUser } from '@repo/db'
+
+const SALT_ROUNDS = 10
+const JWT_SECRET = 'shallom'
 
 export async function POST(Request: NextRequest) {
   try {
@@ -19,12 +23,34 @@ export async function POST(Request: NextRequest) {
         { status: 403 }
       )
     }
-    const newUser = await createUser(parsedData.data)
-    return NextResponse.json(
-      { messgae: JSON.stringify(newUser) },
-      { status: 200 }
+    const newUser = await createUser({
+      name: parsedData.data.name,
+      email: parsedData.data.email,
+      password: await hashPassword(parsedData.data.password, SALT_ROUNDS),
+    })
+    if (!newUser) {
+      return NextResponse.json(
+        { error: 'Could Not Create User' },
+        { status: 403 }
+      )
+    }
+    const token = await signJwt(
+      { userId: newUser.id, email: parsedData.data.email },
+      JWT_SECRET
     )
-    //return NextResponse.redirect(new URL('/new', request.url))
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Error creating login token.' },
+        { status: 500 }
+      )
+    }
+    const response = NextResponse.redirect(new URL('/home', Request.url))
+    response.cookies.set('token', token, {
+      httpOnly: true,
+      path: '/',
+      maxAge: 60 * 60,
+    })
+    return response
   } catch (error) {
     return NextResponse.json(
       { error: 'Error while Signing Up' },
