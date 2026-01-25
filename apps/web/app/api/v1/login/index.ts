@@ -45,5 +45,10 @@ export async function POST(Request: NextRequest) {
       maxAge: 60 * 60,
     })
     return response
-  } catch (error) {}
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Error while Signing Up' },
+      { status: 400 }
+    )
+  }
 }
