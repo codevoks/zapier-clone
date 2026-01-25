@@ -15,5 +15,16 @@ app.post('/hooks/catch/:userid/:zapid', async (req, res) => {
         metadata: body,
       },
     })
+
+    await prisma.zapRunOutBox.create({
+      data: {
+        zapRunId: run.id,
+      },
+    })
+  })
+  res.json({
+    message: 'Webhook Received',
   })
 })
+
+app.listen('4000')
