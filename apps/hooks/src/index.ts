@@ -1,10 +1,19 @@
-import express from "express"
+import express from 'express'
+import { prisma } from '@repo/db'
 
-const app = express();
+const app = express()
 
-app.post('/hooks/catch/:userid/:zapid',(req,res)=>
-	{
-		const userId = req.params.userId;
-		const zapId = req.params.zapId;
-				
-	}
+app.post('/hooks/catch/:userid/:zapid', async (req, res) => {
+  const userId = req.params.userid
+  const zapId = req.params.zapid
+  const body = req.body
+
+  await prisma.$transaction(async tx => {
+    const run = await prisma.zapRun.create({
+      data: {
+        zapId: zapId,
+        metadata: body,
+      },
+    })
+  })
+})

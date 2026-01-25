@@ -21,20 +21,49 @@ model User {
 }
 
 model Zap {
- id String @id @default(uuid))
+ id String @id @default(uuid())
  triggerId String
  trigger Trigger?
+ actions Action[]
+ zapRuns ZapRun[]
 }
 
 model Trigger {
- id String @id @default(uuid))
+ id String @id @default(uuid())
  zapId String @unique
  triggerId String
- type AvaialableTrigger @relations(fields :[zapId] references:[id])
- zap Zap @relations(field :[zapId] references:[id])
+ type AvailableTrigger @relation(fields :[triggerId], references:[id])
+ zap Zap @relation(fields :[zapId], references:[id])
 }
 
-model AvailableTriggers {
+model Action {
+  id String @id @default(uuid())
+  zapId String @unique
+  actionId String
+  type AvaialableAction @relation(fields: [actionId], references: [id])
+  zap Zap @relation(fields: [zapId], references: [id])
+}
+
+model AvailableTrigger {
  id String @id @default(uuid())
  triggers Trigger[] 
+}
+
+model AvaialableAction {
+ id String @id @default(uuid())
+ action Action[] 
+}
+
+model ZapRun {
+  id String @id @default(uuid())
+  zapId String
+  metadata Json
+  zap Zap @relation(fields: [zapId], references: [id])
+  zapRunOutBox ZapRunOutBox?
+}
+
+model ZapRunOutBox {
+  id String @id @default(uuid())
+  zapRunId String @unique
+  zapRun ZapRun @relation(fields: [zapRunId], references: [id])
 }
