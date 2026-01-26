@@ -1,5 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose'
-import type { JwtPayLoad } from './types.js'
+import type { JwtPayLoad } from './jwt.types.js'
 
 export async function signJwt(payload: JwtPayLoad, JWT_SECRET: string) {
   try {

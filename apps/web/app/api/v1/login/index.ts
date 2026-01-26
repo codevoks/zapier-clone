@@ -22,7 +22,11 @@ export async function POST(Request: NextRequest) {
         status: '404',
       })
     }
-    if (!verifyPassword) {
+    const isPasswordValid = await verifyPassword(
+      parsedData.data.password,
+      user.password
+    )
+    if (!isPasswordValid) {
       return NextResponse.json({
         error: 'Incorrect password',
         status: '401',
