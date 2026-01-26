@@ -1,11 +1,11 @@
 import { z } from 'zod'
 
 export const ZapCreteSchema = z.object({
-  triggerId: z.string(),
+  availableTriggerId: z.string(),
   triggerMetadata: z.any().optional(),
   actions: z.array(
     z.object({
-      actionId: z.string(),
+      availableActionId: z.string(),
       actionMetadata: z.any().optional(),
     })
   ),

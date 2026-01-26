@@ -1054,7 +1054,8 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const ZapScalarFieldEnum = {
   id: 'id',
-  triggerId: 'triggerId'
+  triggerId: 'triggerId',
+  userId: 'userId'
 } as const
 
 export type ZapScalarFieldEnum = (typeof ZapScalarFieldEnum)[keyof typeof ZapScalarFieldEnum]
@@ -1063,7 +1064,8 @@ export type ZapScalarFieldEnum = (typeof ZapScalarFieldEnum)[keyof typeof ZapSca
 export const TriggerScalarFieldEnum = {
   id: 'id',
   zapId: 'zapId',
-  triggerId: 'triggerId'
+  triggerId: 'triggerId',
+  sortingOrder: 'sortingOrder'
 } as const
 
 export type TriggerScalarFieldEnum = (typeof TriggerScalarFieldEnum)[keyof typeof TriggerScalarFieldEnum]

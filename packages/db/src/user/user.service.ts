@@ -1,5 +1,5 @@
-import prisma from './client'
-import { UserCreateInput } from './types'
+import prisma from '../client/client.js'
+import type { UserCreateInput } from './user.types.js'
 
 export async function findUser(email: string) {
   try {
