@@ -5,14 +5,14 @@ export const FooterColumn = () => {
   return (
     <div className="footer-column">
       <FooterHeading />
-      <FooterLink />
-      <FooterLink />
-      <FooterLink />
-      <FooterLink />
-      <FooterLink />
-      <FooterLink />
-      <FooterLink />
-      <FooterLink />
+      <FooterLink link="me" />
+      <FooterLink link="me" />
+      <FooterLink link="me" />
+      <FooterLink link="me" />
+      <FooterLink link="me" />
+      <FooterLink link="me" />
+      <FooterLink link="me" />
+      <FooterLink link="me" />
     </div>
   )
 }
