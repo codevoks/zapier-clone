@@ -3,13 +3,13 @@ import { useRouter } from 'next/navigation'
 
 export const FooterLink = ({ link }: { link: string }) => {
   const router = useRouter()
-  const navigateToDashboard = () => {
+  const navigateToLink = () => {
     router.push('/' + link)
   }
   return (
     <div
       className="footer-column-link footer-column-entry"
-      onClick={navigateToDashboard}
+      onClick={navigateToLink}
     >
       Entry
     </div>
