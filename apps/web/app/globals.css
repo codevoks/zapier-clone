@@ -241,4 +241,22 @@
     color: var(--color-secondary-light);
     font-size: var(--font-size-md);
   }
+
+  .footer-socials-icons {
+    display: flex;
+    align-items: center;
+  }
+
+  .social-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    margin: var(--spacing-xs);
+    fill: currentColor;
+    color: var(--color-secondary-light);
+  }
+
+  .social-icon :hover {
+    @apply cursor-pointer;
+    background-color: var(--color-secondary);
+  }
 }
