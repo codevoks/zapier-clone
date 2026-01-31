@@ -25,11 +25,14 @@
   --font-size-xs: 0.75rem; /* 12px - very small text */
   --font-size-sm: 0.875rem; /* 14px - small text */
   --font-size-base: 1rem; /* 16px - normal text (default) */
-  --font-size-lg: 1.125rem; /* 18px - large text */
-  --font-size-xl: 1.25rem; /* 20px - extra large */
-  --font-size-2xl: 1.5rem; /* 24px - headings */
-  --font-size-3xl: 1.875rem; /* 30px - large headings */
-  --font-size-4xl: 2.25rem; /* 36px - hero text */
+  --font-size-md: 1.5rem; /* 18px - large text */
+  --font-size-lg: 1.75rem; /* 18px - large text */
+  --font-size-xl: 2rem; /* 20px - extra large */
+  --font-size-2xl: 2.5rem; /* 24px - headings */
+  --font-size-3xl: 2.875rem; /* 30px - large headings */
+  --font-size-4xl: 2.5rem; /* 36px - hero text */
+  --font-size-5xl: 4rem; /* 80px - hero text */
+  --font-size-6xl: 5.5rem; /* 96px - hero text */
 
   /* Font weights */
   --font-weight-light: 300;
@@ -50,34 +53,46 @@
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
+  --spacing-3xl: 5rem;
+  --spacing-4xl: 15rem;
 
   /* Border radius */
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Card width */
+  --width-xs: 15rem;
+  --width-sm: 20rem;
+  --width-md: 25rem;
+  --width-lg: 75rem;
+  --width-xl: 80rem;
 }
 
 @layer components {
   /* Base */
   .btn {
-    @apply cursor-pointer inline;
+    @apply inline cursor-pointer;
+    border-radius: var(--radius-md);
+    box-shadow: var(--spacing-md);
   }
 
   /* Size variants */
   /* Small Button */
   .btn-sm {
     padding: var(--spacing-xs);
-    font-size: var(--spacing-xs);
+    font-size: var(--font-size-sm);
   }
   /* Medium Button */
   .btn-md {
     padding: var(--spacing-md);
-    font-size: var(--spacing-md);
+    font-size: var(--font-size-md);
   }
   /* Large Button */
   .btn-lg {
     padding: var(--spacing-lg);
-    font-size: var(--spacing-lg);
+    font-size: var(--font-size-lg);
   }
 
   /* Color variants */
@@ -97,7 +112,133 @@
     color: var(--color-secondary-font);
   }
 
-  .btn-primary:hover {
+  .btn-secondary:hover {
     background-color: var(--color-secondary-light);
+  }
+
+  /* Base input component */
+  .input {
+    background-color: var(--color-gray-200);
+    border: var(--spacing-xs);
+    border-radius: var(--radius-md);
+    border-color: var(--color-primary-dark);
+    width: var(--width-sm);
+    margin: var(--spacing-xs);
+  }
+
+  .input-sm {
+    padding: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+  }
+
+  .input-md {
+    padding: var(--spacing-md);
+    font-size: var(--font-size-md);
+  }
+
+  .input-lg {
+    padding: var(--spacing-lg);
+    font-size: var(--font-size-lg);
+  }
+
+  .input:focus {
+    background-color: var(--color-gray-100);
+    border: var(--spacing-xs);
+    border-color: var(--color-primary-light);
+    box-shadow: var(--color-primary-dark);
+  }
+
+  .card {
+    @apply flex flex-col items-center;
+    background-color: var(--color-secondary-light);
+    border: var(--spacing-lg);
+    border-radius: var(--radius-xl);
+    width: var(--width-md);
+    padding: var(--spacing-xl);
+  }
+
+  .card-header {
+  }
+
+  .card-body {
+  }
+
+  .card-footer {
+  }
+
+  .card-elevated {
+  }
+
+  .card-bordered {
+  }
+
+  .txt-card {
+    font-size: var(--font-size-xl);
+    color: var(--color-primary);
+    font-weight: font-semibold;
+    justify-content: center;
+  }
+
+  .txt-hero {
+    @apply flex flex-col items-center;
+    font-weight: font-semibold;
+    padding: var(--spacing-3xl);
+    color: black;
+  }
+
+  .txt-hero-sm {
+    font-size: var(--font-size-lg);
+  }
+
+  .txt-hero-md {
+    font-size: var(--font-size-5xl);
+  }
+
+  .txt-hero-lg {
+    font-size: var(--font-size-6xl);
+  }
+
+  .appbar {
+    @apply sticky top-0 z-10 flex justify-between;
+    background-color: var(--color-secondary);
+  }
+
+  .footer {
+    @apply flex flex-col;
+    background-color: var(--color-primary);
+  }
+
+  .footer-table {
+    @apply flex flex-col items-center;
+    padding-top: var(--spacing-3xl);
+    padding-bottom: var(--spacing-xl);
+  }
+
+  .footer-column {
+    @apply flex flex-col items-center;
+    padding: var(--spacing-xs);
+    margin-inline: var(--spacing-xl);
+  }
+
+  .footer-column-entry {
+    padding: var(--spacing-md);
+    color: var(--color-secondary-light);
+  }
+  .footer-column-heading {
+    font-size: var(--font-size-md);
+  }
+
+  .footer-column-link {
+    font-size: var(--font-size-sm);
+  }
+
+  .footer-column-link:hover {
+    @apply underline cursor-pointer;
+  }
+
+  .footer-socials {
+    padding: var(--spacing-3xl);
+    color: var(--color-secondary-light);
+    font-size: var(--font-size-md);
   }
 }
