@@ -2,7 +2,7 @@ import { PrimaryButton } from '../buttons/PrimaryButton'
 import { Input } from '../inputs/Input'
 import { CardMessage } from './CardMessage'
 
-export const Card = () => {
+export const Card = ({ path }: { path: string }) => {
   return (
     <div className="card">
       <CardMessage textMessage="This is the card message"></CardMessage>
@@ -11,7 +11,7 @@ export const Card = () => {
       <Input inputType="email" inputPlaceholder="abc@abc"></Input>
       <Input inputType="password" inputPlaceholder="password"></Input>
       <div className="h-10"></div>
-      <PrimaryButton></PrimaryButton>
+      <PrimaryButton path={path}></PrimaryButton>
     </div>
   )
 }

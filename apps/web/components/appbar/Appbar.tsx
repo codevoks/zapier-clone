@@ -6,12 +6,12 @@ export const Appbar = () => {
   return (
     <div className="appbar">
       <div>
-        <PrimaryButton link="home"></PrimaryButton>
+        <PrimaryButton path="home"></PrimaryButton>
       </div>
       <div className="flex">
-        <SecondaryButton link="home"></SecondaryButton>
-        <SecondaryButton link="home"></SecondaryButton>
-        <SecondaryButton link="home"></SecondaryButton>
+        <SecondaryButton path="home"></SecondaryButton>
+        <SecondaryButton path="home"></SecondaryButton>
+        <SecondaryButton path="home"></SecondaryButton>
       </div>
     </div>
   )

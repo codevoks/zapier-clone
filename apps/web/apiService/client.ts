@@ -6,4 +6,28 @@ const api = axios.create({
   timeout: 10000,
 })
 
+api.interceptors.request.use(config => {
+  const authToken = localStorage.getItem('token')
+  if (authToken) {
+    config.headers.Authorization = `Bearer ${authToken}`
+  }
+  return config
+})
+
+api.interceptors.response.use(
+  response => response,
+  error => {
+    const status = error.response ? error.response.status : null
+    if (status === 401) {
+      // Handle unauthorized access
+    } else if (status === 404) {
+      // Handle not found errors
+    } else {
+      // Handle other errors
+    }
+
+    return Promise.reject(error)
+  }
+)
+
 export default api
