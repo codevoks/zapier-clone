@@ -1,15 +1,12 @@
 'use client'
-import { useRouter } from 'next/navigation'
+import { useNavigate } from '../../hooks/useNavigate'
 
 export const FooterLink = ({ link }: { link: string }) => {
-  const router = useRouter()
-  const navigateToLink = () => {
-    router.push('/' + link)
-  }
+  const navigateTo = useNavigate()
   return (
     <div
       className="footer-column-link footer-column-entry"
-      onClick={navigateToLink}
+      onClick={() => navigateTo('dashboard')}
     >
       Entry
     </div>

@@ -1,14 +1,14 @@
 'use client'
-import { useRouter } from 'next/router'
+import { useNavigate } from '../../hooks/useNavigate'
 
 export const PrimaryButton = ({ link }: { link: string }) => {
-  const router = useRouter()
-  const navigateToRoute = () => {
-    router.push('/' + link)
-  }
+  const navigateTo = useNavigate()
   return (
     <div>
-      <button className="btn btn-md btn-primary" onClick={navigateToRoute}>
+      <button
+        className="btn btn-md btn-primary"
+        onClick={() => navigateTo(link)}
+      >
         Primary
       </button>
     </div>
