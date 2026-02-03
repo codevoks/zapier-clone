@@ -1,8 +1,8 @@
 'use client'
 import { useNavigate } from '../../hooks/useNavigate'
-import { buttonPathInput } from '../../types/buttonTypes'
+import { buttonInput } from '../../types/buttonTypes'
 
-export const PrimaryButton = ({ path }: buttonPathInput) => {
+export const PrimaryButton = ({ title, path }: buttonInput) => {
   const navigateTo = useNavigate()
   return (
     <div>
@@ -10,7 +10,7 @@ export const PrimaryButton = ({ path }: buttonPathInput) => {
         className="btn btn-md btn-primary"
         onClick={() => navigateTo(path)}
       >
-        Primary
+        {title}
       </button>
     </div>
   )

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { safeParseSignUp } from '@repo/validation'
-import { hashPassword, signJwt, JwtPayLoad } from '@repo/auth'
+import { hashPassword, signJwt } from '@repo/auth'
 import { findUser, createUser } from '@repo/db'
 
 const SALT_ROUNDS = 10

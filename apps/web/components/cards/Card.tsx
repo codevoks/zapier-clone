@@ -1,17 +1,26 @@
 import { PrimaryButton } from '../buttons/PrimaryButton'
 import { Input } from '../inputs/Input'
 import { CardMessage } from './CardMessage'
+import { cardInput, cardInputBar } from '../../types/cardTypes'
 
-export const Card = ({ path }: { path: string }) => {
+export const Card = ({
+  message,
+  inputs,
+  buttonLabel,
+  buttonApi,
+}: cardInput) => {
   return (
     <div className="card">
-      <CardMessage textMessage="This is the card message"></CardMessage>
+      <CardMessage textMessage={message}></CardMessage>
       <div className="h-10"></div>
-      <Input inputType="text" inputPlaceholder="Name"></Input>
-      <Input inputType="email" inputPlaceholder="abc@abc"></Input>
-      <Input inputType="password" inputPlaceholder="password"></Input>
+      {inputs.map((input: cardInputBar) => (
+        <Input
+          inputType={input.inputType}
+          inputPlaceholder={input.inputPlaceholder}
+        ></Input>
+      ))}
       <div className="h-10"></div>
-      <PrimaryButton path={path}></PrimaryButton>
+      <PrimaryButton title={buttonLabel} path={buttonApi}></PrimaryButton>
     </div>
   )
 }

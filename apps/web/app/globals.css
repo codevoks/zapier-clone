@@ -237,7 +237,8 @@
   }
 
   .footer-socials {
-    padding: var(--spacing-3xl);
+    padding-block: var(--spacing-3xl);
+    padding-left: var(--spacing-3xl);
     color: var(--color-secondary-light);
     font-size: var(--font-size-md);
   }
