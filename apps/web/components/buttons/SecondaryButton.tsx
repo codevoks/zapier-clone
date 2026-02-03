@@ -1,6 +1,6 @@
 'user client'
 import { useNavigate } from '../../hooks/useNavigate'
-import { buttonPathInput } from '../../types/types'
+import { buttonPathInput } from '../../types/buttonTypes'
 
 export const SecondaryButton = ({ path }: buttonPathInput) => {
   const navigateTo = useNavigate()

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { submitType } from '../../types/types'
+import { submitType } from '../../types/buttonTypes'
 import {
   postRequest,
   getRequest,

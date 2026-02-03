@@ -1,14 +1,15 @@
 'use client'
 import { useNavigate } from '../../hooks/useNavigate'
+import { columnEntry } from '../../types'
 
-export const FooterLink = ({ link }: { link: string }) => {
+export const FooterLink = ({ title, path }: columnEntry) => {
   const navigateTo = useNavigate()
   return (
     <div
       className="footer-column-link footer-column-entry"
-      onClick={() => navigateTo('dashboard')}
+      onClick={() => navigateTo(path)}
     >
-      Entry
+      {title}
     </div>
   )
 }

@@ -18,8 +18,9 @@ api.interceptors.response.use(
   response => response,
   error => {
     const status = error.response ? error.response.status : null
-    if (status === 401) {
+    if (status === 401 && typeof window !== 'undefined') {
       // Handle unauthorized access
+      window.location.href = '/login'
     } else if (status === 404) {
       // Handle not found errors
     } else {

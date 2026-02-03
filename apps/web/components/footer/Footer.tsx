@@ -1,11 +1,11 @@
 import { FooterTable } from './FooterTable'
 import { FooterSocials } from './FooterSocials'
-import { FooterColumn } from './FooterColumn'
+import { footerColumnData } from './data/footerData'
 
 export const Footer = () => {
   return (
     <div className="footer">
-      <FooterTable></FooterTable>
+      <FooterTable columns={footerColumnData}></FooterTable>
       <FooterSocials></FooterSocials>
     </div>
   )
