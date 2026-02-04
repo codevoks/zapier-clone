@@ -22,10 +22,7 @@ export async function GET(request: NextRequest) {
     }
     const userInfo = await findUserById(Number(parsedToken.userId))
     if (!userInfo) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'User not found' }, { status: 401 })
     }
     return NextResponse.json({
       id: userInfo.id,
@@ -33,9 +30,6 @@ export async function GET(request: NextRequest) {
       email: userInfo.email,
     })
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Error in me route' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error in me route' }, { status: 500 })
   }
 }

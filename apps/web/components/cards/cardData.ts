@@ -11,12 +11,12 @@ export const signUpCardData: cardInput = {
   buttonApi: 'api/v1/signup',
 }
 
-export const signInCardData: cardInput = {
+export const logInCardData: cardInput = {
   message: 'Enter your details to sign in.',
   inputs: [
     { inputType: 'email', inputPlaceholder: 'john@example.com' },
     { inputType: 'password', inputPlaceholder: 'password' },
   ],
-  buttonLabel: 'Sign In',
-  buttonApi: 'api/v1/signin',
+  buttonLabel: 'Log In',
+  buttonApi: 'api/v1/login',
 }
