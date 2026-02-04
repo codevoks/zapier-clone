@@ -10,7 +10,7 @@ export const Appbar = () => {
       </div>
       <div className="flex">
         <SecondaryButton title="Sign Up" path="signup"></SecondaryButton>
-        <SecondaryButton title="Sign In" path="signin"></SecondaryButton>
+        <SecondaryButton title="log In" path="login"></SecondaryButton>
         <SecondaryButton title="Log Out" path=""></SecondaryButton>
       </div>
     </div>
