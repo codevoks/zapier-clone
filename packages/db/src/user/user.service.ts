@@ -22,3 +22,14 @@ export async function createUser(newUser: UserCreateInput) {
     console.log('Error while finding the user.')
   }
 }
+
+export async function findUserById(id: number) {
+  try {
+    return await prisma.user.findUnique({
+      where: { id },
+      select: { id: true, name: true, email: true },
+    })
+  } catch (error) {
+    console.log('Error while finding the user.')
+  }
+}
