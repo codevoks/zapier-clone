@@ -31,7 +31,7 @@ export const Appbar = () => {
         {loggedIn ? (
           <SecondaryButton title="Log Out" path=""></SecondaryButton>
         ) : (
-          <div>
+          <div className="flex">
             <SecondaryButton title="Sign Up" path="signup"></SecondaryButton>
             <SecondaryButton title="Log In" path="login"></SecondaryButton>
           </div>
