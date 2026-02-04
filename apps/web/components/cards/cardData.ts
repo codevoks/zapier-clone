@@ -12,7 +12,7 @@ export const signUpCardData: cardInput = {
 }
 
 export const logInCardData: cardInput = {
-  message: 'Enter your details to sign in.',
+  message: 'Enter your details to log in.',
   inputs: [
     { inputType: 'email', inputPlaceholder: 'john@example.com' },
     { inputType: 'password', inputPlaceholder: 'password' },
