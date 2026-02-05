@@ -3,11 +3,15 @@ import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { PrimaryButton } from '../buttons/PrimaryButton'
 import { SecondaryButton } from '../buttons/SecondaryButton'
-import { getRequest } from '../../apiService'
+import { getRequest, postRequest } from '../../apiService'
+import { useNavigate } from '../../hooks/useNavigate'
 
 export const Appbar = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const [loggingOut, setLoggingOut] = useState<boolean>(false)
   const pathname = usePathname()
+
+  const navigateTo = useNavigate()
 
   useEffect(() => {
     async function checkLoggedIn() {
@@ -18,18 +22,38 @@ export const Appbar = () => {
         } else {
           setLoggedIn(false)
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error(error)
+      }
     }
     checkLoggedIn()
   }, [pathname])
+
+  const handleLogOutClick = async () => {
+    try {
+      setLoggingOut(true)
+      await postRequest({ path: '/logout', data: {} })
+      navigateTo('/')
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoggingOut(false)
+    }
+  }
+
   return (
     <div className="appbar">
       <div>
         <PrimaryButton title="Home" path=""></PrimaryButton>
       </div>
       <div className="flex">
+        <PrimaryButton title="Dashboard" path="/dashboard"></PrimaryButton>
         {loggedIn ? (
-          <SecondaryButton title="Log Out" path=""></SecondaryButton>
+          <SecondaryButton
+            title="Log Out"
+            onClick={handleLogOutClick}
+            disabled={loggingOut}
+          ></SecondaryButton>
         ) : (
           <div className="flex">
             <SecondaryButton title="Sign Up" path="signup"></SecondaryButton>
