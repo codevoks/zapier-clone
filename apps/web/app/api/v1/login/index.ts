@@ -42,7 +42,7 @@ export async function POST(Request: NextRequest) {
         status: '500',
       })
     }
-    const response = NextResponse.redirect(new URL('/home', Request.url))
+    const response = NextResponse.redirect(new URL('/dashboard', Request.url))
     response.cookies.set('token', token, {
       httpOnly: true,
       path: '/',
@@ -51,7 +51,7 @@ export async function POST(Request: NextRequest) {
     return response
   } catch (error) {
     return NextResponse.json(
-      { error: 'Error while Signing Up' },
+      { error: 'Error while logging in' },
       { status: 400 }
     )
   }
