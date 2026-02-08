@@ -7,7 +7,10 @@ export const Card = ({
   message,
   inputs,
   buttonLabel,
-  buttonApi,
+  values,
+  onInputChange,
+  onButtonClick,
+  disabled,
 }: cardInput) => {
   return (
     <div className="card">
@@ -15,12 +18,24 @@ export const Card = ({
       <div className="h-10"></div>
       {inputs.map((input: cardInputBar) => (
         <Input
+          key={input.fieldName}
           inputType={input.inputType}
           inputPlaceholder={input.inputPlaceholder}
+          value={values?.[input.fieldName] ?? ''}
+          onChange={
+            onInputChange
+              ? e => onInputChange(input.fieldName, e.target.value)
+              : undefined
+          }
         ></Input>
       ))}
       <div className="h-10"></div>
-      <PrimaryButton title={buttonLabel} path={buttonApi}></PrimaryButton>
+      <PrimaryButton
+        title={buttonLabel}
+        path={'/dashboard'}
+        onClick={onButtonClick}
+        disabled={disabled}
+      ></PrimaryButton>
     </div>
   )
 }

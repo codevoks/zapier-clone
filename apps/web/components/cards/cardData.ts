@@ -3,20 +3,34 @@ import { cardInput } from '../../types'
 export const signUpCardData: cardInput = {
   message: 'Enter your details to sign up.',
   inputs: [
-    { inputType: 'text', inputPlaceholder: 'Name' },
-    { inputType: 'email', inputPlaceholder: 'john@example.com' },
-    { inputType: 'password', inputPlaceholder: 'password' },
+    { fieldName: 'name', inputType: 'text', inputPlaceholder: 'Name' },
+    {
+      fieldName: 'email',
+      inputType: 'email',
+      inputPlaceholder: 'john@example.com',
+    },
+    {
+      fieldName: 'password',
+      inputType: 'password',
+      inputPlaceholder: 'password',
+    },
   ],
   buttonLabel: 'Sign Up',
-  buttonApi: 'api/v1/signup',
 }
 
 export const logInCardData: cardInput = {
   message: 'Enter your details to log in.',
   inputs: [
-    { inputType: 'email', inputPlaceholder: 'john@example.com' },
-    { inputType: 'password', inputPlaceholder: 'password' },
+    {
+      fieldName: 'email',
+      inputType: 'email',
+      inputPlaceholder: 'john@example.com',
+    },
+    {
+      fieldName: 'password',
+      inputType: 'password',
+      inputPlaceholder: 'password',
+    },
   ],
   buttonLabel: 'Log In',
-  buttonApi: 'api/v1/login',
 }
