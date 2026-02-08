@@ -44,7 +44,7 @@ export const Appbar = () => {
   return (
     <div className="appbar">
       <div>
-        <PrimaryButton title="Home" path=""></PrimaryButton>
+        <PrimaryButton title="Home" path="/"></PrimaryButton>
       </div>
       <div className="flex">
         <PrimaryButton title="Dashboard" path="/dashboard"></PrimaryButton>
