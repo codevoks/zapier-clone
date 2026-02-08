@@ -3,17 +3,23 @@
 @theme {
   /* Colors */
   --color-primary: #cc3f00;
-  --color-secondary: #fffefa;
+  --color-secondary: #291b00;
+  --color-tertiary: #695be8;
   --color-primary-font: #fffdf9;
-  --color-secondary-font: #201515;
+  --color-secondary-font: #fbfaf8;
+  --color-tertiary-font: #fffdf9;
 
   /* Primary color variation */
   --color-primary-light: #ff4d00;
   --color-primary-dark: #752300;
 
   /* Secondary color variation */
-  --color-secondary-light: #fbfaf8;
-  --color-secondary-dark: #413735;
+  --color-secondary-light: #413735;
+  --color-secondary-dark: #291b00;
+
+  /* Tertiary color variation */
+  --color-tertiary-light: #695be8;
+  --color-tertiary-dark: #503ebd;
 
   /* Neutral grays*/
   --color-gray-100: #f3f4f6;
@@ -116,6 +122,16 @@
     background-color: var(--color-secondary-light);
   }
 
+  /* Tertiary color */
+  .btn-tertiary {
+    background-color: var(--color-tertiary);
+    color: var(--color-tertiary-font);
+  }
+
+  .btn-tertiary:hover {
+    background-color: var(--color-tertiary-light);
+  }
+
   /* Base input component */
   .input {
     background-color: var(--color-gray-200);
@@ -183,7 +199,8 @@
     @apply flex flex-col items-center;
     font-weight: font-semibold;
     padding: var(--spacing-3xl);
-    color: black;
+    color: var(--color-primary-font);
+    background-color: var(--color-secondary);
   }
 
   .txt-hero-sm {
@@ -196,6 +213,11 @@
 
   .txt-hero-lg {
     font-size: var(--font-size-6xl);
+  }
+
+  .hero-video {
+    @apply flex flex-col items-center;
+    background: var(--color-secondary);
   }
 
   .appbar {
@@ -222,7 +244,7 @@
 
   .footer-column-entry {
     padding: var(--spacing-md);
-    color: var(--color-secondary-light);
+    color: var(--color-primary-font);
   }
   .footer-column-heading {
     font-size: var(--font-size-md);
@@ -239,7 +261,7 @@
   .footer-socials {
     padding-block: var(--spacing-3xl);
     padding-left: var(--spacing-3xl);
-    color: var(--color-secondary-light);
+    color: var(--color-primary-font);
     font-size: var(--font-size-md);
   }
 
@@ -253,11 +275,11 @@
     width: 1.5rem;
     margin: var(--spacing-xs);
     fill: currentColor;
-    color: var(--color-secondary-light);
+    color: var(--color-primary-font);
   }
 
   .social-icon :hover {
     @apply cursor-pointer;
-    background-color: var(--color-secondary);
+    background-color: var(--color-secondary-dark);
   }
 }

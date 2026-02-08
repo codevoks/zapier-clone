@@ -1,6 +1,6 @@
 export const HeroVideo = () => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="hero-video">
       <video width="80%" height="240" controls preload="none" autoPlay={true}>
         <source
           src="https://res.cloudinary.com/zapier-media/video/upload/q_auto/f_auto/c_scale,w_1920/v1745864783/aiworkflowshomepage.mp4"
