@@ -1,4 +1,4 @@
-export const Input = ({
+export const InputBar = ({
   inputType,
   inputPlaceholder,
   value,

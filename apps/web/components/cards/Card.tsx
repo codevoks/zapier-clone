@@ -1,5 +1,5 @@
 import { PrimaryButton } from '../buttons/PrimaryButton'
-import { Input } from '../inputs/Input'
+import { InputBar } from '../inputBar/InputBar'
 import { CardMessage } from './CardMessage'
 import { cardInput, cardInputBar } from '../../types/cardTypes'
 
@@ -17,7 +17,7 @@ export const Card = ({
       <CardMessage textMessage={message}></CardMessage>
       <div className="h-10"></div>
       {inputs.map((input: cardInputBar) => (
-        <Input
+        <InputBar
           key={input.fieldName}
           inputType={input.inputType}
           inputPlaceholder={input.inputPlaceholder}
@@ -27,7 +27,7 @@ export const Card = ({
               ? e => onInputChange(input.fieldName, e.target.value)
               : undefined
           }
-        ></Input>
+        ></InputBar>
       ))}
       <div className="h-10"></div>
       <PrimaryButton
