@@ -27,7 +27,7 @@ export default function Dashboard() {
   return (
     <div className="bg-secondary">
       {loadingZaps ? <div>Loading...</div> : <ZapTable zaps={zaps} />}
-      <TertiaryButton title="Create" />
+      <TertiaryButton title="Create" path="/zap/create" />
     </div>
   )
 }
