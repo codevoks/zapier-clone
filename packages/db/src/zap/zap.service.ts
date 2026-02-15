@@ -1,5 +1,5 @@
-import prisma from '../client/client.js'
-import type { ZapCreateInput } from './zap.types.js'
+import prisma from '../client/client'
+import type { ZapCreateInput } from './zap.types'
 
 export async function createZap(newZap: ZapCreateInput) {
   try {

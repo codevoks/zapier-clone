@@ -1,3 +1,3 @@
-export * from './zap.schema.js'
-export * from './zap.types.js'
-export * from './zap.parse.js'
+export * from './zap.schema'
+export * from './zap.types'
+export * from './zap.parse'

@@ -1,4 +1,4 @@
-import { SignUpSchema, LogInSchema } from './user.schema.js'
+import { SignUpSchema, LogInSchema } from './user.schema'
 
 export function safeParseSignUp(input: unknown) {
   return SignUpSchema.safeParse(input)

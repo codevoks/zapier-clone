@@ -1,4 +1,4 @@
-import { ZapCreteSchema } from './zap.schema.js'
+import { ZapCreteSchema } from './zap.schema'
 
 export function safeParseZapCreteSchema(input: unknown) {
   return ZapCreteSchema.safeParse(input)

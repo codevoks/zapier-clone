@@ -1,2 +1,2 @@
-export * from './jwt.service.js'
-export * from './jwt.types.js'
+export * from './jwt.service'
+export * from './jwt.types'

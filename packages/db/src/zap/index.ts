@@ -1,2 +1,2 @@
-export * from './zap.types.js'
-export * from './zap.service.js'
+export * from './zap.types'
+export * from './zap.service'

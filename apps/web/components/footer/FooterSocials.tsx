@@ -1,4 +1,4 @@
-import { socials } from './socials/socials.ts'
+import { socials } from './socials/socials'
 export const FooterSocials = () => {
   return (
     <div className="flex">

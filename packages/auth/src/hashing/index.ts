@@ -1,1 +1,1 @@
-export * from './hash.service.js'
+export * from './hash.service'

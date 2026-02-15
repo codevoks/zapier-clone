@@ -1,2 +1,2 @@
-export * from './user/index.js'
-export * from './zap/index.js'
+export * from './user/index'
+export * from './zap/index'
