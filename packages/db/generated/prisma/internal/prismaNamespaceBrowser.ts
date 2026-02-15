@@ -116,14 +116,18 @@ export type ActionScalarFieldEnum = (typeof ActionScalarFieldEnum)[keyof typeof 
 
 
 export const AvailableTriggerScalarFieldEnum = {
-  id: 'id'
+  id: 'id',
+  name: 'name',
+  image: 'image'
 } as const
 
 export type AvailableTriggerScalarFieldEnum = (typeof AvailableTriggerScalarFieldEnum)[keyof typeof AvailableTriggerScalarFieldEnum]
 
 
 export const AvaialableActionScalarFieldEnum = {
-  id: 'id'
+  id: 'id',
+  name: 'name',
+  image: 'image'
 } as const
 
 export type AvaialableActionScalarFieldEnum = (typeof AvaialableActionScalarFieldEnum)[keyof typeof AvaialableActionScalarFieldEnum]
