@@ -23,6 +23,7 @@ export const Appbar = () => {
           setLoggedIn(false)
         }
       } catch (error) {
+        setLoggedIn(false)
         console.error(error)
       }
     }
