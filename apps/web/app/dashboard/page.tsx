@@ -3,7 +3,7 @@ import { TertiaryButton } from '../../components/buttons/TertiaryButton'
 import { getRequest } from '../../apiService'
 import { useState, useEffect } from 'react'
 import { Zap } from '../../types'
-import ZapTable from '../../components/zapsTable/ZapsTable'
+import ZapTable from '../../components/zap/zapsTable/ZapsTable'
 
 export default function Dashboard() {
   const [loadingZaps, setLoadingZaps] = useState<boolean>(false)
