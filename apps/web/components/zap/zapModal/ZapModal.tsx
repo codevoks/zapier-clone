@@ -28,11 +28,23 @@ export const ZapModal = ({
           {index === 1
             ? availableTriggers &&
               availableTriggers.map(trigger => (
-                <ZapModalEntry key={trigger.id} entry={trigger}></ZapModalEntry>
+                <ZapModalEntry
+                  key={trigger.id}
+                  entry={trigger}
+                  onSelect={() =>
+                    onSelect({ name: trigger.name, id: trigger.id })
+                  }
+                ></ZapModalEntry>
               ))
             : availableActions &&
               availableActions.map(action => (
-                <ZapModalEntry key={action.id} entry={action}></ZapModalEntry>
+                <ZapModalEntry
+                  key={action.id}
+                  entry={action}
+                  onSelect={() =>
+                    onSelect({ name: action.name, id: action.id })
+                  }
+                ></ZapModalEntry>
               ))}
         </div>
       </div>

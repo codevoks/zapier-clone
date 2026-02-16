@@ -10,7 +10,7 @@ export function ZapCell({
   return (
     <div
       onClick={onClick}
-      className="border border-black py-8 px-8 flex w-[300px] justify-center cursor-pointer"
+      className="border border-black py-8 px-8 flex w-[300px] justify-center cursor-pointer rounded-2xl"
     >
       <div className="text-xl flex">
         <div className="font-bold">{index}. </div>

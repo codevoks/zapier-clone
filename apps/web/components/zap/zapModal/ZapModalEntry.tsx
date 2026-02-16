@@ -4,11 +4,16 @@ import Image from 'next/image'
 
 export const ZapModalEntry = ({
   entry,
+  onSelect,
 }: {
   entry: AvailableTrigger | AvaialableAction
+  onSelect: (props: null | { name: string; id: string }) => void
 }) => {
   return (
-    <div className="flex items-center gap-xs p-xs">
+    <div
+      className="flex items-center gap-xs p-xs hover:bg-slate-100 cursor-pointer"
+      onClick={() => onSelect({ name: entry.name, id: entry.id })}
+    >
       <Image
         src={entry.image}
         width={25}

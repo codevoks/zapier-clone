@@ -31,7 +31,6 @@ export default function NewZap() {
   useEffect(() => {
     const getAvailableTriggers = async () => {
       const response = await useAvailableTriggers()
-      console.log('TRIGGER=> ' + JSON.stringify(response))
       if (response) {
         setAvailableTriggers(response)
       }
@@ -39,7 +38,6 @@ export default function NewZap() {
 
     const getAvailableActions = async () => {
       const response = await useAvailableActions()
-      console.log('ACTION=> ' + JSON.stringify(response))
       if (response) {
         setAvailableActions(response)
       }
