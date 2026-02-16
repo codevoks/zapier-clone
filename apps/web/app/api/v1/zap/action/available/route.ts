@@ -17,9 +17,9 @@ export async function GET(Request: NextRequest) {
     if (!parsedToken?.userId) {
       return NextResponse.json({ error: 'Invalid Token.' }, { status: 411 })
     }
-    const avaialableActions = await prisma.avaialableAction.findMany({})
+    const availableActions = await prisma.avaialableAction.findMany({})
     return NextResponse.json(
-      { avaialableActions: avaialableActions },
+      { availableActions: availableActions },
       { status: 200 }
     )
   } catch (error) {
