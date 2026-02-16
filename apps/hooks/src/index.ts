@@ -1,5 +1,5 @@
 import express from 'express'
-import { prisma } from '@repo/db'
+import { prisma, Prisma } from '@repo/db'
 
 const app = express()
 
@@ -12,7 +12,7 @@ app.post('/hooks/catch/:userid/:zapid', async (req, res) => {
     return res.status(400).json({ error: 'Missing params' })
   }
 
-  await prisma.$transaction(async tx => {
+  await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     const run = await tx.zapRun.create({
       data: {
         zapId: zapId,
