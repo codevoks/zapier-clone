@@ -1,35 +1,76 @@
 'use client'
-import { useState } from 'react'
-import ZapCell from '../../../components/zapsCell/ZapCell'
-import { SecondaryButton } from '../../../components/buttons/SecondaryButton'
+import { useEffect, useState } from 'react'
+import { ZapCell } from '../../../components/zap/zapsCell/ZapCell'
 import { PrimaryButton } from '../../../components/buttons/PrimaryButton'
+import { ZapModal } from '../../../components/zap/zapModal/ZapModal'
+import { useAvailableTriggers, useAvailableActions } from '../../../hooks'
+import type { AvailableTrigger, AvaialableAction } from '@repo/db'
 
 export default function NewZap() {
-  const [selectedTrigger, setSelectedTrigger] = useState('')
+  const [availableTriggers, setAvailableTriggers] = useState<
+    AvailableTrigger[]
+  >([])
+  const [availableActions, setAvailableActions] = useState<AvaialableAction[]>(
+    []
+  )
+  const [selectedTrigger, setSelectedTrigger] = useState<{
+    availableTriggerId: string
+    availableTriggerName: string
+  }>()
   const [selectedActions, setSelectedActions] = useState<
     {
-      availableactionId: string
+      index: number
+      availableActionId: string
       availableActionName: string
     }[]
   >([])
+  const [selectedModalIndex, setSelectedModalIndex] = useState<number | null>(
+    null
+  )
+
+  useEffect(() => {
+    const getAvailableTriggers = async () => {
+      const response = await useAvailableTriggers()
+      console.log('TRIGGER=> ' + JSON.stringify(response))
+      if (response) {
+        setAvailableTriggers(response)
+      }
+    }
+
+    const getAvailableActions = async () => {
+      const response = await useAvailableActions()
+      console.log('ACTION=> ' + JSON.stringify(response))
+      if (response) {
+        setAvailableActions(response)
+      }
+    }
+
+    getAvailableTriggers()
+    getAvailableActions()
+  }, [])
+
   return (
     <div className="w-full min-h-screen bg-slate-200 flex flex-col justify-center">
       <div className="flex justify-center w-full">
         <ZapCell
-          name={selectedTrigger ? selectedTrigger : 'Trigger'}
+          name={
+            selectedTrigger ? selectedTrigger.availableTriggerName : 'Trigger'
+          }
           index={1}
+          onClick={() => setSelectedModalIndex(1)}
         ></ZapCell>
       </div>
       <div className="w-full pt-2 pb-2">
-        {selectedActions.map((action, index) => (
-          <div className="pt-2 flex justify-center">
+        {selectedActions.map(action => (
+          <div key={action.index} className="pt-2 flex justify-center">
             <ZapCell
               name={
                 action.availableActionName
                   ? action.availableActionName
                   : 'Action'
               }
-              index={2 + index}
+              index={action.index}
+              onClick={() => setSelectedModalIndex(action.index)}
             ></ZapCell>
           </div>
         ))}
@@ -41,13 +82,44 @@ export default function NewZap() {
             setSelectedActions(prev => [
               ...prev,
               {
-                availableactionId: '',
+                index: prev.length + 2,
+                availableActionId: '',
                 availableActionName: '',
               },
             ])
           }}
         ></PrimaryButton>
       </div>
+      {selectedModalIndex && (
+        <ZapModal
+          onSelect={(props: null | { name: string; id: string }) => {
+            if (props === null) {
+              setSelectedModalIndex(null)
+              return
+            }
+            if (selectedModalIndex === 1) {
+              setSelectedTrigger({
+                availableTriggerId: props.id,
+                availableTriggerName: props.name,
+              })
+            } else {
+              setSelectedActions(prev => {
+                const newActions = [...prev]
+                newActions[selectedModalIndex - 2] = {
+                  index: selectedModalIndex,
+                  availableActionId: props.id,
+                  availableActionName: props.name,
+                }
+                return newActions
+              })
+            }
+            setSelectedModalIndex(null)
+          }}
+          index={selectedModalIndex}
+          availableTriggers={availableTriggers}
+          availableActions={availableActions}
+        />
+      )}
     </div>
   )
 }
