@@ -8,7 +8,6 @@ const JWT_SECRET = 'shallom'
 
 export async function POST(Request: NextRequest) {
   try {
-    console.log('INSIDE POST SIGNUP')
     const body = await Request.json()
     const parsedData = safeParseSignUp(body)
     if (!parsedData.success) {
