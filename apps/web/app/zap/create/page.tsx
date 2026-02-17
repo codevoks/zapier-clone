@@ -48,7 +48,7 @@ export default function NewZap() {
   }, [])
 
   return (
-    <div className="w-full min-h-screen bg-slate-200 flex flex-col justify-center">
+    <div className="zap-create">
       <div className="flex justify-center w-full">
         <ZapCell
           name={

@@ -282,4 +282,20 @@
     @apply cursor-pointer;
     background-color: var(--color-secondary-dark);
   }
+
+  .zap-create {
+    @apply w-full min-h-screen flex flex-col justify-center;
+    background-color: var(--color-secondary-light);
+  }
+
+  .zapcell {
+    @apply border  py-8 px-8 flex w-[300px] justify-center cursor-pointer rounded-2xl;
+    border-color: var(--color-secondary-font);
+    background-color: var(--color-secondary-dark);
+  }
+
+  .zapcell-text {
+    @apply font-bold;
+    color: var(--color-primary-font);
+  }
 }
