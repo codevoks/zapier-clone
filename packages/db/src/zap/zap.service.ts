@@ -7,6 +7,6 @@ export async function createZap(newZap: ZapCreateInput) {
       data: newZap,
     })
   } catch (error) {
-    console.log('Error while finding the user.')
+    console.log('Error while finding the zap.')
   }
 }
