@@ -19,7 +19,7 @@ export default function ZapsBar({ cells, zap }: ZapsBarProps) {
       : [])
 
   return (
-    <tr>
+    <tr className="text-primary-font">
       {content.map((cell, i) =>
         cells ? <th key={i}>{cell}</th> : <td key={i}>{cell}</td>
       )}
