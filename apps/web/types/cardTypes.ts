@@ -1,3 +1,5 @@
+import { AxiosPromise } from 'axios'
+
 export type cardInputBar = {
   fieldName: string
   inputType: string
@@ -9,6 +11,6 @@ export type cardInput = {
   buttonLabel: string
   values?: Record<string, string>
   onInputChange?: (field: string, value: string) => void
-  onButtonClick?: () => void | Promise<void>
+  onButtonClick: () => void | Promise<void> | Promise<AxiosPromise>
   disabled?: boolean
 }

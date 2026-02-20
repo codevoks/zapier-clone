@@ -5,6 +5,8 @@ import { PrimaryButton } from '../../../components/buttons/PrimaryButton'
 import { ZapModal } from '../../../components/zap/zapModal/ZapModal'
 import { useAvailableTriggers, useAvailableActions } from '../../../hooks'
 import type { AvailableTrigger, AvaialableAction } from '@repo/db'
+import { TertiaryButton } from '../../../components/buttons/TertiaryButton'
+import { postRequest } from '../../../apiService'
 
 export default function NewZap() {
   const [availableTriggers, setAvailableTriggers] = useState<
@@ -49,6 +51,28 @@ export default function NewZap() {
 
   return (
     <div className="zap-create">
+      <div className="flex justify-center">
+        <TertiaryButton
+          title="Publish Zap"
+          onClick={async () => {
+            if (!selectedTrigger?.availableTriggerId) {
+              return
+            }
+            const response = await postRequest({
+              path: 'zap',
+              data: {
+                availableTriggerId: selectedTrigger?.availableTriggerId,
+                triggerMetadata: {},
+                actions: selectedActions.map(action => ({
+                  availableActionId: action.availableActionId,
+                  availableActionName: action.availableActionName,
+                })),
+              },
+            })
+          }}
+          path="dashboard"
+        ></TertiaryButton>
+      </div>
       <div className="flex justify-center w-full">
         <ZapCell
           name={
