@@ -16,6 +16,9 @@ export const signUpCardData: cardInput = {
     },
   ],
   buttonLabel: 'Sign Up',
+  onButtonClick: () => {
+    return
+  },
 }
 
 export const logInCardData: cardInput = {
@@ -33,4 +36,7 @@ export const logInCardData: cardInput = {
     },
   ],
   buttonLabel: 'Log In',
+  onButtonClick: () => {
+    return
+  },
 }
