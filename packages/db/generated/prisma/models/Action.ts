@@ -20,46 +20,70 @@ export type ActionModel = runtime.Types.Result.DefaultSelection<Prisma.$ActionPa
 
 export type AggregateAction = {
   _count: ActionCountAggregateOutputType | null
+  _avg: ActionAvgAggregateOutputType | null
+  _sum: ActionSumAggregateOutputType | null
   _min: ActionMinAggregateOutputType | null
   _max: ActionMaxAggregateOutputType | null
+}
+
+export type ActionAvgAggregateOutputType = {
+  sortingOrder: number | null
+}
+
+export type ActionSumAggregateOutputType = {
+  sortingOrder: number | null
 }
 
 export type ActionMinAggregateOutputType = {
   id: string | null
   zapId: string | null
   actionId: string | null
+  sortingOrder: number | null
 }
 
 export type ActionMaxAggregateOutputType = {
   id: string | null
   zapId: string | null
   actionId: string | null
+  sortingOrder: number | null
 }
 
 export type ActionCountAggregateOutputType = {
   id: number
   zapId: number
   actionId: number
+  sortingOrder: number
   _all: number
 }
 
+
+export type ActionAvgAggregateInputType = {
+  sortingOrder?: true
+}
+
+export type ActionSumAggregateInputType = {
+  sortingOrder?: true
+}
 
 export type ActionMinAggregateInputType = {
   id?: true
   zapId?: true
   actionId?: true
+  sortingOrder?: true
 }
 
 export type ActionMaxAggregateInputType = {
   id?: true
   zapId?: true
   actionId?: true
+  sortingOrder?: true
 }
 
 export type ActionCountAggregateInputType = {
   id?: true
   zapId?: true
   actionId?: true
+  sortingOrder?: true
   _all?: true
 }
 
@@ -101,6 +125,18 @@ export type ActionAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ActionAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ActionSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ActionMinAggregateInputType
@@ -131,6 +167,8 @@ export type ActionGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   _count?: ActionCountAggregateInputType | true
+  _avg?: ActionAvgAggregateInputType
+  _sum?: ActionSumAggregateInputType
   _min?: ActionMinAggregateInputType
   _max?: ActionMaxAggregateInputType
 }
@@ -139,7 +177,10 @@ export type ActionGroupByOutputType = {
   id: string
   zapId: string
   actionId: string
+  sortingOrder: number
   _count: ActionCountAggregateOutputType | null
+  _avg: ActionAvgAggregateOutputType | null
+  _sum: ActionSumAggregateOutputType | null
   _min: ActionMinAggregateOutputType | null
   _max: ActionMaxAggregateOutputType | null
 }
@@ -166,6 +207,7 @@ export type ActionWhereInput = {
   id?: Prisma.StringFilter<"Action"> | string
   zapId?: Prisma.StringFilter<"Action"> | string
   actionId?: Prisma.StringFilter<"Action"> | string
+  sortingOrder?: Prisma.IntFilter<"Action"> | number
   type?: Prisma.XOR<Prisma.AvaialableActionScalarRelationFilter, Prisma.AvaialableActionWhereInput>
   zap?: Prisma.XOR<Prisma.ZapScalarRelationFilter, Prisma.ZapWhereInput>
 }
@@ -174,28 +216,33 @@ export type ActionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   actionId?: Prisma.SortOrder
+  sortingOrder?: Prisma.SortOrder
   type?: Prisma.AvaialableActionOrderByWithRelationInput
   zap?: Prisma.ZapOrderByWithRelationInput
 }
 
 export type ActionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  zapId?: string
   AND?: Prisma.ActionWhereInput | Prisma.ActionWhereInput[]
   OR?: Prisma.ActionWhereInput[]
   NOT?: Prisma.ActionWhereInput | Prisma.ActionWhereInput[]
+  zapId?: Prisma.StringFilter<"Action"> | string
   actionId?: Prisma.StringFilter<"Action"> | string
+  sortingOrder?: Prisma.IntFilter<"Action"> | number
   type?: Prisma.XOR<Prisma.AvaialableActionScalarRelationFilter, Prisma.AvaialableActionWhereInput>
   zap?: Prisma.XOR<Prisma.ZapScalarRelationFilter, Prisma.ZapWhereInput>
-}, "id" | "zapId">
+}, "id">
 
 export type ActionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   actionId?: Prisma.SortOrder
+  sortingOrder?: Prisma.SortOrder
   _count?: Prisma.ActionCountOrderByAggregateInput
+  _avg?: Prisma.ActionAvgOrderByAggregateInput
   _max?: Prisma.ActionMaxOrderByAggregateInput
   _min?: Prisma.ActionMinOrderByAggregateInput
+  _sum?: Prisma.ActionSumOrderByAggregateInput
 }
 
 export type ActionScalarWhereWithAggregatesInput = {
@@ -205,10 +252,12 @@ export type ActionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Action"> | string
   zapId?: Prisma.StringWithAggregatesFilter<"Action"> | string
   actionId?: Prisma.StringWithAggregatesFilter<"Action"> | string
+  sortingOrder?: Prisma.IntWithAggregatesFilter<"Action"> | number
 }
 
 export type ActionCreateInput = {
   id?: string
+  sortingOrder?: number
   type: Prisma.AvaialableActionCreateNestedOneWithoutActionInput
   zap: Prisma.ZapCreateNestedOneWithoutActionsInput
 }
@@ -217,10 +266,12 @@ export type ActionUncheckedCreateInput = {
   id?: string
   zapId: string
   actionId: string
+  sortingOrder?: number
 }
 
 export type ActionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.AvaialableActionUpdateOneRequiredWithoutActionNestedInput
   zap?: Prisma.ZapUpdateOneRequiredWithoutActionsNestedInput
 }
@@ -229,22 +280,26 @@ export type ActionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
   actionId?: Prisma.StringFieldUpdateOperationsInput | string
+  sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ActionCreateManyInput = {
   id?: string
   zapId: string
   actionId: string
+  sortingOrder?: number
 }
 
 export type ActionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ActionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
   actionId?: Prisma.StringFieldUpdateOperationsInput | string
+  sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ActionListRelationFilter = {
@@ -261,18 +316,29 @@ export type ActionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   actionId?: Prisma.SortOrder
+  sortingOrder?: Prisma.SortOrder
+}
+
+export type ActionAvgOrderByAggregateInput = {
+  sortingOrder?: Prisma.SortOrder
 }
 
 export type ActionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   actionId?: Prisma.SortOrder
+  sortingOrder?: Prisma.SortOrder
 }
 
 export type ActionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   actionId?: Prisma.SortOrder
+  sortingOrder?: Prisma.SortOrder
+}
+
+export type ActionSumOrderByAggregateInput = {
+  sortingOrder?: Prisma.SortOrder
 }
 
 export type ActionCreateNestedManyWithoutZapInput = {
@@ -361,12 +427,14 @@ export type ActionUncheckedUpdateManyWithoutTypeNestedInput = {
 
 export type ActionCreateWithoutZapInput = {
   id?: string
+  sortingOrder?: number
   type: Prisma.AvaialableActionCreateNestedOneWithoutActionInput
 }
 
 export type ActionUncheckedCreateWithoutZapInput = {
   id?: string
   actionId: string
+  sortingOrder?: number
 }
 
 export type ActionCreateOrConnectWithoutZapInput = {
@@ -402,16 +470,19 @@ export type ActionScalarWhereInput = {
   id?: Prisma.StringFilter<"Action"> | string
   zapId?: Prisma.StringFilter<"Action"> | string
   actionId?: Prisma.StringFilter<"Action"> | string
+  sortingOrder?: Prisma.IntFilter<"Action"> | number
 }
 
 export type ActionCreateWithoutTypeInput = {
   id?: string
+  sortingOrder?: number
   zap: Prisma.ZapCreateNestedOneWithoutActionsInput
 }
 
 export type ActionUncheckedCreateWithoutTypeInput = {
   id?: string
   zapId: string
+  sortingOrder?: number
 }
 
 export type ActionCreateOrConnectWithoutTypeInput = {
@@ -443,41 +514,49 @@ export type ActionUpdateManyWithWhereWithoutTypeInput = {
 export type ActionCreateManyZapInput = {
   id?: string
   actionId: string
+  sortingOrder?: number
 }
 
 export type ActionUpdateWithoutZapInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.AvaialableActionUpdateOneRequiredWithoutActionNestedInput
 }
 
 export type ActionUncheckedUpdateWithoutZapInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   actionId?: Prisma.StringFieldUpdateOperationsInput | string
+  sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ActionUncheckedUpdateManyWithoutZapInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   actionId?: Prisma.StringFieldUpdateOperationsInput | string
+  sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ActionCreateManyTypeInput = {
   id?: string
   zapId: string
+  sortingOrder?: number
 }
 
 export type ActionUpdateWithoutTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
   zap?: Prisma.ZapUpdateOneRequiredWithoutActionsNestedInput
 }
 
 export type ActionUncheckedUpdateWithoutTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
+  sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ActionUncheckedUpdateManyWithoutTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
+  sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -486,6 +565,7 @@ export type ActionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   zapId?: boolean
   actionId?: boolean
+  sortingOrder?: boolean
   type?: boolean | Prisma.AvaialableActionDefaultArgs<ExtArgs>
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["action"]>
@@ -494,6 +574,7 @@ export type ActionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   zapId?: boolean
   actionId?: boolean
+  sortingOrder?: boolean
   type?: boolean | Prisma.AvaialableActionDefaultArgs<ExtArgs>
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["action"]>
@@ -502,6 +583,7 @@ export type ActionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   zapId?: boolean
   actionId?: boolean
+  sortingOrder?: boolean
   type?: boolean | Prisma.AvaialableActionDefaultArgs<ExtArgs>
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["action"]>
@@ -510,9 +592,10 @@ export type ActionSelectScalar = {
   id?: boolean
   zapId?: boolean
   actionId?: boolean
+  sortingOrder?: boolean
 }
 
-export type ActionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "zapId" | "actionId", ExtArgs["result"]["action"]>
+export type ActionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "zapId" | "actionId" | "sortingOrder", ExtArgs["result"]["action"]>
 export type ActionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   type?: boolean | Prisma.AvaialableActionDefaultArgs<ExtArgs>
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
@@ -536,6 +619,7 @@ export type $ActionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     id: string
     zapId: string
     actionId: string
+    sortingOrder: number
   }, ExtArgs["result"]["action"]>
   composites: {}
 }
@@ -964,6 +1048,7 @@ export interface ActionFieldRefs {
   readonly id: Prisma.FieldRef<"Action", 'String'>
   readonly zapId: Prisma.FieldRef<"Action", 'String'>
   readonly actionId: Prisma.FieldRef<"Action", 'String'>
+  readonly sortingOrder: Prisma.FieldRef<"Action", 'Int'>
 }
     
 

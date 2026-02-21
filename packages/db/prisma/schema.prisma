@@ -5,8 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider             = "prisma-client"
+  output               = "../generated/prisma"
+  importFileExtension  = "ts"
 }
 
 datasource db {
@@ -37,15 +38,15 @@ model Trigger {
  triggerId String
  type AvailableTrigger @relation(fields :[triggerId], references:[id])
  zap Zap @relation(fields :[zapId], references:[id])
- sortingOrder Int @default(0)
 }
 
 model Action {
   id String @id @default(uuid())
-  zapId String @unique
+  zapId String
   actionId String
   type AvaialableAction @relation(fields: [actionId], references: [id])
   zap Zap @relation(fields: [zapId], references: [id])
+  sortingOrder Int @default(0)
 }
 
 model AvailableTrigger {
