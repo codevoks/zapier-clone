@@ -25,7 +25,7 @@ export default function Dashboard() {
     }
   }, [])
   return (
-    <div className="bg-secondary flex">
+    <div className="bg-secondary flex justify-between">
       {loadingZaps ? <div>Loading...</div> : <ZapTable zaps={zaps} />}
       <TertiaryButton title="Create" path="/zap/create" />
     </div>
