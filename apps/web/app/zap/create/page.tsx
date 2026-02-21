@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 import { ZapCell } from '../../../components/zap/zapsCell/ZapCell'
 import { PrimaryButton } from '../../../components/buttons/PrimaryButton'
 import { ZapModal } from '../../../components/zap/zapModal/ZapModal'
+import { TertiaryButton } from '../../../components/buttons/TertiaryButton'
 import { useAvailableTriggers, useAvailableActions } from '../../../hooks'
 import type { AvailableTrigger, AvaialableAction } from '@repo/db'
-import { TertiaryButton } from '../../../components/buttons/TertiaryButton'
 import { postRequest } from '../../../apiService'
 
 export default function NewZap() {
