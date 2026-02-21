@@ -10,7 +10,7 @@ export default function Dashboard() {
   const [zaps, setZaps] = useState<Zap[]>([])
   useEffect(() => {
     const getZaps = async () => {
-      const response = await getRequest({ path: 'zaps', data: {} })
+      const response = await getRequest({ path: 'zap', data: {} })
       if (response.status === 200) {
         setZaps(response.data.zaps)
       }
