@@ -6,9 +6,7 @@ export default function ZapTable({ zaps }: { zaps: Zap[] }) {
   return (
     <table>
       <thead>
-        <ZapsBar
-          cells={['ID', 'Trigger ID', 'Trigger Type', 'User ID', 'Actions']}
-        />
+        <ZapsBar cells={['Name', 'ID', 'Created at', 'Webhook URL', 'Go']} />
       </thead>
       <tbody>
         {zaps.map(zap => (
