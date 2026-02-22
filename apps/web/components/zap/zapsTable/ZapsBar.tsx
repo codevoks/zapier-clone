@@ -5,6 +5,8 @@ interface ZapsBarProps {
   zap?: Zap
 }
 
+const baseWebHookURL = process.env.NEXT_PUBLIC_WEBHOOK_URL ?? ''
+
 export default function ZapsBar({ cells, zap }: ZapsBarProps) {
   const content =
     cells ??
@@ -18,8 +20,8 @@ export default function ZapsBar({ cells, zap }: ZapsBarProps) {
             .join(' • ') || '—',
           zap.id,
           '—', // Created at
-          '—', // Webhook URL
-          '—',
+          `${baseWebHookURL}/${zap.userId}/${zap.id}`,
+          '—', //Go
         ]
       : [])
 
@@ -28,11 +30,7 @@ export default function ZapsBar({ cells, zap }: ZapsBarProps) {
   return (
     <tr>
       {content.map((cell, i) =>
-        isHeader ? (
-          <th key={i}>{cell}</th>
-        ) : (
-          <td key={i}>{cell}</td>
-        )
+        isHeader ? <th key={i}>{cell}</th> : <td key={i}>{cell}</td>
       )}
     </tr>
   )
