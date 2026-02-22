@@ -6,7 +6,12 @@ export interface Zap {
     id: string
     zapId: string
     actionId: string
-    name: string
+    sortingOrder: number
+    type: {
+      id: string
+      name: string
+      image: string
+    }
   }[]
   trigger: {
     id: string

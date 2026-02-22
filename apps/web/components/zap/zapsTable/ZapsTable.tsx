@@ -8,7 +8,9 @@ export default function ZapTable({ zaps }: { zaps: Zap[] }) {
       <div className="overflow-x-auto">
         <table>
           <thead>
-            <ZapsBar cells={['Name', 'ID', 'Created at', 'Webhook URL', 'Go']} />
+            <ZapsBar
+              cells={['Name', 'ID', 'Created at', 'Webhook URL', 'Go']}
+            />
           </thead>
           <tbody>
             {zaps.map(zap => (

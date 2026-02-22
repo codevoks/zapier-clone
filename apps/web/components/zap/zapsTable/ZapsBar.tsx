@@ -14,7 +14,7 @@ export default function ZapsBar({ cells, zap }: ZapsBarProps) {
       ? [
           [
             zap.trigger?.type?.name,
-            zap.actions.map(a => a.name ?? a.actionId).join(', ') || '—',
+            zap.actions.map(a => a.type.name ?? a.actionId).join(', ') || '—',
           ]
             .filter(Boolean)
             .join(' • ') || '—',
