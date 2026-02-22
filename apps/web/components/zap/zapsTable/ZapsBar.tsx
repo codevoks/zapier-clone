@@ -10,18 +10,29 @@ export default function ZapsBar({ cells, zap }: ZapsBarProps) {
     cells ??
     (zap
       ? [
+          [
+            zap.trigger?.type?.name,
+            zap.actions.map(a => a.name ?? a.actionId).join(', ') || '—',
+          ]
+            .filter(Boolean)
+            .join(' • ') || '—',
           zap.id,
-          zap.triggerId,
-          zap.trigger.type.name,
-          String(zap.userId),
-          zap.actions.map(a => a.actionId).join(', ') || '-',
+          '—', // Created at
+          '—', // Webhook URL
+          '—',
         ]
       : [])
 
+  const isHeader = Boolean(cells)
+
   return (
-    <tr className="text-primary-font">
+    <tr>
       {content.map((cell, i) =>
-        cells ? <th key={i}>{cell}</th> : <td key={i}>{cell}</td>
+        isHeader ? (
+          <th key={i}>{cell}</th>
+        ) : (
+          <td key={i}>{cell}</td>
+        )
       )}
     </tr>
   )

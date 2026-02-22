@@ -6,6 +6,7 @@ export interface Zap {
     id: string
     zapId: string
     actionId: string
+    name: string
   }[]
   trigger: {
     id: string
