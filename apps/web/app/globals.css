@@ -298,4 +298,49 @@
     @apply font-bold;
     color: var(--color-primary-font);
   }
+
+  /* Zaps table */
+  .zaps-table-wrap {
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    border: 1px solid color-mix(in srgb, var(--color-secondary-light) 40%, transparent);
+    background-color: color-mix(in srgb, var(--color-secondary-dark) 60%, transparent);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  .zaps-table-wrap table {
+    @apply w-full min-w-[640px] border-collapse text-left;
+    color: var(--color-primary-font);
+  }
+
+  .zaps-table-wrap th {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-primary-font) 90%, transparent);
+    background-color: color-mix(in srgb, var(--color-secondary-light) 80%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-secondary-light) 50%, transparent);
+  }
+
+  .zaps-table-wrap td {
+    padding: var(--spacing-md);
+    font-size: var(--font-size-sm);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-secondary-light) 30%, transparent);
+  }
+
+  .zaps-table-wrap tbody tr {
+    background-color: color-mix(in srgb, var(--color-secondary-dark) 40%, transparent);
+    transition: background-color 0.15s ease;
+  }
+
+  .zaps-table-wrap tbody tr:nth-child(even) {
+    background-color: color-mix(in srgb, var(--color-secondary-dark) 20%, transparent);
+  }
+
+  .zaps-table-wrap tbody tr:hover {
+    background-color: color-mix(in srgb, var(--color-secondary-light) 30%, transparent);
+  }
 }
