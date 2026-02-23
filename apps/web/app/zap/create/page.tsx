@@ -84,7 +84,7 @@ export default function NewZap() {
       </div>
       <div className="w-full pt-2 pb-2">
         {selectedActions.map(action => (
-          <div key={action.index} className="pt-2 flex justify-center">
+          <div key={action.index} className="flex justify-center pt-2">
             <ZapCell
               name={
                 action.availableActionName

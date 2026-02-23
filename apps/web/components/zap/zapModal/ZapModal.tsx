@@ -1,7 +1,7 @@
 'use client'
-
 import { AvaialableAction, AvailableTrigger } from '@repo/db'
 import { ZapModalEntry } from './ZapModalEntry'
+import { useState } from 'react'
 
 export const ZapModal = ({
   index,
@@ -15,15 +15,15 @@ export const ZapModal = ({
   availableActions: AvaialableAction[]
 }) => {
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-sm">
-        <div className="flex justify-between items-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="p-6 bg-white rounded-lg w-sm">
+        <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">
             {index === 1 ? 'Trigger' : 'Action'}
           </h2>
           <button onClick={() => onSelect(null)}>×</button>
         </div>
-        <p className="mt-4 text-slate-600 font-bold">Select an option</p>
+        <p className="mt-4 font-bold text-slate-600">Select an option</p>
         <div className="flex flex-col">
           {index === 1
             ? availableTriggers &&
