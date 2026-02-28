@@ -40,6 +40,7 @@ export type TriggerCountAggregateOutputType = {
   id: number
   zapId: number
   triggerId: number
+  metadata: number
   _all: number
 }
 
@@ -60,6 +61,7 @@ export type TriggerCountAggregateInputType = {
   id?: true
   zapId?: true
   triggerId?: true
+  metadata?: true
   _all?: true
 }
 
@@ -139,6 +141,7 @@ export type TriggerGroupByOutputType = {
   id: string
   zapId: string
   triggerId: string
+  metadata: runtime.JsonValue | null
   _count: TriggerCountAggregateOutputType | null
   _min: TriggerMinAggregateOutputType | null
   _max: TriggerMaxAggregateOutputType | null
@@ -166,6 +169,7 @@ export type TriggerWhereInput = {
   id?: Prisma.StringFilter<"Trigger"> | string
   zapId?: Prisma.StringFilter<"Trigger"> | string
   triggerId?: Prisma.StringFilter<"Trigger"> | string
+  metadata?: Prisma.JsonNullableFilter<"Trigger">
   type?: Prisma.XOR<Prisma.AvailableTriggerScalarRelationFilter, Prisma.AvailableTriggerWhereInput>
   zap?: Prisma.XOR<Prisma.ZapScalarRelationFilter, Prisma.ZapWhereInput>
 }
@@ -174,6 +178,7 @@ export type TriggerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   triggerId?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.AvailableTriggerOrderByWithRelationInput
   zap?: Prisma.ZapOrderByWithRelationInput
 }
@@ -185,6 +190,7 @@ export type TriggerWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.TriggerWhereInput[]
   NOT?: Prisma.TriggerWhereInput | Prisma.TriggerWhereInput[]
   triggerId?: Prisma.StringFilter<"Trigger"> | string
+  metadata?: Prisma.JsonNullableFilter<"Trigger">
   type?: Prisma.XOR<Prisma.AvailableTriggerScalarRelationFilter, Prisma.AvailableTriggerWhereInput>
   zap?: Prisma.XOR<Prisma.ZapScalarRelationFilter, Prisma.ZapWhereInput>
 }, "id" | "zapId">
@@ -193,6 +199,7 @@ export type TriggerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   triggerId?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.TriggerCountOrderByAggregateInput
   _max?: Prisma.TriggerMaxOrderByAggregateInput
   _min?: Prisma.TriggerMinOrderByAggregateInput
@@ -205,10 +212,12 @@ export type TriggerScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Trigger"> | string
   zapId?: Prisma.StringWithAggregatesFilter<"Trigger"> | string
   triggerId?: Prisma.StringWithAggregatesFilter<"Trigger"> | string
+  metadata?: Prisma.JsonNullableWithAggregatesFilter<"Trigger">
 }
 
 export type TriggerCreateInput = {
   id?: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   type: Prisma.AvailableTriggerCreateNestedOneWithoutTriggersInput
   zap: Prisma.ZapCreateNestedOneWithoutTriggerInput
 }
@@ -217,10 +226,12 @@ export type TriggerUncheckedCreateInput = {
   id?: string
   zapId: string
   triggerId: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type TriggerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   type?: Prisma.AvailableTriggerUpdateOneRequiredWithoutTriggersNestedInput
   zap?: Prisma.ZapUpdateOneRequiredWithoutTriggerNestedInput
 }
@@ -229,22 +240,26 @@ export type TriggerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
   triggerId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type TriggerCreateManyInput = {
   id?: string
   zapId: string
   triggerId: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type TriggerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type TriggerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
   triggerId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type TriggerNullableScalarRelationFilter = {
@@ -256,6 +271,7 @@ export type TriggerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   triggerId?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
 }
 
 export type TriggerMaxOrderByAggregateInput = {
@@ -356,12 +372,14 @@ export type TriggerUncheckedUpdateManyWithoutTypeNestedInput = {
 
 export type TriggerCreateWithoutZapInput = {
   id?: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   type: Prisma.AvailableTriggerCreateNestedOneWithoutTriggersInput
 }
 
 export type TriggerUncheckedCreateWithoutZapInput = {
   id?: string
   triggerId: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type TriggerCreateOrConnectWithoutZapInput = {
@@ -382,22 +400,26 @@ export type TriggerUpdateToOneWithWhereWithoutZapInput = {
 
 export type TriggerUpdateWithoutZapInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   type?: Prisma.AvailableTriggerUpdateOneRequiredWithoutTriggersNestedInput
 }
 
 export type TriggerUncheckedUpdateWithoutZapInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   triggerId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type TriggerCreateWithoutTypeInput = {
   id?: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   zap: Prisma.ZapCreateNestedOneWithoutTriggerInput
 }
 
 export type TriggerUncheckedCreateWithoutTypeInput = {
   id?: string
   zapId: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type TriggerCreateOrConnectWithoutTypeInput = {
@@ -433,26 +455,31 @@ export type TriggerScalarWhereInput = {
   id?: Prisma.StringFilter<"Trigger"> | string
   zapId?: Prisma.StringFilter<"Trigger"> | string
   triggerId?: Prisma.StringFilter<"Trigger"> | string
+  metadata?: Prisma.JsonNullableFilter<"Trigger">
 }
 
 export type TriggerCreateManyTypeInput = {
   id?: string
   zapId: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type TriggerUpdateWithoutTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   zap?: Prisma.ZapUpdateOneRequiredWithoutTriggerNestedInput
 }
 
 export type TriggerUncheckedUpdateWithoutTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type TriggerUncheckedUpdateManyWithoutTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 
@@ -461,6 +488,7 @@ export type TriggerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   zapId?: boolean
   triggerId?: boolean
+  metadata?: boolean
   type?: boolean | Prisma.AvailableTriggerDefaultArgs<ExtArgs>
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trigger"]>
@@ -469,6 +497,7 @@ export type TriggerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   zapId?: boolean
   triggerId?: boolean
+  metadata?: boolean
   type?: boolean | Prisma.AvailableTriggerDefaultArgs<ExtArgs>
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trigger"]>
@@ -477,6 +506,7 @@ export type TriggerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   zapId?: boolean
   triggerId?: boolean
+  metadata?: boolean
   type?: boolean | Prisma.AvailableTriggerDefaultArgs<ExtArgs>
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trigger"]>
@@ -485,9 +515,10 @@ export type TriggerSelectScalar = {
   id?: boolean
   zapId?: boolean
   triggerId?: boolean
+  metadata?: boolean
 }
 
-export type TriggerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "zapId" | "triggerId", ExtArgs["result"]["trigger"]>
+export type TriggerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "zapId" | "triggerId" | "metadata", ExtArgs["result"]["trigger"]>
 export type TriggerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   type?: boolean | Prisma.AvailableTriggerDefaultArgs<ExtArgs>
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
@@ -511,6 +542,7 @@ export type $TriggerPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: string
     zapId: string
     triggerId: string
+    metadata: runtime.JsonValue | null
   }, ExtArgs["result"]["trigger"]>
   composites: {}
 }
@@ -939,6 +971,7 @@ export interface TriggerFieldRefs {
   readonly id: Prisma.FieldRef<"Trigger", 'String'>
   readonly zapId: Prisma.FieldRef<"Trigger", 'String'>
   readonly triggerId: Prisma.FieldRef<"Trigger", 'String'>
+  readonly metadata: Prisma.FieldRef<"Trigger", 'Json'>
 }
     
 

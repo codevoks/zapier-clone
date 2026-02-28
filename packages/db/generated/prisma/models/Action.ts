@@ -52,6 +52,7 @@ export type ActionCountAggregateOutputType = {
   id: number
   zapId: number
   actionId: number
+  metadata: number
   sortingOrder: number
   _all: number
 }
@@ -83,6 +84,7 @@ export type ActionCountAggregateInputType = {
   id?: true
   zapId?: true
   actionId?: true
+  metadata?: true
   sortingOrder?: true
   _all?: true
 }
@@ -177,6 +179,7 @@ export type ActionGroupByOutputType = {
   id: string
   zapId: string
   actionId: string
+  metadata: runtime.JsonValue | null
   sortingOrder: number
   _count: ActionCountAggregateOutputType | null
   _avg: ActionAvgAggregateOutputType | null
@@ -207,6 +210,7 @@ export type ActionWhereInput = {
   id?: Prisma.StringFilter<"Action"> | string
   zapId?: Prisma.StringFilter<"Action"> | string
   actionId?: Prisma.StringFilter<"Action"> | string
+  metadata?: Prisma.JsonNullableFilter<"Action">
   sortingOrder?: Prisma.IntFilter<"Action"> | number
   type?: Prisma.XOR<Prisma.AvaialableActionScalarRelationFilter, Prisma.AvaialableActionWhereInput>
   zap?: Prisma.XOR<Prisma.ZapScalarRelationFilter, Prisma.ZapWhereInput>
@@ -216,6 +220,7 @@ export type ActionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   actionId?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   sortingOrder?: Prisma.SortOrder
   type?: Prisma.AvaialableActionOrderByWithRelationInput
   zap?: Prisma.ZapOrderByWithRelationInput
@@ -228,6 +233,7 @@ export type ActionWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ActionWhereInput | Prisma.ActionWhereInput[]
   zapId?: Prisma.StringFilter<"Action"> | string
   actionId?: Prisma.StringFilter<"Action"> | string
+  metadata?: Prisma.JsonNullableFilter<"Action">
   sortingOrder?: Prisma.IntFilter<"Action"> | number
   type?: Prisma.XOR<Prisma.AvaialableActionScalarRelationFilter, Prisma.AvaialableActionWhereInput>
   zap?: Prisma.XOR<Prisma.ZapScalarRelationFilter, Prisma.ZapWhereInput>
@@ -237,6 +243,7 @@ export type ActionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   actionId?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   sortingOrder?: Prisma.SortOrder
   _count?: Prisma.ActionCountOrderByAggregateInput
   _avg?: Prisma.ActionAvgOrderByAggregateInput
@@ -252,11 +259,13 @@ export type ActionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Action"> | string
   zapId?: Prisma.StringWithAggregatesFilter<"Action"> | string
   actionId?: Prisma.StringWithAggregatesFilter<"Action"> | string
+  metadata?: Prisma.JsonNullableWithAggregatesFilter<"Action">
   sortingOrder?: Prisma.IntWithAggregatesFilter<"Action"> | number
 }
 
 export type ActionCreateInput = {
   id?: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: number
   type: Prisma.AvaialableActionCreateNestedOneWithoutActionInput
   zap: Prisma.ZapCreateNestedOneWithoutActionsInput
@@ -266,11 +275,13 @@ export type ActionUncheckedCreateInput = {
   id?: string
   zapId: string
   actionId: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: number
 }
 
 export type ActionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.AvaialableActionUpdateOneRequiredWithoutActionNestedInput
   zap?: Prisma.ZapUpdateOneRequiredWithoutActionsNestedInput
@@ -280,6 +291,7 @@ export type ActionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
   actionId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -287,11 +299,13 @@ export type ActionCreateManyInput = {
   id?: string
   zapId: string
   actionId: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: number
 }
 
 export type ActionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -299,6 +313,7 @@ export type ActionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
   actionId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -316,6 +331,7 @@ export type ActionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   actionId?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   sortingOrder?: Prisma.SortOrder
 }
 
@@ -427,6 +443,7 @@ export type ActionUncheckedUpdateManyWithoutTypeNestedInput = {
 
 export type ActionCreateWithoutZapInput = {
   id?: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: number
   type: Prisma.AvaialableActionCreateNestedOneWithoutActionInput
 }
@@ -434,6 +451,7 @@ export type ActionCreateWithoutZapInput = {
 export type ActionUncheckedCreateWithoutZapInput = {
   id?: string
   actionId: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: number
 }
 
@@ -470,11 +488,13 @@ export type ActionScalarWhereInput = {
   id?: Prisma.StringFilter<"Action"> | string
   zapId?: Prisma.StringFilter<"Action"> | string
   actionId?: Prisma.StringFilter<"Action"> | string
+  metadata?: Prisma.JsonNullableFilter<"Action">
   sortingOrder?: Prisma.IntFilter<"Action"> | number
 }
 
 export type ActionCreateWithoutTypeInput = {
   id?: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: number
   zap: Prisma.ZapCreateNestedOneWithoutActionsInput
 }
@@ -482,6 +502,7 @@ export type ActionCreateWithoutTypeInput = {
 export type ActionUncheckedCreateWithoutTypeInput = {
   id?: string
   zapId: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: number
 }
 
@@ -514,11 +535,13 @@ export type ActionUpdateManyWithWhereWithoutTypeInput = {
 export type ActionCreateManyZapInput = {
   id?: string
   actionId: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: number
 }
 
 export type ActionUpdateWithoutZapInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.AvaialableActionUpdateOneRequiredWithoutActionNestedInput
 }
@@ -526,23 +549,27 @@ export type ActionUpdateWithoutZapInput = {
 export type ActionUncheckedUpdateWithoutZapInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   actionId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ActionUncheckedUpdateManyWithoutZapInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   actionId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ActionCreateManyTypeInput = {
   id?: string
   zapId: string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: number
 }
 
 export type ActionUpdateWithoutTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
   zap?: Prisma.ZapUpdateOneRequiredWithoutActionsNestedInput
 }
@@ -550,12 +577,14 @@ export type ActionUpdateWithoutTypeInput = {
 export type ActionUncheckedUpdateWithoutTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ActionUncheckedUpdateManyWithoutTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   sortingOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -565,6 +594,7 @@ export type ActionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   zapId?: boolean
   actionId?: boolean
+  metadata?: boolean
   sortingOrder?: boolean
   type?: boolean | Prisma.AvaialableActionDefaultArgs<ExtArgs>
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
@@ -574,6 +604,7 @@ export type ActionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   zapId?: boolean
   actionId?: boolean
+  metadata?: boolean
   sortingOrder?: boolean
   type?: boolean | Prisma.AvaialableActionDefaultArgs<ExtArgs>
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
@@ -583,6 +614,7 @@ export type ActionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   zapId?: boolean
   actionId?: boolean
+  metadata?: boolean
   sortingOrder?: boolean
   type?: boolean | Prisma.AvaialableActionDefaultArgs<ExtArgs>
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
@@ -592,10 +624,11 @@ export type ActionSelectScalar = {
   id?: boolean
   zapId?: boolean
   actionId?: boolean
+  metadata?: boolean
   sortingOrder?: boolean
 }
 
-export type ActionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "zapId" | "actionId" | "sortingOrder", ExtArgs["result"]["action"]>
+export type ActionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "zapId" | "actionId" | "metadata" | "sortingOrder", ExtArgs["result"]["action"]>
 export type ActionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   type?: boolean | Prisma.AvaialableActionDefaultArgs<ExtArgs>
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
@@ -619,6 +652,7 @@ export type $ActionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     id: string
     zapId: string
     actionId: string
+    metadata: runtime.JsonValue | null
     sortingOrder: number
   }, ExtArgs["result"]["action"]>
   composites: {}
@@ -1048,6 +1082,7 @@ export interface ActionFieldRefs {
   readonly id: Prisma.FieldRef<"Action", 'String'>
   readonly zapId: Prisma.FieldRef<"Action", 'String'>
   readonly actionId: Prisma.FieldRef<"Action", 'String'>
+  readonly metadata: Prisma.FieldRef<"Action", 'Json'>
   readonly sortingOrder: Prisma.FieldRef<"Action", 'Int'>
 }
     

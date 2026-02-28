@@ -99,7 +99,8 @@ export type ZapScalarFieldEnum = (typeof ZapScalarFieldEnum)[keyof typeof ZapSca
 export const TriggerScalarFieldEnum = {
   id: 'id',
   zapId: 'zapId',
-  triggerId: 'triggerId'
+  triggerId: 'triggerId',
+  metadata: 'metadata'
 } as const
 
 export type TriggerScalarFieldEnum = (typeof TriggerScalarFieldEnum)[keyof typeof TriggerScalarFieldEnum]
@@ -109,6 +110,7 @@ export const ActionScalarFieldEnum = {
   id: 'id',
   zapId: 'zapId',
   actionId: 'actionId',
+  metadata: 'metadata',
   sortingOrder: 'sortingOrder'
 } as const
 
@@ -158,6 +160,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull'
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const JsonNullValueInput = {
   JsonNull: 'JsonNull'
 } as const
@@ -180,4 +190,12 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
