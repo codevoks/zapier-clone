@@ -1,16 +1,16 @@
 import { ACTION_IDS } from './action.constants'
 import { ActionEmailSchema, ActionSolanaSchema } from './action.schema'
 
-export function safeParseActionEmailSchema(input: unknown) {
+function safeParseActionEmailSchema(input: unknown) {
   return ActionEmailSchema.safeParse(input)
 }
 
-export function safeParseActionSolanaSchemas(input: unknown) {
+function safeParseActionSolanaSchemas(input: unknown) {
   return ActionSolanaSchema.safeParse(input)
 }
 
 export function safeParseActionSchema(actionId: string, actionMetadata: JSON) {
-  if (!(actionId in ACTION_IDS)) {
+  if (!Object.keys(ACTION_IDS).includes(actionId)) {
     return false
   }
   if (actionId === ACTION_IDS.EMAIL) {

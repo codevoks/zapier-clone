@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { safeParseZapCreteSchema } from '@repo/validation'
+import {
+  safeParseZapCreteSchema,
+  safeParseTriggersAndActions,
+} from '@repo/validation'
 import { prisma } from '@repo/db'
 import { verifyJwt } from '@repo/auth'
 
@@ -24,7 +27,7 @@ export async function POST(Request: NextRequest) {
     const userId = Number(parsedToken.userId)
     const body = await Request.json()
     const parsedBody = await safeParseZapCreteSchema(body)
-    if (!parsedBody.success) {
+    if (!parsedBody.success || !safeParseTriggersAndActions(parsedBody.data)) {
       return NextResponse.json({ error: 'Zap Parsing Failed' }, { status: 411 })
     }
 
