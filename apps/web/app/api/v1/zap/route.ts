@@ -36,6 +36,7 @@ export async function POST(Request: NextRequest) {
             create: parsedBody.data.actions.map((x, index) => ({
               actionId: x.availableActionId,
               sortingOrder: index,
+              metadata: x.actionMetadata,
             })),
           },
         },
@@ -45,6 +46,7 @@ export async function POST(Request: NextRequest) {
         data: {
           triggerId: parsedBody.data.availableTriggerId,
           zapId: zap.id,
+          metadata: parsedBody.data.triggerMetadata,
         },
       })
 
