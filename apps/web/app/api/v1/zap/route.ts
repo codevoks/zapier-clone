@@ -27,6 +27,7 @@ export async function POST(Request: NextRequest) {
     if (!parsedBody.success) {
       return NextResponse.json({ error: 'Zap Parsing Failed' }, { status: 411 })
     }
+
     const newZap = await prisma.$transaction(async tx => {
       const zap = await tx.zap.create({
         data: {
