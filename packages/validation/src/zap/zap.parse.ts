@@ -10,15 +10,18 @@ export function safeParseZapCreteSchema(input: unknown) {
 export function safeParseTriggersAndActions(newZap: ZapCreateType) {
   const triggerId = newZap.availableTriggerId
   const triggerMetadata = newZap.triggerMetadata
-  if (!safeParseTriggerSchema(triggerId, triggerMetadata)) {
+  const parsedTrigger = safeParseTriggerSchema(triggerId, triggerMetadata)
+  if (!parsedTrigger.success) {
     return false
   }
-  newZap.actions.map(action => {
-    if (
-      !safeParseActionSchema(action.availableActionId, action.actionMetadata)
-    ) {
+  return newZap.actions.every(action => {
+    const parsedAction = safeParseActionSchema(
+      action.availableActionId,
+      action.actionMetadata
+    )
+    if (!parsedAction.success) {
       return false
     }
+    return true
   })
-  return true
 }
