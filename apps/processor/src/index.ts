@@ -8,6 +8,17 @@ const kafka = new Kafka({
   brokers: ['localhost:9092'],
 })
 
+function buildExecutionPlan(zapRun) {
+  return zapRun.zap.actions
+    .sort((a, b) => a.sortingOrder - b.sortingOrder)
+    .map(entry => ({
+      type: entry.type.name,
+      metadata: entry.metadata,
+      payload: zapRun.metadata,
+      order: entry.sortingOrder,
+    }))
+}
+
 async function main() {
   try {
     const consumer = kafka.consumer({ groupId: 'main-worker' })
@@ -56,7 +67,23 @@ async function main() {
           ])
           return
         }
-        console.log('ZAP=> ' + JSON.stringify(zapRun))
+        // console.log('ZAP=> ' + JSON.stringify(zapRun))
+        console.log('EXECUTION CONTEXT', {
+          zapRunId: zapRun.id,
+          zapId: zapRun.zap.id,
+          trigger: {
+            type: zapRun.zap.trigger.type.name,
+            metadata: zapRun.zap.trigger.metadata,
+          },
+          actions: zapRun.zap.actions.map(a => ({
+            id: a.id,
+            type: a.type.name,
+            sortingOrder: a.sortingOrder,
+            metadata: a.metadata,
+          })),
+        })
+        const executionPlan = buildExecutionPlan(zapRun)
+        console.log('EXECUTION PLAN => ' + JSON.stringify(executionPlan))
         console.log({
           partition,
           offset: message.offset,
