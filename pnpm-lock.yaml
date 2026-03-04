@@ -110,6 +110,9 @@ importers:
       '@repo/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@repo/processor':
+        specifier: workspace:*
+        version: link:../../packages/processor
       '@types/express':
         specifier: ^5.0.6
         version: 5.0.6
@@ -260,6 +263,8 @@ importers:
       typescript-eslint:
         specifier: ^8.50.0
         version: 8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2)
+
+  packages/processor: {}
 
   packages/typescript-config: {}
 

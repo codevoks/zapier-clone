@@ -3,6 +3,8 @@ import { prisma, Prisma } from '@repo/db'
 
 const app = express()
 
+app.use(express.json())
+
 app.post('/hooks/catch/:userid/:zapid', async (req, res) => {
   const userId = req.params.userid
   const zapId = req.params.zapid

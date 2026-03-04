@@ -17,20 +17,24 @@ async function main() {
       where: {},
       take: 10,
     })
+    if (pendingRows.length > 0) {
+      await producer.send({
+        topic: TOPIC_NAME,
+        messages: pendingRows.map(r => ({
+          value: r.zapRunId,
+        })),
+      })
 
-    producer.send({
-      topic: TOPIC_NAME,
-      messages: pendingRows.map(r => ({
-        value: r.zapRunId,
-      })),
-    })
-
-    await prisma.zapRunOutBox.deleteMany({
-      where: {
-        id: {
-          in: pendingRows.map(x => x.id),
+      await prisma.zapRunOutBox.deleteMany({
+        where: {
+          id: {
+            in: pendingRows.map(x => x.id),
+          },
         },
-      },
-    })
+      })
+      console.log('SENT to Kafka')
+    }
   }
 }
+
+main()
