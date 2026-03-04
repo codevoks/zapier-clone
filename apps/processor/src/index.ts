@@ -21,22 +21,40 @@ async function main() {
         const zapRunId = message.value?.toString()
         if (!zapRunId) {
           console.log(' No zapRunId received')
+          await consumer.commitOffsets([
+            {
+              topic: TOPIC_NAME,
+              partition: partition,
+              offset: (parseInt(message.offset) + 1).toString(),
+            },
+          ])
+          return
         }
         const zapRun = await prisma.zapRun.findUnique({
           where: { id: zapRunId },
           include: {
             zap: {
               include: {
-                trigger: true,
-                actions: true,
+                trigger: {
+                  include: { type: true },
+                },
+                actions: {
+                  include: { type: true },
+                },
               },
             },
           },
         })
         if (!zapRun) {
-          console.log(
-            "I don't know if should return, continue or do what ? Return will stop the consumer all together ?"
-          )
+          console.log('zapRun not found')
+          await consumer.commitOffsets([
+            {
+              topic: TOPIC_NAME,
+              partition: partition,
+              offset: (parseInt(message.offset) + 1).toString(),
+            },
+          ])
+          return
         }
         console.log('ZAP=> ' + JSON.stringify(zapRun))
         console.log({
