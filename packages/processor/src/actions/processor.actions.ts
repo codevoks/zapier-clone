@@ -1,6 +1,9 @@
-import type { ActionItem } from './processor.types'
+import type { ActionItem, ExecutionContext } from './processor.types'
 
-async function executeEmail(actionItem: ActionItem) {
+async function executeEmail(
+  actionItem: ActionItem,
+  executionContext: ExecutionContext
+) {
   const metadata = actionItem.metadata as {
     toEmail?: string
     subject?: string
@@ -15,7 +18,10 @@ async function executeEmail(actionItem: ActionItem) {
     payload: actionItem.payload,
   })
 }
-async function executeSolana(actionItem: ActionItem) {
+async function executeSolana(
+  actionItem: ActionItem,
+  executionContext: ExecutionContext
+) {
   const metadata = actionItem.metadata as {
     fromWalletId?: string
     toAddress?: string
@@ -32,18 +38,22 @@ async function executeSolana(actionItem: ActionItem) {
 }
 
 export const ACTION_HANDLERS: Record<
-  string,
-  (actionItem: ActionItem) => Promise<void>
+  ActionItem['type'],
+  (actionItem: ActionItem, executionContext: ExecutionContext) => Promise<void>
 > = {
   email: executeEmail,
   solana: executeSolana,
 }
 
-export async function executeAction(actionItem: ActionItem) {
-  const actionHandler = ACTION_HANDLERS[actionItem.type.toLowerCase()]
+export async function executeAction(
+  actionItem: ActionItem,
+  executionContext: ExecutionContext
+) {
+  const key = actionItem.type.toLowerCase() as keyof typeof ACTION_HANDLERS
+  const actionHandler = ACTION_HANDLERS[key]
   if (!actionHandler) {
     console.log('ACTION NOT SUPPORTED')
     return
   }
-  await actionHandler(actionItem)
+  await actionHandler(actionItem, executionContext)
 }

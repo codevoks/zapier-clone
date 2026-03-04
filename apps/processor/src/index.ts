@@ -2,6 +2,7 @@ import { Kafka } from 'kafkajs'
 import { prisma } from '@repo/db'
 import { ActionItem } from '@repo/processor'
 import { processActions } from '@repo/processor'
+import type { ZapRunType, TriggerType, ActionType } from '@repo/db'
 
 const TOPIC_NAME = 'zap-events'
 
@@ -29,11 +30,11 @@ async function debugRun() {
   return zapRun
 }
 
-function buildExecutionPlan(zapRun) {
+function buildExecutionPlan(zapRun: ZapRunType) {
   const actionItems: ActionItem[] = zapRun.zap.actions
-    .sort((a, b) => a.sortingOrder - b.sortingOrder)
+    .sort((a: ActionItem, b: ActionItem) => a.sortingOrder - b.sortingOrder)
     .map(
-      entry =>
+      (entry: ActionItem) =>
         ({
           type: entry.type.name,
           metadata: entry.metadata,
@@ -146,7 +147,7 @@ async function main() {
       type: zapRun.zap.trigger.type.name,
       metadata: zapRun.zap.trigger.metadata,
     },
-    actions: zapRun.zap.actions.map(a => ({
+    actions: zapRun.zap.actions.map((a: ActionItem) => ({
       id: a.id,
       type: a.type.name,
       sortingOrder: a.sortingOrder,
@@ -160,14 +161,3 @@ async function main() {
 }
 
 main()
-
-/*
-zapRun Trigger ?
-plan ka output ?
-
-zapRun hai kya ?
-= Webhook ko receive karte time banta hai and body hi meta data hai
-Trigger kaise karte hain ?
-= webhook receive karke, perhaps.
-
-*/
