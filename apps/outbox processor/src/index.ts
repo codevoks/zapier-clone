@@ -1,5 +1,6 @@
 import { prisma } from '@repo/db'
 import { Kafka } from 'kafkajs'
+import { ZapRunOutBoxType } from '@repo/db'
 
 const TOPIC_NAME = 'zap-events'
 
@@ -20,7 +21,7 @@ async function main() {
     if (pendingRows.length > 0) {
       await producer.send({
         topic: TOPIC_NAME,
-        messages: pendingRows.map(r => ({
+        messages: pendingRows.map((r: ZapRunOutBoxType) => ({
           value: r.zapRunId,
         })),
       })
@@ -28,7 +29,7 @@ async function main() {
       await prisma.zapRunOutBox.deleteMany({
         where: {
           id: {
-            in: pendingRows.map(x => x.id),
+            in: pendingRows.map((x: ZapRunOutBoxType) => x.id),
           },
         },
       })

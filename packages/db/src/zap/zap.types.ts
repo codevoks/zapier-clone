@@ -17,3 +17,9 @@ export type ZapRunType = Prisma.ZapRunGetPayload<{
 
 export type TriggerType = ZapRunType['zap']['trigger']
 export type ActionType = ZapRunType['zap']['actions'][number]
+
+export type ZapRunOutBoxType = Prisma.ZapRunOutBoxGetPayload<{
+  include: {
+    zapRun: true
+  }
+}>

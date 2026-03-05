@@ -8,4 +8,5 @@ export type {
   ZapRunType,
   TriggerType,
   ActionType,
+  ZapRunOutBoxType,
 } from './zap/zap.types'
