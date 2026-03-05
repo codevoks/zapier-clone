@@ -1,6 +1,6 @@
 import { prisma } from '@repo/db'
 import { Kafka } from 'kafkajs'
-import { ZapRunOutBoxType } from '@repo/db'
+import type { ZapRunOutBoxType } from '@repo/db'
 
 const TOPIC_NAME = 'zap-events'
 
