@@ -37,86 +37,92 @@ async function main() {
     await consumer.run({
       autoCommit: false,
       eachMessage: async ({ topic, partition, message }) => {
+        const commit = async () => {
+          await consumer.commitOffsets([
+            {
+              topic: TOPIC_NAME,
+              partition,
+              offset: (parseInt(message.offset) + 1).toString(),
+            },
+          ])
+        }
+        const rawValue = message.value?.toString()
         console.log({
           partition,
           offset: message.offset,
-          value: message.value?.toString(),
+          value: rawValue,
         })
-        if (!message.value?.toString()) {
+        if (!rawValue) {
           console.log('Empty message received, skipping')
+          await commit()
           return
         }
 
-        console.log('Message received:', message.value.toString())
-        const parsedValue = JSON.parse(message.value.toString())
+        console.log('Message received:', rawValue)
+        let parsedValue: { zapRunId?: string; stage?: number }
+        try {
+          parsedValue = JSON.parse(rawValue)
+        } catch (error) {
+          console.log('Error parsing raw value ' + error)
+          await commit()
+          return
+        }
         const zapRunId = parsedValue.zapRunId
         const stage = parsedValue.stage
         if (!zapRunId) {
           console.log(' No zapRunId received')
-          await consumer.commitOffsets([
-            {
-              topic: TOPIC_NAME,
-              partition: partition,
-              offset: (parseInt(message.offset) + 1).toString(),
-            },
-          ])
+          await commit()
           return
         }
-        const zapRun = await prisma.zapRun.findUnique({
-          where: { id: zapRunId },
-          include: {
-            zap: {
-              include: {
-                trigger: {
-                  include: { type: true },
-                },
-                actions: {
-                  include: { type: true },
+        try {
+          const zapRun = await prisma.zapRun.findUnique({
+            where: { id: zapRunId },
+            include: {
+              zap: {
+                include: {
+                  trigger: {
+                    include: { type: true },
+                  },
+                  actions: {
+                    include: { type: true },
+                  },
                 },
               },
             },
-          },
-        })
-        if (!zapRun) {
-          console.log('zapRun not found')
-          await consumer.commitOffsets([
-            {
-              topic: TOPIC_NAME,
-              partition: partition,
-              offset: (parseInt(message.offset) + 1).toString(),
+          })
+          if (!zapRun) {
+            console.log('zapRun not found')
+            await commit()
+            return
+          }
+          // console.log('ZAP=> ' + JSON.stringify(zapRun))
+          console.log('EXECUTION CONTEXT', {
+            zapRunId: zapRun.id,
+            zapId: zapRun.zap.id,
+            trigger: {
+              type: zapRun.zap.trigger.type.name,
+              metadata: zapRun.zap.trigger.metadata,
             },
-          ])
-          return
+            actions: zapRun.zap.actions.map((a: ActionItem) => ({
+              id: a.id,
+              type: a.type.name,
+              sortingOrder: a.sortingOrder,
+              metadata: a.metadata,
+            })),
+          })
+          const executionPlan = buildExecutionPlan(zapRun)
+          console.log('EXECUTION PLAN => ' + JSON.stringify(executionPlan))
+          await processActions(executionPlan)
+          console.log({
+            partition,
+            offset: message.offset,
+            value: message.value?.toString(),
+          })
+          await commit()
+        } catch (error) {
+          console.error('Error in each message ' + error)
+          await commit()
         }
-        // console.log('ZAP=> ' + JSON.stringify(zapRun))
-        console.log('EXECUTION CONTEXT', {
-          zapRunId: zapRun.id,
-          zapId: zapRun.zap.id,
-          trigger: {
-            type: zapRun.zap.trigger.type.name,
-            metadata: zapRun.zap.trigger.metadata,
-          },
-          actions: zapRun.zap.actions.map((a: ActionItem) => ({
-            id: a.id,
-            type: a.type.name,
-            sortingOrder: a.sortingOrder,
-            metadata: a.metadata,
-          })),
-        })
-        const executionPlan = buildExecutionPlan(zapRun)
-        console.log('EXECUTION PLAN => ' + JSON.stringify(executionPlan))
-        console.log({
-          partition,
-          offset: message.offset,
-          value: message.value?.toString(),
-        })
-        await consumer.commitOffsets([
-          {
-            topic: TOPIC_NAME,
-            partition: partition,
-            offset: (parseInt(message.offset) + 1).toString(),
-          },
-        ])
       },
     })
   } catch (error) {
