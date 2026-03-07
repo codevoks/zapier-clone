@@ -5,13 +5,23 @@ export function renderTemplate(
     steps?: Record<string, unknown>[]
   }
 ): string {
-  while (template.indexOf('{{payload.') != -1) {
+  while (template.indexOf('{{payload.') !== -1) {
     const startIndex = template.indexOf('{{payload.')
-    const endIndex = template.indexOf('}}')
+    const endIndex = template.indexOf('}}', startIndex)
     const keyStart = startIndex + '{{payload.'.length
     const path = template.substring(keyStart, endIndex)
     template = template.replace(
       '{{payload.' + path + '}}',
+      getValueAtPath(context.payload, path)
+    )
+  }
+  while (template.indexOf('{{steps.') !== -1) {
+    const startIndex = template.indexOf('{{steps.')
+    const endIndex = template.indexOf('}}', startIndex)
+    const keyStart = startIndex + '{{steps.'.length
+    const path = template.substring(keyStart, endIndex)
+    template = template.replace(
+      '{{steps.' + path + '}}',
       getValueAtPath(context.payload, path)
     )
   }
