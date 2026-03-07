@@ -19,10 +19,14 @@ export function renderTemplate(
     const startIndex = template.indexOf('{{steps.')
     const endIndex = template.indexOf('}}', startIndex)
     const keyStart = startIndex + '{{steps.'.length
-    const path = template.substring(keyStart, endIndex)
+    const content = template.substring(keyStart, endIndex)
+    const dotIndex = content.indexOf('.')
+    const stepNumber = parseInt(content.substring(0, dotIndex), 10)
+    const step = context.steps?.[stepNumber] as Record<string, unknown>
+    const path = content.substring(dotIndex + 1)
     template = template.replace(
-      '{{steps.' + path + '}}',
-      getValueAtPath(context.payload, path)
+      '{{steps.' + content + '}}',
+      getValueAtPath(step, path)
     )
   }
   return template
