@@ -1,6 +1,9 @@
 export function renderTemplate(
   template: string,
-  payload: Record<string, unknown>
+  context: {
+    payload: Record<string, unknown>
+    steps?: Record<string, unknown>[]
+  }
 ): string {
   while (template.indexOf('{{payload.') != -1) {
     const startIndex = template.indexOf('{{payload.')
@@ -9,7 +12,7 @@ export function renderTemplate(
     const path = template.substring(keyStart, endIndex)
     template = template.replace(
       '{{payload.' + path + '}}',
-      getValueAtPath(payload, path)
+      getValueAtPath(context.payload, path)
     )
   }
   return template
