@@ -6,11 +6,22 @@ export function renderTemplate(
     const startIndex = template.indexOf('{{payload.')
     const endIndex = template.indexOf('}}')
     const keyStart = startIndex + '{{payload.'.length
-    const placeHolder = template.substring(keyStart, endIndex)
+    const path = template.substring(keyStart, endIndex)
     template = template.replace(
-      '{{payload.' + placeHolder + '}}',
-      String(payload[placeHolder] ?? '')
+      '{{payload.' + path + '}}',
+      getValueAtPath(payload, path)
     )
   }
   return template
+}
+
+function getValueAtPath(object: Record<string, unknown>, path: string): string {
+  const keys = path.split('.')
+  for (const key of keys) {
+    if (object == null || !object[key]) {
+      return ''
+    }
+    object = object[key] as Record<string, unknown>
+  }
+  return String(object ?? '')
 }
