@@ -18,7 +18,7 @@ export function renderTemplate(
 function getValueAtPath(object: Record<string, unknown>, path: string): string {
   const keys = path.split('.')
   for (const key of keys) {
-    if (object == null || !object[key]) {
+    if (object == null || !(key in object)) {
       return ''
     }
     object = object[key] as Record<string, unknown>
