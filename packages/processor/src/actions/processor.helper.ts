@@ -23,11 +23,12 @@ export function renderTemplate(
     const dotIndex = content.indexOf('.')
     const stepNumber = parseInt(content.substring(0, dotIndex), 10)
     const step = context.steps?.[stepNumber] as Record<string, unknown>
-    const path = content.substring(dotIndex + 1)
-    template = template.replace(
-      '{{steps.' + content + '}}',
-      getValueAtPath(step, path)
-    )
+    let value = ''
+    if (step != null) {
+      const path = content.substring(dotIndex + 1)
+      value = getValueAtPath(step, path)
+    }
+    template = template.replace('{{steps.' + content + '}}', value)
   }
   return template
 }
