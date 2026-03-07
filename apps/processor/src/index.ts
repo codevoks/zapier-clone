@@ -95,7 +95,7 @@ async function main() {
             await commit()
             return
           }
-          // console.log('ZAP=> ' + JSON.stringify(zapRun))
+          console.log('ZapRun PAYLOAD => ' + JSON.stringify(zapRun.metadata))
           console.log('EXECUTION CONTEXT', {
             zapRunId: zapRun.id,
             zapId: zapRun.zap.id,
