@@ -2,9 +2,15 @@ export function renderTemplate(
   template: string,
   payload: Record<string, unknown>
 ): string {
-  const newString = template.replace(
-    '{{payload.name}}',
-    String(payload.name ?? '')
-  )
-  return newString
+  while (template.indexOf('{{payload.') != -1) {
+    const startIndex = template.indexOf('{{payload.')
+    const endIndex = template.indexOf('}}')
+    const keyStart = startIndex + '{{payload.'.length
+    const placeHolder = template.substring(keyStart, endIndex)
+    template = template.replace(
+      '{{payload.' + placeHolder + '}}',
+      String(payload[placeHolder] ?? '')
+    )
+  }
+  return template
 }
