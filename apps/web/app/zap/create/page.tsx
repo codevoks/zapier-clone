@@ -66,6 +66,7 @@ export default function NewZap() {
                 actions: selectedActions.map(action => ({
                   availableActionId: action.availableActionId,
                   availableActionName: action.availableActionName,
+                  actionMetadata: {},
                 })),
               },
             })
