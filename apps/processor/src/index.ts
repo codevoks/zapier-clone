@@ -112,7 +112,11 @@ async function main() {
           })
           const executionPlan = buildExecutionPlan(zapRun)
           console.log('EXECUTION PLAN => ' + JSON.stringify(executionPlan))
-          await processActions(executionPlan)
+          const executionContext = {
+            triggerPayload: zapRun.metadata,
+            stepResults: {},
+          }
+          await processActions(executionPlan, executionContext)
           console.log({
             partition,
             offset: message.offset,
