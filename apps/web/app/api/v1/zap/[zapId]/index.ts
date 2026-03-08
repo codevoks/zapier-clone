@@ -71,6 +71,7 @@ export async function PUT(
     if (!parsedToken?.userId) {
       return NextResponse.json({ error: 'Invalid Token.' }, { status: 411 })
     }
+    const userId = Number(parsedToken.userId)
     const body = await Request.json()
     const parsedBody = await safeParseZapCreteSchema(body)
     if (!parsedBody.success || !safeParseTriggersAndActions(parsedBody.data)) {
@@ -79,6 +80,7 @@ export async function PUT(
     const newZap = await prisma.zap.update({
       where: {
         id: params.zapId,
+        userId: userId,
       },
       data: {
         trigger: {
@@ -95,6 +97,54 @@ export async function PUT(
             metadata: x.actionMetadata,
           })),
         },
+      },
+      include: {
+        trigger: {
+          include: {
+            type: true,
+          },
+        },
+        actions: {
+          include: {
+            type: true,
+          },
+        },
+      },
+    })
+
+    return NextResponse.json({ zap: newZap }, { status: 200 })
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Error while updating Zaps' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function DELETE(
+  Request: NextRequest,
+  { params }: { params: { zapId: string } }
+) {
+  try {
+    const token = Request.cookies.get('token')?.value
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Login token not found.' },
+        { status: 411 }
+      )
+    }
+    const parsedToken = await verifyJwt(token, JWT_SECRET)
+    if (!parsedToken?.userId) {
+      return NextResponse.json({ error: 'Invalid Token.' }, { status: 411 })
+    }
+    const body = await Request.json()
+    const parsedBody = await safeParseZapCreteSchema(body)
+    if (!parsedBody.success || !safeParseTriggersAndActions(parsedBody.data)) {
+      return NextResponse.json({ error: 'Zap Parsing Failed' }, { status: 411 })
+    }
+    const newZap = await prisma.zap.delete({
+      where: {
+        id: params.zapId,
       },
     })
 
