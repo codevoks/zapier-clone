@@ -113,8 +113,8 @@ async function main() {
           const executionPlan = buildExecutionPlan(zapRun)
           console.log('EXECUTION PLAN => ' + JSON.stringify(executionPlan))
           const executionContext = {
-            triggerPayload: zapRun.metadata,
-            stepResults: {},
+            triggerPayload: zapRun.metadata as Record<string, unknown>,
+            stepResults: [] as Record<string, unknown>[],
           }
           await processActions(executionPlan, executionContext)
           console.log({

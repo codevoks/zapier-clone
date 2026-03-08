@@ -6,6 +6,6 @@ export type ActionItem = {
 }
 
 export type ExecutionContext = {
-  triggerPayload: JSON
-  stepResults: Record<number, JSON>
+  triggerPayload: Record<string, unknown>
+  stepResults: Record<string, unknown>[]
 }

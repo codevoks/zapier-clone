@@ -7,7 +7,8 @@ export async function processActions(
 ) {
   try {
     for (const actionItem of actionItems) {
-      await executeAction(actionItem, executionContext)
+      const result = await executeAction(actionItem, executionContext)
+      executionContext.stepResults[actionItem.order] = result ?? {}
     }
   } catch (error) {
     console.log('Error in processActions=> ' + error)
