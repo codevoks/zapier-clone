@@ -1,4 +1,5 @@
 import type { ActionItem, ExecutionContext } from './processor.types'
+import { renderTemplate } from './processor.helper'
 
 async function executeEmail(
   actionItem: ActionItem,
@@ -17,6 +18,11 @@ async function executeEmail(
     metadata: actionItem.metadata,
     payload: actionItem.payload,
   })
+  const context = { payload: actionItem.payload, steps: [] }
+  const subject = renderTemplate(metadata.subject ?? '', context)
+  const bodyTemplate = renderTemplate(metadata.bodyTemplate ?? '', context)
+  console.log('SUBJECT => ' + subject)
+  console.log('BODY TEMPLATE => ' + bodyTemplate)
 }
 async function executeSolana(
   actionItem: ActionItem,
