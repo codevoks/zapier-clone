@@ -21,6 +21,7 @@
     "@types/express": "^5.0.6",
     "express": "^5.2.1",
     "kafkajs": "^2.2.4",
+    "resend": "^6.9.3",
     "tsx": "^4.19.0"
   }
 }
