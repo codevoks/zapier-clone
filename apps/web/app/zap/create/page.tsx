@@ -18,12 +18,14 @@ export default function NewZap() {
   const [selectedTrigger, setSelectedTrigger] = useState<{
     availableTriggerId: string
     availableTriggerName: string
+    triggerMetadata: Record<string, unknown>
   }>()
   const [selectedActions, setSelectedActions] = useState<
     {
       index: number
       availableActionId: string
       availableActionName: string
+      actionMetadata: Record<string, unknown>
     }[]
   >([])
   const [selectedModalIndex, setSelectedModalIndex] = useState<number | null>(
