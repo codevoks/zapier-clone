@@ -7,6 +7,7 @@ import { TertiaryButton } from '../../../components/buttons/TertiaryButton'
 import { useAvailableTriggers, useAvailableActions } from '../../../hooks'
 import type { AvailableTrigger, AvaialableAction } from '@repo/db'
 import { postRequest } from '../../../apiService'
+import { MetadataModal } from '../../../components/zap/metadataModal/MetadataModal'
 
 export default function NewZap() {
   const [availableTriggers, setAvailableTriggers] = useState<
@@ -31,6 +32,12 @@ export default function NewZap() {
   const [selectedModalIndex, setSelectedModalIndex] = useState<number | null>(
     null
   )
+  const [metadataModal, setMetadataModal] = useState<{
+    kind: 'trigger' | 'action'
+    index: number
+    id: string
+    name: string
+  } | null>(null)
 
   useEffect(() => {
     const getAvailableTriggers = async () => {
@@ -64,11 +71,11 @@ export default function NewZap() {
               path: 'zap',
               data: {
                 availableTriggerId: selectedTrigger?.availableTriggerId,
-                triggerMetadata: {},
+                triggerMetadata: selectedTrigger?.triggerMetadata ?? {},
                 actions: selectedActions.map(action => ({
                   availableActionId: action.availableActionId,
                   availableActionName: action.availableActionName,
-                  actionMetadata: {},
+                  actionMetadata: action.actionMetadata ?? {},
                 })),
               },
             })
@@ -123,11 +130,23 @@ export default function NewZap() {
               return
             }
             if (selectedModalIndex === 1) {
+              setMetadataModal({
+                kind: 'trigger',
+                index: 1,
+                id: props.id,
+                name: props.name,
+              })
               setSelectedTrigger({
                 availableTriggerId: props.id,
                 availableTriggerName: props.name,
               })
             } else {
+              setMetadataModal({
+                kind: 'action',
+                index: selectedModalIndex,
+                id: props.id,
+                name: props.name,
+              })
               setSelectedActions(prev => {
                 const newActions = [...prev]
                 newActions[selectedModalIndex - 2] = {
@@ -143,6 +162,17 @@ export default function NewZap() {
           index={selectedModalIndex}
           availableTriggers={availableTriggers}
           availableActions={availableActions}
+        />
+      )}
+      {metadataModal && (
+        <MetadataModal
+          open
+          title={metadataModal.name}
+          onClose={() => setMetadataModal(null)}
+          onSubmit={m => {
+            console.log(m)
+            setMetadataModal(null)
+          }}
         />
       )}
     </div>
