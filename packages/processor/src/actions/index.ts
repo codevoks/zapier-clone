@@ -1,1 +1,1 @@
-export * from './controller.actions'
+export * from './controller/controller.actions'

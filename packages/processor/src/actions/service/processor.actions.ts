@@ -1,6 +1,6 @@
-import type { ActionItem, ExecutionContext } from './processor.types'
+import type { ActionItem, ExecutionContext } from '../types/processor.types'
 import { renderTemplate } from './processor.helper'
-import { sendEmail, sendSolana } from './actions.helper'
+import { sendEmail, sendSolana } from './actions.service'
 
 async function executeEmail(
   actionItem: ActionItem,

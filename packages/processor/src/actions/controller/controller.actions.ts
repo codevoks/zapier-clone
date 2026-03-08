@@ -1,5 +1,5 @@
-import type { ActionItem, ExecutionContext } from './processor.types'
-import { ACTION_HANDLERS, executeAction } from './processor.actions'
+import type { ActionItem, ExecutionContext } from '../types/processor.types'
+import { ACTION_HANDLERS, executeAction } from '../service/processor.actions'
 
 export async function processActions(
   actionItems: ActionItem[],

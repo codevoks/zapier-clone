@@ -1,2 +1,2 @@
-export type { ActionItem } from './actions/processor.types'
-export { processActions } from './actions/controller.actions'
+export type { ActionItem } from './actions/types/processor.types'
+export { processActions } from './actions/controller/controller.actions'
