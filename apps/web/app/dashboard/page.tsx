@@ -25,9 +25,11 @@ export default function Dashboard() {
     }
   }, [])
   return (
-    <div className="flex justify-between w-full h-full bg-secondary">
-      {loadingZaps ? <div>Loading...</div> : <ZapTable zaps={zaps} />}
+    <div className="bg-secondary">
       <TertiaryButton title="Create" path="/zap/create" />
+      <div className="flex justify-between w-full h-full ">
+        {loadingZaps ? <div>Loading...</div> : <ZapTable zaps={zaps} />}
+      </div>
     </div>
   )
 }
