@@ -9,5 +9,5 @@ export const ActionEmailSchema = z.object({
 export const ActionSolanaSchema = z.object({
   fromWalletId: z.string(),
   toAddress: z.string(),
-  amountLamports: z.number(),
+  solanaAmount: z.number(),
 })

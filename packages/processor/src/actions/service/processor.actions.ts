@@ -41,22 +41,26 @@ async function executeSolana(
     const metadata = actionItem.metadata as {
       fromWalletId?: string
       toAddress?: string
-      amountLamports?: number
+      solanaAmount?: number
     }
     if (!metadata || !metadata.fromWalletId || !metadata.toAddress) {
       console.log("Sender/Receiver's address missing.")
+      return { success: false }
+    }
+    if ((metadata.solanaAmount ?? 0) <= 0) {
+      console.log('Solana amount should be more than 0')
       return { success: false }
     }
     console.log('EXECUTING SOLANA', {
       metadata: actionItem.metadata,
       payload: actionItem.payload,
     })
-    await sendSolana({
+    const { signature } = await sendSolana({
       fromWalletId: metadata.fromWalletId,
       toAddress: metadata.toAddress,
-      amountLamports: metadata.amountLamports ?? 0,
+      solanaAmount: metadata.solanaAmount ?? 0,
     })
-    return { success: true, sent: true, transactionId: '' }
+    return { success: true, sent: true, transactionId: signature }
   } catch (error) {
     console.log('Error in executeSolana')
     return { success: false }
