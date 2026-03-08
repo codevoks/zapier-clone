@@ -137,21 +137,18 @@ export async function DELETE(
     if (!parsedToken?.userId) {
       return NextResponse.json({ error: 'Invalid Token.' }, { status: 411 })
     }
-    const body = await Request.json()
-    const parsedBody = await safeParseZapCreteSchema(body)
-    if (!parsedBody.success || !safeParseTriggersAndActions(parsedBody.data)) {
-      return NextResponse.json({ error: 'Zap Parsing Failed' }, { status: 411 })
-    }
-    const newZap = await prisma.zap.delete({
+    const userId = Number(parsedToken.userId)
+    const zap = await prisma.zap.delete({
       where: {
         id: params.zapId,
+        userId: userId,
       },
     })
 
-    return NextResponse.json({ zap: newZap }, { status: 200 })
+    return NextResponse.json({ zap: zap }, { status: 200 })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Error while fetching Zaps' },
+      { error: 'Error while deleting Zap' },
       { status: 500 }
     )
   }
