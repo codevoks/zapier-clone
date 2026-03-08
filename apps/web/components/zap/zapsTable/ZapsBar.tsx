@@ -46,6 +46,8 @@ export default function ZapsBar({ cells, zap }: ZapsBarProps) {
           '—', // Created at
           `${baseWebHookURL}/${zap.userId}/${zap.id}`,
           '—', // Go
+          '—', // Edit
+          '—', // Delete
         ]
       : [])
 

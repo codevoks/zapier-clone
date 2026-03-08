@@ -9,7 +9,15 @@ export default function ZapTable({ zaps }: { zaps: Zap[] }) {
         <table>
           <thead>
             <ZapsBar
-              cells={['Name', 'ID', 'Created at', 'Webhook URL', 'Go']}
+              cells={[
+                'Name',
+                'ID',
+                'Created at',
+                'Webhook URL',
+                'Go',
+                'Edit',
+                'Delete',
+              ]}
             />
           </thead>
           <tbody>
