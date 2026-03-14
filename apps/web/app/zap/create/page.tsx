@@ -166,7 +166,7 @@ export default function NewZap() {
       )}
       {metadataModal && (
         <MetadataModal
-          type={metadataModal.type}
+          type={metadataModal.name}
           open
           title={metadataModal.name}
           onClose={() => setMetadataModal(null)}
