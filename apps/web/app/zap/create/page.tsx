@@ -131,7 +131,7 @@ export default function NewZap() {
             }
             if (selectedModalIndex === 1) {
               setMetadataModal({
-                kind: 'trigger',
+                type: 'trigger',
                 index: 1,
                 id: props.id,
                 name: props.name,
@@ -142,7 +142,7 @@ export default function NewZap() {
               })
             } else {
               setMetadataModal({
-                kind: 'action',
+                type: 'action',
                 index: selectedModalIndex,
                 id: props.id,
                 name: props.name,
