@@ -2,11 +2,13 @@ import { PrimaryButton } from '../../buttons/PrimaryButton'
 import { SecondaryButton } from '../../buttons/SecondaryButton'
 
 export function MetadataModal({
+  type,
   open,
   title,
   onClose,
   onSubmit,
 }: {
+  type: string
   open: boolean
   title: string
   onClose: () => void
@@ -27,10 +29,7 @@ export function MetadataModal({
         </div>
         <div className="mt-4 flex justify-end gap-2">
           <SecondaryButton title="Close" onClick={onClose} />
-          <PrimaryButton
-            title="Submit"
-            onClick={() => onSubmit({})}
-          />
+          <PrimaryButton title="Submit" onClick={() => onSubmit({})} />
         </div>
       </div>
     </div>

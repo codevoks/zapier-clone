@@ -33,7 +33,7 @@ export default function NewZap() {
     null
   )
   const [metadataModal, setMetadataModal] = useState<{
-    kind: 'trigger' | 'action'
+    type: 'trigger' | 'action'
     index: number
     id: string
     name: string
@@ -166,6 +166,7 @@ export default function NewZap() {
       )}
       {metadataModal && (
         <MetadataModal
+          type={metadataModal.type}
           open
           title={metadataModal.name}
           onClose={() => setMetadataModal(null)}
