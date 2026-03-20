@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PrimaryButton } from '../../buttons/PrimaryButton'
 import { SecondaryButton } from '../../buttons/SecondaryButton'
 import { METADATA_FORM_CONFIG } from '../../../config/metadataFormConfig'
@@ -18,11 +18,26 @@ export function MetadataModal({
   onClose: () => void
   onSubmit: (metadata: Record<string, unknown>) => void
 }) {
+  const fields = METADATA_FORM_CONFIG[type]
   const [values, setValues] = useState<Record<string, string>>({})
+  useEffect(() => {
+    if (!open) {
+      return
+    }
+    const currentFields = METADATA_FORM_CONFIG[type]
+    if (!currentFields?.length) {
+      setValues({})
+      return
+    }
+    const initial: Record<string, string> = {}
+    for (const field of currentFields) {
+      initial[field.name] = ''
+    }
+    setValues(initial)
+  }, [open, type])
   if (!open) {
     return null
   }
-  const fields = METADATA_FORM_CONFIG[type]
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="p-6 bg-white rounded-lg w-sm">
