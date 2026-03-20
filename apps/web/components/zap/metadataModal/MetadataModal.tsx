@@ -18,7 +18,7 @@ export function MetadataModal({
   onClose: () => void
   onSubmit: (metadata: Record<string, unknown>) => void
 }) {
-  const [toEmail, setToEmail] = useState('')
+  const [values, setValues] = useState<Record<string, string>>({})
   if (!open) {
     return null
   }
@@ -33,16 +33,22 @@ export function MetadataModal({
         <div className="mt-4 flex flex-col gap-2">
           <div className="text-sm text-slate-600">
             {fields ? `${fields.length} field(s)` : 'no config for this type'}
-            {fields?.[0] && (
-              <div>
-                <label>{fields[0].label}</label>
+            {fields?.map(field => (
+              <div key={field.name}>
+                <label>{field.label}</label>
                 <input
-                  value={toEmail}
-                  type={fields[0].type}
-                  onChange={e => setToEmail(e.target.value)}
+                  className="border-4 bg-amber-600"
+                  value={values[field.name] ?? ''}
+                  type={field.type}
+                  onChange={e =>
+                    setValues(prev => ({
+                      ...prev,
+                      [field?.name]: e.target.value,
+                    }))
+                  }
                 ></input>
               </div>
-            )}
+            ))}
           </div>
         </div>
         <div className="mt-4 flex justify-end gap-2">
@@ -50,9 +56,7 @@ export function MetadataModal({
           <PrimaryButton
             title="Submit"
             onClick={() =>
-              fields?.[0]
-                ? onSubmit({ [fields[0].name]: toEmail })
-                : onSubmit({})
+              fields?.length ? onSubmit({ ...values }) : onSubmit({})
             }
           />
         </div>
