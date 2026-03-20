@@ -171,7 +171,12 @@ export default function NewZap() {
           title={metadataModal.name}
           onClose={() => setMetadataModal(null)}
           onSubmit={m => {
-            console.log(m)
+            if (metadataModal.type === 'trigger') {
+              setSelectedTrigger(prev =>
+                prev ? { ...prev, triggerMetadata: m } : prev
+              )
+            } else if (metadataModal.type === 'action') {
+            }
             setMetadataModal(null)
           }}
         />
