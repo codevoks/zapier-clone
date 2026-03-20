@@ -11,12 +11,14 @@ export function MetadataModal({
   title,
   onClose,
   onSubmit,
+  initialMetadata,
 }: {
   type: string
   open: boolean
   title: string
   onClose: () => void
   onSubmit: (metadata: Record<string, unknown>) => void
+  initialMetadata?: Record<string, unknown>
 }) {
   const fields = METADATA_FORM_CONFIG[type]
   const [values, setValues] = useState<Record<string, string>>({})
@@ -31,7 +33,11 @@ export function MetadataModal({
     }
     const initial: Record<string, string> = {}
     for (const field of currentFields) {
-      initial[field.name] = ''
+      const initialValue = initialMetadata?.[field.name]
+      initial[field.name] =
+        initialValue !== undefined && initialValue !== null
+          ? String(initialValue)
+          : ''
     }
     setValues(initial)
   }, [open, type])
