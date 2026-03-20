@@ -55,9 +55,19 @@ export function MetadataModal({
           <SecondaryButton title="Close" onClick={onClose} />
           <PrimaryButton
             title="Submit"
-            onClick={() =>
-              fields?.length ? onSubmit({ ...values }) : onSubmit({})
-            }
+            onClick={() => {
+              if (!fields?.length) {
+                onSubmit({})
+                return
+              }
+              const payload: Record<string, unknown> = {}
+              for (const field of fields) {
+                const raw = values[field.name] ?? ''
+                payload[field.name] =
+                  field.type === 'number' ? Number(raw) : raw
+              }
+              onSubmit(payload)
+            }}
           />
         </div>
       </div>
