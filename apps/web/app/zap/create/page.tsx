@@ -176,6 +176,13 @@ export default function NewZap() {
                 prev ? { ...prev, triggerMetadata: m } : prev
               )
             } else if (metadataModal.type === 'action') {
+              setSelectedActions(prev =>
+                prev.map(action =>
+                  action.index === metadataModal.index
+                    ? { ...action, actionMetadata: m }
+                    : action
+                )
+              )
             }
             setMetadataModal(null)
           }}
