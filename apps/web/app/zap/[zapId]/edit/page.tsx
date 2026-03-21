@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { useNavigate } from '../../../../hooks'
 import { getRequest } from '../../../../apiService'
+import { ZapForm } from '../../../../components/zap/zapForm/ZapForm'
 
 export default function EditZap() {
   const params = useParams()
@@ -53,5 +54,5 @@ export default function EditZap() {
     }
     getZap(params.zapId as string)
   }, [params.zapId])
-  return <div></div>
+  return <ZapForm />
 }

@@ -24,3 +24,9 @@ export interface Zap {
     }
   }
 }
+
+export interface ZapFormType {
+  initialTrigger: {}
+  initialActions: {}
+  zapId?: string
+}

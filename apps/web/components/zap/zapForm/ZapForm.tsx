@@ -12,8 +12,61 @@ import {
 import type { AvailableTrigger, AvaialableAction } from '@repo/db'
 import { postRequest } from '../../../apiService'
 import { MetadataModal } from '../../../components/zap/metadataModal/MetadataModal'
+import { ZapFormType } from '../../../types/zaps'
 
-export function ZapForm() {
+export function ZapForm({
+  initialTrigger,
+  initialActions,
+  zapId,
+}: ZapFormType) {
+  const navigateTo = useNavigate()
+  const [availableTriggers, setAvailableTriggers] = useState<
+    AvailableTrigger[]
+  >([])
+  const [availableActions, setAvailableActions] = useState<AvaialableAction[]>(
+    []
+  )
+  const [selectedTrigger, setSelectedTrigger] = useState<{
+    availableTriggerId: string
+    availableTriggerName: string
+    triggerMetadata?: Record<string, unknown>
+  }>()
+  const [selectedActions, setSelectedActions] = useState<
+    {
+      index: number
+      availableActionId: string
+      availableActionName: string
+      actionMetadata?: Record<string, unknown>
+    }[]
+  >([])
+  const [selectedModalIndex, setSelectedModalIndex] = useState<number | null>(
+    null
+  )
+  const [metadataModal, setMetadataModal] = useState<{
+    type: 'trigger' | 'action'
+    index: number
+    id: string
+    name: string
+  } | null>(null)
+
+  useEffect(() => {
+    const getAvailableTriggers = async () => {
+      const response = await useAvailableTriggers()
+      if (response) {
+        setAvailableTriggers(response)
+      }
+    }
+
+    const getAvailableActions = async () => {
+      const response = await useAvailableActions()
+      if (response) {
+        setAvailableActions(response)
+      }
+    }
+
+    getAvailableTriggers()
+    getAvailableActions()
+  }, [])
   return (
     <div className="zap-create">
       <div className="flex justify-center">
