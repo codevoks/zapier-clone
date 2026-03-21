@@ -109,6 +109,9 @@ export function ZapForm({
                 })
               ),
             }
+            console.log(
+              'bodyForValidation ' + JSON.stringify(bodyForValidation)
+            )
             if (!safeParseTriggersAndActions(bodyForValidation)) {
               alert('Trigger or action metadata is invalid')
               return
@@ -187,9 +190,15 @@ export function ZapForm({
                 id: props.id,
                 name: props.name,
               })
-              setSelectedTrigger({
-                availableTriggerId: props.id,
-                availableTriggerName: props.name,
+              setSelectedTrigger(prev => {
+                const sameTrigger = prev?.availableTriggerId === props.id
+                return {
+                  availableTriggerId: props.id,
+                  availableTriggerName: props.name,
+                  triggerMetadata: sameTrigger
+                    ? prev?.triggerMetadata
+                    : undefined,
+                }
               })
             } else {
               setMetadataModal({
@@ -200,10 +209,13 @@ export function ZapForm({
               })
               setSelectedActions(prev => {
                 const newActions = [...prev]
+                const old = newActions[selectedModalIndex - 2]
+                const sameAction = old?.availableActionId === props.id
                 newActions[selectedModalIndex - 2] = {
                   index: selectedModalIndex,
                   availableActionId: props.id,
                   availableActionName: props.name,
+                  actionMetadata: sameAction ? old?.actionMetadata : undefined,
                 }
                 return newActions
               })
