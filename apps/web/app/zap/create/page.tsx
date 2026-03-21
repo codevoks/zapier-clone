@@ -78,11 +78,13 @@ export default function NewZap() {
                 data: {
                   availableTriggerId: selectedTrigger?.availableTriggerId,
                   triggerMetadata: selectedTrigger?.triggerMetadata ?? {},
-                  actions: selectedActions.map(action => ({
-                    availableActionId: action.availableActionId,
-                    availableActionName: action.availableActionName,
-                    actionMetadata: action.actionMetadata ?? {},
-                  })),
+                  actions: selectedActions
+                    .filter(action => action.availableActionId !== '')
+                    .map(action => ({
+                      availableActionId: action.availableActionId,
+                      availableActionName: action.availableActionName,
+                      actionMetadata: action.actionMetadata ?? {},
+                    })),
                 },
               })
               if (response.status === 201) {
