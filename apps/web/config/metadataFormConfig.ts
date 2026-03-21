@@ -5,6 +5,13 @@ type MetadataField = {
 }
 
 export const METADATA_FORM_CONFIG: Record<string, MetadataField[]> = {
+  'Web Hook': [
+    {
+      name: 'secret',
+      label: 'Signing secret',
+      type: 'text',
+    },
+  ],
   Email: [
     { name: 'toEmail', label: 'To email', type: 'email' },
     { name: 'subject', label: 'Subject', type: 'text' },
