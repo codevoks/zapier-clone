@@ -24,11 +24,18 @@ export default function Dashboard() {
       setLoadingZaps(false)
     }
   }, [])
+  function handleZapDeleted(zapId: string) {
+    setZaps(prev => prev.filter(zap => zap.id !== zapId))
+  }
   return (
     <div className="bg-secondary">
       <TertiaryButton title="New Zap" path="/zap/create" />
       <div className="flex justify-between w-full h-full ">
-        {loadingZaps ? <div>Loading...</div> : <ZapTable zaps={zaps} />}
+        {loadingZaps ? (
+          <div>Loading...</div>
+        ) : (
+          <ZapTable zaps={zaps} handleZapDeleted={handleZapDeleted} />
+        )}
       </div>
     </div>
   )

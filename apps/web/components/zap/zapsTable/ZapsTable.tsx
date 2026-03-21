@@ -2,7 +2,13 @@
 import { Zap } from '../../../types'
 import ZapsBar from './ZapsBar'
 
-export default function ZapTable({ zaps }: { zaps: Zap[] }) {
+export default function ZapTable({
+  zaps,
+  handleZapDeleted,
+}: {
+  zaps: Zap[]
+  handleZapDeleted: (zapId: string) => void
+}) {
   return (
     <div className="zaps-table-wrap">
       <div className="overflow-x-auto">
@@ -22,7 +28,7 @@ export default function ZapTable({ zaps }: { zaps: Zap[] }) {
           </thead>
           <tbody>
             {zaps.map(zap => (
-              <ZapsBar key={zap.id} zap={zap} />
+              <ZapsBar key={zap.id} zap={zap} onZapDeleted={handleZapDeleted} />
             ))}
           </tbody>
         </table>

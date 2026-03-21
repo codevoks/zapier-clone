@@ -1,15 +1,24 @@
 import Image from 'next/image'
 import { Zap } from '../../../types'
-import { SecondaryButton } from '../../buttons/SecondaryButton'
+import { PrimaryButton } from '../../buttons/PrimaryButton'
+import { TertiaryButton } from '../../buttons/TertiaryButton'
+import { deleteRequest } from '../../../apiService'
 
 interface ZapsBarProps {
   cells?: string[]
   zap?: Zap
+  onZapDeleted?: (zapId: string) => void
 }
 
 const baseWebHookURL = process.env.NEXT_PUBLIC_WEBHOOK_URL ?? ''
 
-export default function ZapsBar({ cells, zap }: ZapsBarProps) {
+export default function ZapsBar({ cells, zap, onZapDeleted }: ZapsBarProps) {
+  const deleteZap = async (zapId: string) => {
+    const response = await deleteRequest({ path: `/zap/${zapId}`, data: {} })
+    if (response.status === 200) {
+      onZapDeleted?.(zapId)
+    }
+  }
   const nameCell =
     zap &&
     (zap.trigger?.type?.image || zap.actions.some(a => a.type?.image)) ? (
@@ -47,8 +56,8 @@ export default function ZapsBar({ cells, zap }: ZapsBarProps) {
           '—', // Created at
           `${baseWebHookURL}/${zap.userId}/${zap.id}`,
           '—', // Go
-          <SecondaryButton title="Edit" path={`/zap/${zap.id}/edit`} />,
-          '—', // Delete
+          <PrimaryButton title="Edit" path={`/zap/${zap.id}/edit`} />,
+          <TertiaryButton title="Delete" onClick={() => deleteZap(zap.id)} />,
         ]
       : [])
 
