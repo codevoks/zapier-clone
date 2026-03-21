@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { Zap } from '../../../types'
+import { SecondaryButton } from '../../buttons/SecondaryButton'
 
 interface ZapsBarProps {
   cells?: string[]
@@ -46,7 +47,7 @@ export default function ZapsBar({ cells, zap }: ZapsBarProps) {
           '—', // Created at
           `${baseWebHookURL}/${zap.userId}/${zap.id}`,
           '—', // Go
-          '—', // Edit
+          <SecondaryButton title="Edit" path={`/zap/${zap.id}/edit`} />,
           '—', // Delete
         ]
       : [])

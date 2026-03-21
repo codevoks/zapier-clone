@@ -1,4 +1,4 @@
-'user client'
+'use client'
 import { useNavigate } from '../../hooks/useNavigate'
 import { buttonInput } from '../../types/buttonTypes'
 
