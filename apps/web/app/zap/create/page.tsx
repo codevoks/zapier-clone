@@ -169,6 +169,12 @@ export default function NewZap() {
           type={metadataModal.name}
           open
           title={metadataModal.name}
+          initialMetadata={
+            metadataModal.type === 'trigger'
+              ? selectedTrigger?.triggerMetadata
+              : selectedActions.find(a => a.index === metadataModal.index)
+                  ?.actionMetadata
+          }
           onClose={() => setMetadataModal(null)}
           onSubmit={m => {
             if (metadataModal.type === 'trigger') {

@@ -9,16 +9,16 @@ export function MetadataModal({
   type,
   open,
   title,
+  initialMetadata,
   onClose,
   onSubmit,
-  initialMetadata,
 }: {
   type: string
   open: boolean
   title: string
+  initialMetadata?: Record<string, unknown>
   onClose: () => void
   onSubmit: (metadata: Record<string, unknown>) => void
-  initialMetadata?: Record<string, unknown>
 }) {
   const fields = METADATA_FORM_CONFIG[type]
   const [values, setValues] = useState<Record<string, string>>({})
@@ -40,7 +40,7 @@ export function MetadataModal({
           : ''
     }
     setValues(initial)
-  }, [open, type])
+  }, [open, type, initialMetadata])
   if (!open) {
     return null
   }
