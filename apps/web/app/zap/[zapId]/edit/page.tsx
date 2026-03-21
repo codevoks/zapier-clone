@@ -5,23 +5,18 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from '../../../../hooks'
 import { getRequest } from '../../../../apiService'
 import { ZapForm } from '../../../../components/zap/zapForm/ZapForm'
+import {
+  AvailableTriggerType,
+  AvailableActionType,
+} from '../../../../types/zaps'
 
 export default function EditZap() {
   const params = useParams()
   const navigateTo = useNavigate()
-  const [selectedTrigger, setSelectedTrigger] = useState<{
-    availableTriggerId: string
-    availableTriggerName: string
-    triggerMetadata?: Record<string, unknown>
-  }>()
-  const [selectedActions, setSelectedActions] = useState<
-    {
-      index: number
-      availableActionId: string
-      availableActionName: string
-      actionMetadata?: Record<string, unknown>
-    }[]
-  >([])
+  const [selectedTrigger, setSelectedTrigger] = useState<AvailableTriggerType>()
+  const [selectedActions, setSelectedActions] = useState<AvailableActionType[]>(
+    []
+  )
   useEffect(() => {
     const getZap = async (zapId: string) => {
       try {
@@ -59,6 +54,7 @@ export default function EditZap() {
       initialTrigger={selectedTrigger}
       initialActions={selectedActions}
       zapId={params.zapId as string}
+      mode="updateZap"
     />
   )
 }

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { ZapCell } from '../../../components/zap/zapsCell/ZapCell'
 import { PrimaryButton } from '../../../components/buttons/PrimaryButton'
 import { ZapModal } from '../../../components/zap/zapModal/ZapModal'
+import { MetadataModal } from '../../../components/zap/metadataModal/MetadataModal'
 import { TertiaryButton } from '../../../components/buttons/TertiaryButton'
 import {
   useNavigate,
@@ -10,14 +11,24 @@ import {
   useAvailableActions,
 } from '../../../hooks'
 import type { AvailableTrigger, AvaialableAction } from '@repo/db'
-import { postRequest } from '../../../apiService'
-import { MetadataModal } from '../../../components/zap/metadataModal/MetadataModal'
-import { ZapFormType } from '../../../types/zaps'
+import {
+  AvailableTriggerType,
+  AvailableActionType,
+  ZapFormType,
+} from '../../../types/zaps'
+import {
+  ZAP_API_MAP,
+  ZAP_API_BUTTON_LABEL,
+  ZAP_API_SUCCESS_CODE,
+  ZAP_API_SUCCESS_LABEL,
+  ZAP_API_FAILURE_LABEL,
+} from '../../../config/zapApiConfig'
 
 export function ZapForm({
   initialTrigger,
   initialActions,
   zapId,
+  mode,
 }: ZapFormType) {
   const navigateTo = useNavigate()
   const [availableTriggers, setAvailableTriggers] = useState<
@@ -26,19 +37,10 @@ export function ZapForm({
   const [availableActions, setAvailableActions] = useState<AvaialableAction[]>(
     []
   )
-  const [selectedTrigger, setSelectedTrigger] = useState<{
-    availableTriggerId: string
-    availableTriggerName: string
-    triggerMetadata?: Record<string, unknown>
-  }>()
-  const [selectedActions, setSelectedActions] = useState<
-    {
-      index: number
-      availableActionId: string
-      availableActionName: string
-      actionMetadata?: Record<string, unknown>
-    }[]
-  >([])
+  const [selectedTrigger, setSelectedTrigger] = useState<AvailableTriggerType>()
+  const [selectedActions, setSelectedActions] = useState<AvailableActionType[]>(
+    []
+  )
   const [selectedModalIndex, setSelectedModalIndex] = useState<number | null>(
     null
   )
@@ -49,6 +51,14 @@ export function ZapForm({
     name: string
   } | null>(null)
 
+  useEffect(() => {
+    if (initialTrigger) {
+      setSelectedTrigger(initialTrigger)
+    }
+    if (initialActions) {
+      setSelectedActions(initialActions)
+    }
+  }, [initialTrigger, initialActions])
   useEffect(() => {
     const getAvailableTriggers = async () => {
       const response = await useAvailableTriggers()
@@ -71,7 +81,7 @@ export function ZapForm({
     <div className="zap-create">
       <div className="flex justify-center">
         <TertiaryButton
-          title="Publish Zap"
+          title={ZAP_API_BUTTON_LABEL[mode]}
           onClick={async () => {
             if (!selectedTrigger?.availableTriggerId) {
               return
@@ -79,6 +89,7 @@ export function ZapForm({
             const actionsPayload = selectedActions
               .filter(action => action.availableActionId !== '')
               .map(action => ({
+                index: action.index,
                 availableActionId: action.availableActionId,
                 availableActionName: action.availableActionName,
                 actionMetadata: action.actionMetadata ?? {},
@@ -88,19 +99,17 @@ export function ZapForm({
               return
             }
             try {
-              const response = await postRequest({
-                path: 'zap',
-                data: {
-                  availableTriggerId: selectedTrigger?.availableTriggerId,
-                  triggerMetadata: selectedTrigger?.triggerMetadata ?? {},
-                  actions: actionsPayload,
-                },
+              const apiFunction = ZAP_API_MAP[mode]
+              const response = await apiFunction({
+                selectedTrigger,
+                actionsPayload,
+                zapId,
               })
-              if (response.status === 201) {
-                alert('Zap created successfully!')
+              if (response.status === ZAP_API_SUCCESS_CODE[mode]) {
+                alert(ZAP_API_SUCCESS_LABEL[mode])
                 navigateTo('dashboard')
               } else {
-                alert('Failed to create zap ')
+                alert(ZAP_API_FAILURE_LABEL[mode])
               }
             } catch (error) {
               alert('Server error ')

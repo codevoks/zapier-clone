@@ -25,8 +25,29 @@ export interface Zap {
   }
 }
 
+export interface AvailableTriggerType {
+  availableTriggerId: string
+  availableTriggerName: string
+  triggerMetadata?: Record<string, unknown> | undefined
+}
+
+export interface AvailableActionType {
+  index: number
+  availableActionId: string
+  availableActionName: string
+  actionMetadata?: Record<string, unknown>
+}
 export interface ZapFormType {
-  initialTrigger?: {}
-  initialActions?: {}
+  initialTrigger?: AvailableTriggerType
+  initialActions?: AvailableActionType[]
+  zapId?: string
+  mode: 'createZap' | 'updateZap'
+}
+
+export type ZapApiFnArgs = {
+  selectedTrigger: AvailableTriggerType
+  actionsPayload: AvailableActionType[]
   zapId?: string
 }
+
+export type ZapApiFn = (args: ZapApiFnArgs) => Promise<unknown>
