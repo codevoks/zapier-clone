@@ -16,6 +16,7 @@ import {
   AvailableActionType,
   ZapFormType,
 } from '../../../types/zaps'
+import { safeParseTriggersAndActions } from '@repo/validation'
 import {
   ZAP_API_MAP,
   ZAP_API_BUTTON_LABEL,
@@ -98,6 +99,20 @@ export function ZapForm({
               alert('Add at least one action before publishing zap')
               return
             }
+            const bodyForValidation = {
+              availableTriggerId: selectedTrigger.availableTriggerId,
+              triggerMetadata: selectedTrigger.triggerMetadata ?? {},
+              actions: actionsPayload.map(
+                ({ availableActionId, actionMetadata }) => ({
+                  availableActionId,
+                  actionMetadata: actionMetadata ?? {},
+                })
+              ),
+            }
+            if (!safeParseTriggersAndActions(bodyForValidation)) {
+              alert('Trigger or action metadata is invalid')
+              return
+            }
             try {
               const apiFunction = ZAP_API_MAP[mode]
               const response = await apiFunction({
@@ -112,7 +127,7 @@ export function ZapForm({
                 alert(ZAP_API_FAILURE_LABEL[mode])
               }
             } catch (error) {
-              alert('Server error ')
+              alert('Server error ' + error)
               console.log('Error = ' + error)
             }
           }}
