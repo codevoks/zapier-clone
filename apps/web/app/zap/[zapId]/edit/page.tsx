@@ -30,13 +30,23 @@ export default function EditZap() {
         })
         if (response.status !== 200) {
           navigateTo('dashboard')
+          return
         }
-        const zap = response.data
+        const zap = response.data.zap
         setSelectedTrigger({
           availableTriggerId: zap.trigger.type.id,
-          availableTriggerName: zap.trigger.zapId,
-          triggerMetadata: zap.trigger.metadata,
+          availableTriggerName: zap.trigger.type.name,
+          triggerMetadata: zap.trigger.metadata ?? {},
         })
+        const actions = [...zap.actions]
+          .sorted((a, b) => a.sortingOrder - b.sortingOrder)
+          .map((action, index) => ({
+            index: index + 2,
+            availableActionId: action.type.id,
+            availableActionName: action.type.name,
+            actionMetadata: action.metadata ?? {},
+          }))
+        setSelectedActions(actions)
       } catch (error) {
         console.log('Error - ' + error)
       }
