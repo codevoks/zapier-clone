@@ -72,19 +72,24 @@ export default function NewZap() {
             if (!selectedTrigger?.availableTriggerId) {
               return
             }
+            const actionsPayload = selectedActions
+              .filter(action => action.availableActionId !== '')
+              .map(action => ({
+                availableActionId: action.availableActionId,
+                availableActionName: action.availableActionName,
+                actionMetadata: action.actionMetadata ?? {},
+              }))
+            if (actionsPayload.length === 0) {
+              alert('Add at least one action before publishing zap')
+              return
+            }
             try {
               const response = await postRequest({
                 path: 'zap',
                 data: {
                   availableTriggerId: selectedTrigger?.availableTriggerId,
                   triggerMetadata: selectedTrigger?.triggerMetadata ?? {},
-                  actions: selectedActions
-                    .filter(action => action.availableActionId !== '')
-                    .map(action => ({
-                      availableActionId: action.availableActionId,
-                      availableActionName: action.availableActionName,
-                      actionMetadata: action.actionMetadata ?? {},
-                    })),
+                  actions: actionsPayload,
                 },
               })
               if (response.status === 201) {
