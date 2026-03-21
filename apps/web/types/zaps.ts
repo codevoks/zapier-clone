@@ -50,4 +50,6 @@ export type ZapApiFnArgs = {
   zapId?: string
 }
 
-export type ZapApiFn = (args: ZapApiFnArgs) => Promise<unknown>
+export type ZapApiResponse = { status: number }
+
+export type ZapApiFn = (args: ZapApiFnArgs) => Promise<ZapApiResponse>
