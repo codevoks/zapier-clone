@@ -54,5 +54,11 @@ export default function EditZap() {
     }
     getZap(params.zapId as string)
   }, [params.zapId])
-  return <ZapForm />
+  return (
+    <ZapForm
+      initialTrigger={selectedTrigger}
+      initialActions={selectedActions}
+      zapId={params.zapId as string}
+    />
+  )
 }

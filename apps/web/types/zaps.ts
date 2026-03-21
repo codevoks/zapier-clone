@@ -26,7 +26,7 @@ export interface Zap {
 }
 
 export interface ZapFormType {
-  initialTrigger: {}
-  initialActions: {}
+  initialTrigger?: {}
+  initialActions?: {}
   zapId?: string
 }
