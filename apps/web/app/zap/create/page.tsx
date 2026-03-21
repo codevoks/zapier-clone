@@ -72,23 +72,28 @@ export default function NewZap() {
             if (!selectedTrigger?.availableTriggerId) {
               return
             }
-            const response = await postRequest({
-              path: 'zap',
-              data: {
-                availableTriggerId: selectedTrigger?.availableTriggerId,
-                triggerMetadata: selectedTrigger?.triggerMetadata ?? {},
-                actions: selectedActions.map(action => ({
-                  availableActionId: action.availableActionId,
-                  availableActionName: action.availableActionName,
-                  actionMetadata: action.actionMetadata ?? {},
-                })),
-              },
-            })
-            if (response.status === 200) {
-              alert('Zap created successfully!')
-              navigateTo('dashboard')
-            } else {
-              alert('Failed to create zap ')
+            try {
+              const response = await postRequest({
+                path: 'zap',
+                data: {
+                  availableTriggerId: selectedTrigger?.availableTriggerId,
+                  triggerMetadata: selectedTrigger?.triggerMetadata ?? {},
+                  actions: selectedActions.map(action => ({
+                    availableActionId: action.availableActionId,
+                    availableActionName: action.availableActionName,
+                    actionMetadata: action.actionMetadata ?? {},
+                  })),
+                },
+              })
+              if (response.status === 201) {
+                alert('Zap created successfully!')
+                navigateTo('dashboard')
+              } else {
+                alert('Failed to create zap ')
+              }
+            } catch (error) {
+              alert('Server error ')
+              console.log('Error = ' + error)
             }
           }}
           path="dashboard"
