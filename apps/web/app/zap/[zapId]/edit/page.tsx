@@ -39,7 +39,7 @@ export default function EditZap() {
           triggerMetadata: zap.trigger.metadata ?? {},
         })
         const actions = [...zap.actions]
-          .sorted((a, b) => a.sortingOrder - b.sortingOrder)
+          .sort((a, b) => a.sortingOrder - b.sortingOrder)
           .map((action, index) => ({
             index: index + 2,
             availableActionId: action.type.id,
