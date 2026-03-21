@@ -1,3 +1,18 @@
+'use client'
+import { useEffect, useState } from 'react'
+import { ZapCell } from '../../../components/zap/zapsCell/ZapCell'
+import { PrimaryButton } from '../../../components/buttons/PrimaryButton'
+import { ZapModal } from '../../../components/zap/zapModal/ZapModal'
+import { TertiaryButton } from '../../../components/buttons/TertiaryButton'
+import {
+  useNavigate,
+  useAvailableTriggers,
+  useAvailableActions,
+} from '../../../hooks'
+import type { AvailableTrigger, AvaialableAction } from '@repo/db'
+import { postRequest } from '../../../apiService'
+import { MetadataModal } from '../../../components/zap/metadataModal/MetadataModal'
+
 export function ZapForm() {
   return (
     <div className="zap-create">
