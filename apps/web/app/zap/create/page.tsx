@@ -4,12 +4,17 @@ import { ZapCell } from '../../../components/zap/zapsCell/ZapCell'
 import { PrimaryButton } from '../../../components/buttons/PrimaryButton'
 import { ZapModal } from '../../../components/zap/zapModal/ZapModal'
 import { TertiaryButton } from '../../../components/buttons/TertiaryButton'
-import { useAvailableTriggers, useAvailableActions } from '../../../hooks'
+import {
+  useNavigate,
+  useAvailableTriggers,
+  useAvailableActions,
+} from '../../../hooks'
 import type { AvailableTrigger, AvaialableAction } from '@repo/db'
 import { postRequest } from '../../../apiService'
 import { MetadataModal } from '../../../components/zap/metadataModal/MetadataModal'
 
 export default function NewZap() {
+  const navigateTo = useNavigate()
   const [availableTriggers, setAvailableTriggers] = useState<
     AvailableTrigger[]
   >([])
@@ -79,6 +84,12 @@ export default function NewZap() {
                 })),
               },
             })
+            if (response.status === 200) {
+              alert('Zap created successfully!')
+              navigateTo('dashboard')
+            } else {
+              alert('Failed to create zap ')
+            }
           }}
           path="dashboard"
         ></TertiaryButton>
