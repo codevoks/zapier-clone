@@ -10,9 +10,10 @@ const JWT_SECRET = 'shallom'
 
 export async function GET(
   Request: NextRequest,
-  { params }: { params: { zapId: string } }
+  { params }: { params: Promise<{ zapId: string }> }
 ) {
   try {
+    const { zapId } = await params
     const token = Request.cookies.get('token')?.value
     if (!token) {
       return NextResponse.json(
@@ -28,7 +29,7 @@ export async function GET(
     const zap = await prisma.zap.findFirst({
       where: {
         userId: userId,
-        id: params.zapId,
+        id: zapId,
       },
       include: {
         actions: {
@@ -57,9 +58,10 @@ export async function GET(
 
 export async function PUT(
   Request: NextRequest,
-  { params }: { params: { zapId: string } }
+  { params }: { params: Promise<{ zapId: string }> }
 ) {
   try {
+    const { zapId } = await params
     const token = Request.cookies.get('token')?.value
     if (!token) {
       return NextResponse.json(
@@ -79,7 +81,7 @@ export async function PUT(
     }
     const newZap = await prisma.zap.update({
       where: {
-        id: params.zapId,
+        id: zapId,
         userId: userId,
       },
       data: {
@@ -123,9 +125,10 @@ export async function PUT(
 
 export async function DELETE(
   Request: NextRequest,
-  { params }: { params: { zapId: string } }
+  { params }: { params: Promise<{ zapId: string }> }
 ) {
   try {
+    const { zapId } = await params
     const token = Request.cookies.get('token')?.value
     if (!token) {
       return NextResponse.json(
@@ -140,7 +143,7 @@ export async function DELETE(
     const userId = Number(parsedToken.userId)
     const zap = await prisma.zap.delete({
       where: {
-        id: params.zapId,
+        id: zapId,
         userId: userId,
       },
     })
