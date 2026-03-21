@@ -1,0 +1,158 @@
+export function ZapForm() {
+  return (
+    <div className="zap-create">
+      <div className="flex justify-center">
+        <TertiaryButton
+          title="Publish Zap"
+          onClick={async () => {
+            if (!selectedTrigger?.availableTriggerId) {
+              return
+            }
+            const actionsPayload = selectedActions
+              .filter(action => action.availableActionId !== '')
+              .map(action => ({
+                availableActionId: action.availableActionId,
+                availableActionName: action.availableActionName,
+                actionMetadata: action.actionMetadata ?? {},
+              }))
+            if (actionsPayload.length === 0) {
+              alert('Add at least one action before publishing zap')
+              return
+            }
+            try {
+              const response = await postRequest({
+                path: 'zap',
+                data: {
+                  availableTriggerId: selectedTrigger?.availableTriggerId,
+                  triggerMetadata: selectedTrigger?.triggerMetadata ?? {},
+                  actions: actionsPayload,
+                },
+              })
+              if (response.status === 201) {
+                alert('Zap created successfully!')
+                navigateTo('dashboard')
+              } else {
+                alert('Failed to create zap ')
+              }
+            } catch (error) {
+              alert('Server error ')
+              console.log('Error = ' + error)
+            }
+          }}
+          path="dashboard"
+        ></TertiaryButton>
+      </div>
+      <div className="flex justify-center w-full">
+        <ZapCell
+          name={
+            selectedTrigger ? selectedTrigger.availableTriggerName : 'Trigger'
+          }
+          index={1}
+          onClick={() => setSelectedModalIndex(1)}
+        ></ZapCell>
+      </div>
+      <div className="w-full pt-2 pb-2">
+        {selectedActions.map(action => (
+          <div key={action.index} className="flex justify-center pt-2">
+            <ZapCell
+              name={
+                action.availableActionName
+                  ? action.availableActionName
+                  : 'Action'
+              }
+              index={action.index}
+              onClick={() => setSelectedModalIndex(action.index)}
+            ></ZapCell>
+          </div>
+        ))}
+      </div>
+      <div className="flex justify-center">
+        <PrimaryButton
+          title=" + "
+          onClick={() => {
+            setSelectedActions(prev => [
+              ...prev,
+              {
+                index: prev.length + 2,
+                availableActionId: '',
+                availableActionName: '',
+              },
+            ])
+          }}
+        ></PrimaryButton>
+      </div>
+      {selectedModalIndex && (
+        <ZapModal
+          onSelect={(props: null | { name: string; id: string }) => {
+            if (props === null) {
+              setSelectedModalIndex(null)
+              return
+            }
+            if (selectedModalIndex === 1) {
+              setMetadataModal({
+                type: 'trigger',
+                index: 1,
+                id: props.id,
+                name: props.name,
+              })
+              setSelectedTrigger({
+                availableTriggerId: props.id,
+                availableTriggerName: props.name,
+              })
+            } else {
+              setMetadataModal({
+                type: 'action',
+                index: selectedModalIndex,
+                id: props.id,
+                name: props.name,
+              })
+              setSelectedActions(prev => {
+                const newActions = [...prev]
+                newActions[selectedModalIndex - 2] = {
+                  index: selectedModalIndex,
+                  availableActionId: props.id,
+                  availableActionName: props.name,
+                }
+                return newActions
+              })
+            }
+            setSelectedModalIndex(null)
+          }}
+          index={selectedModalIndex}
+          availableTriggers={availableTriggers}
+          availableActions={availableActions}
+        />
+      )}
+      {metadataModal && (
+        <MetadataModal
+          type={metadataModal.name}
+          open
+          title={metadataModal.name}
+          initialMetadata={
+            metadataModal.type === 'trigger'
+              ? selectedTrigger?.triggerMetadata
+              : selectedActions.find(a => a.index === metadataModal.index)
+                  ?.actionMetadata
+          }
+          onClose={() => setMetadataModal(null)}
+          onSubmit={m => {
+            if (metadataModal.type === 'trigger') {
+              setSelectedTrigger(prev =>
+                prev ? { ...prev, triggerMetadata: m } : prev
+              )
+            } else if (metadataModal.type === 'action') {
+              setSelectedActions(prev =>
+                prev.map(action =>
+                  action.index === metadataModal.index
+                    ? { ...action, actionMetadata: m }
+                    : action
+                )
+              )
+            }
+            setMetadataModal(null)
+          }}
+        />
+      )}
+    </div>
+  )
+}
