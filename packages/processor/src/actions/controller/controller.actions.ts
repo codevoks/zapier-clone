@@ -12,7 +12,18 @@ export async function processActions(
         z => z.stepOrder === actionItem.order
       )
       if (executionState?.status === Status.SUCCESS) {
-        executionContext.stepResults[actionItem.order] = { success: true }
+        if (executionState.message) {
+          try {
+            executionContext.stepResults[actionItem.order] = JSON.parse(
+              executionState.message
+            )
+          } catch (error) {
+            executionContext.stepResults[actionItem.order] = { success: true }
+            console.log('Error while parsing ' + error)
+          }
+        } else {
+          executionContext.stepResults[actionItem.order] = { success: true }
+        }
         continue
       }
       const result = await executeAction(actionItem, executionContext)
@@ -21,6 +32,7 @@ export async function processActions(
           zapRunId: executionContext.zapRunId,
           stepOrder: actionItem.order,
           status: Status.SUCCESS,
+          message: JSON.stringify(result),
         })
       }
       executionContext.stepResults[actionItem.order] = result ?? {}
