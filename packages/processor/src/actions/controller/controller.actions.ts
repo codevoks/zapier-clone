@@ -9,8 +9,13 @@ export async function processActions(
     for (const actionItem of actionItems) {
       const result = await executeAction(actionItem, executionContext)
       executionContext.stepResults[actionItem.order] = result ?? {}
+      if (!result || !result.success) {
+        return { success: false, error: result.error }
+      }
     }
+    return { success: true }
   } catch (error) {
     console.log('Error in processActions=> ' + error)
+    return { success: false, error: error }
   }
 }

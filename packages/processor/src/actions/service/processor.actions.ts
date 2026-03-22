@@ -14,7 +14,7 @@ async function executeEmail(
     }
     if (!metadata || !metadata.toEmail) {
       console.log("Receiver's email address missing.")
-      return { success: false }
+      return { success: false, error: "Receiver's email address missing." }
     }
     console.log('EXECUTING EMAIL', {
       metadata: actionItem.metadata,
@@ -30,7 +30,7 @@ async function executeEmail(
     return { success: true, sent: true }
   } catch (error) {
     console.log('Error in executeEmail')
-    return { success: false }
+    return { success: false, error: error }
   }
 }
 async function executeSolana(
@@ -67,7 +67,7 @@ async function executeSolana(
     }
     if (Number.isNaN(solanaAmount) || solanaAmount <= 0) {
       console.log('Enter valid amount')
-      return { success: false }
+      return { success: false, error: 'Enter valid amount' }
     }
     console.log('EXECUTING SOLANA', {
       metadata: actionItem.metadata,
@@ -81,7 +81,7 @@ async function executeSolana(
     return { success: true, sent: true, transactionId: signature }
   } catch (error) {
     console.log('Error in executeSolana')
-    return { success: false }
+    return { success: false, error: error }
   }
 }
 
@@ -106,5 +106,10 @@ export async function executeAction(
     console.log('ACTION NOT SUPPORTED')
     return { success: false }
   }
-  return await actionHandler(actionItem, executionContext)
+  try {
+    return await actionHandler(actionItem, executionContext)
+  } catch (error) {
+    console.log(error)
+    return { success: false, error: error }
+  }
 }
