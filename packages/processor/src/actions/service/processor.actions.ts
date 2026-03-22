@@ -47,8 +47,26 @@ async function executeSolana(
       console.log("Sender/Receiver's address missing.")
       return { success: false }
     }
-    if ((metadata.solanaAmount ?? 0) <= 0) {
-      console.log('Solana amount should be more than 0')
+    const context = {
+      payload: executionContext.triggerPayload,
+      steps: executionContext.stepResults,
+    }
+    const fromWalletId = renderTemplate(
+      String(metadata.fromWalletId ?? ''),
+      context
+    ).trim()
+    const toAddress = renderTemplate(metadata.toAddress ?? '', context).trim()
+    const amountStr = renderTemplate(
+      String(metadata.solanaAmount ?? ''),
+      context
+    )
+    const solanaAmount = Number(amountStr)
+    if (!fromWalletId || !toAddress) {
+      console.log('Enter valid address')
+      return { success: false }
+    }
+    if (Number.isNaN(solanaAmount) || solanaAmount <= 0) {
+      console.log('Enter valid amount')
       return { success: false }
     }
     console.log('EXECUTING SOLANA', {
@@ -56,9 +74,9 @@ async function executeSolana(
       payload: actionItem.payload,
     })
     const { signature } = await sendSolana({
-      fromWalletId: metadata.fromWalletId,
-      toAddress: metadata.toAddress,
-      solanaAmount: metadata.solanaAmount ?? 0,
+      fromWalletId: fromWalletId,
+      toAddress: toAddress,
+      solanaAmount: solanaAmount,
     })
     return { success: true, sent: true, transactionId: signature }
   } catch (error) {
