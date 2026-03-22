@@ -6,8 +6,13 @@ export async function processActions(
   executionContext: ExecutionContext
 ) {
   try {
-    const zapRunId = executionContext.zapRunId
     for (const actionItem of actionItems) {
+      const executionState = executionContext.zapRunExecutions.find(
+        z => z.stepOrder === actionItem.order
+      )
+      if (executionState?.status === 'SUCCESS') {
+        continue
+      }
       const result = await executeAction(actionItem, executionContext)
       executionContext.stepResults[actionItem.order] = result ?? {}
       if (!result || !result.success) {

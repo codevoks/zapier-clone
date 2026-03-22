@@ -98,7 +98,7 @@ async function main() {
           }
           console.log('ZapRun PAYLOAD => ' + JSON.stringify(zapRun.metadata))
           console.log('EXECUTION CONTEXT', {
-            zapRunId: zapRun.id,
+            zapRunId: zapRunId,
             zapId: zapRun.zap.id,
             trigger: {
               type: zapRun.zap.trigger.type.name,
@@ -116,6 +116,7 @@ async function main() {
           const executionContext = {
             triggerPayload: zapRun.metadata as Record<string, unknown>,
             stepResults: [] as Record<string, unknown>[],
+            zapRunId: zapRun.id,
             zapRunExecutions: zapRun.zapRunExecutions,
           }
           const actionsResult = await processActions(
