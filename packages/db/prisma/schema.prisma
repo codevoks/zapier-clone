@@ -71,10 +71,27 @@ model ZapRun {
   metadata Json
   zap Zap @relation(fields: [zapId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   zapRunOutBox ZapRunOutBox?
+  zapRunExecutions ZapRunExecution []
+}
+
+model ZapRunExecution{
+  id String @id @default(uuid())
+  zapRunId String
+  stepOrder Int
+  zapRun ZapRun @relation(fields: [zapRunId], references: [id])
+  status Status
+  message String?
+  @@unique([zapRunId,stepOrder])
 }
 
 model ZapRunOutBox {
   id String @id @default(uuid())
   zapRunId String @unique
   zapRun ZapRun @relation(fields: [zapRunId], references: [id])
+}
+
+enum Status {
+  PROCESSING
+  SUCCESS
+  FAIL
 }

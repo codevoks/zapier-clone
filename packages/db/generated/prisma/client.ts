@@ -75,6 +75,11 @@ export type AvaialableAction = Prisma.AvaialableActionModel
  */
 export type ZapRun = Prisma.ZapRunModel
 /**
+ * Model ZapRunExecution
+ * 
+ */
+export type ZapRunExecution = Prisma.ZapRunExecutionModel
+/**
  * Model ZapRunOutBox
  * 
  */

@@ -78,6 +78,7 @@ async function main() {
           const zapRun = await prisma.zapRun.findUnique({
             where: { id: zapRunId },
             include: {
+              zapRunExecutions: true,
               zap: {
                 include: {
                   trigger: {
@@ -115,6 +116,7 @@ async function main() {
           const executionContext = {
             triggerPayload: zapRun.metadata as Record<string, unknown>,
             stepResults: [] as Record<string, unknown>[],
+            zapRunExecutions: zapRun.zapRunExecutions,
           }
           const actionsResult = await processActions(
             executionPlan,

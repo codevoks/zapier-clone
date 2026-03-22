@@ -58,6 +58,7 @@ export const ModelName = {
   AvailableTrigger: 'AvailableTrigger',
   AvaialableAction: 'AvaialableAction',
   ZapRun: 'ZapRun',
+  ZapRunExecution: 'ZapRunExecution',
   ZapRunOutBox: 'ZapRunOutBox'
 } as const
 
@@ -142,6 +143,17 @@ export const ZapRunScalarFieldEnum = {
 } as const
 
 export type ZapRunScalarFieldEnum = (typeof ZapRunScalarFieldEnum)[keyof typeof ZapRunScalarFieldEnum]
+
+
+export const ZapRunExecutionScalarFieldEnum = {
+  id: 'id',
+  zapRunId: 'zapRunId',
+  stepOrder: 'stepOrder',
+  status: 'status',
+  message: 'message'
+} as const
+
+export type ZapRunExecutionScalarFieldEnum = (typeof ZapRunExecutionScalarFieldEnum)[keyof typeof ZapRunExecutionScalarFieldEnum]
 
 
 export const ZapRunOutBoxScalarFieldEnum = {

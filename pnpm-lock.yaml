@@ -269,6 +269,9 @@ importers:
 
   packages/processor:
     dependencies:
+      '@repo/db':
+        specifier: workspace:*
+        version: link:../db
       '@solana/web3.js':
         specifier: ^1.98.4
         version: 1.98.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)

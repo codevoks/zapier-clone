@@ -391,6 +391,7 @@ export const ModelName = {
   AvailableTrigger: 'AvailableTrigger',
   AvaialableAction: 'AvaialableAction',
   ZapRun: 'ZapRun',
+  ZapRunExecution: 'ZapRunExecution',
   ZapRunOutBox: 'ZapRunOutBox'
 } as const
 
@@ -407,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "zap" | "trigger" | "action" | "availableTrigger" | "avaialableAction" | "zapRun" | "zapRunOutBox"
+    modelProps: "user" | "zap" | "trigger" | "action" | "availableTrigger" | "avaialableAction" | "zapRun" | "zapRunExecution" | "zapRunOutBox"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -929,6 +930,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ZapRunExecution: {
+      payload: Prisma.$ZapRunExecutionPayload<ExtArgs>
+      fields: Prisma.ZapRunExecutionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ZapRunExecutionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ZapRunExecutionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ZapRunExecutionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ZapRunExecutionPayload>
+        }
+        findFirst: {
+          args: Prisma.ZapRunExecutionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ZapRunExecutionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ZapRunExecutionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ZapRunExecutionPayload>
+        }
+        findMany: {
+          args: Prisma.ZapRunExecutionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ZapRunExecutionPayload>[]
+        }
+        create: {
+          args: Prisma.ZapRunExecutionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ZapRunExecutionPayload>
+        }
+        createMany: {
+          args: Prisma.ZapRunExecutionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ZapRunExecutionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ZapRunExecutionPayload>[]
+        }
+        delete: {
+          args: Prisma.ZapRunExecutionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ZapRunExecutionPayload>
+        }
+        update: {
+          args: Prisma.ZapRunExecutionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ZapRunExecutionPayload>
+        }
+        deleteMany: {
+          args: Prisma.ZapRunExecutionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ZapRunExecutionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ZapRunExecutionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ZapRunExecutionPayload>[]
+        }
+        upsert: {
+          args: Prisma.ZapRunExecutionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ZapRunExecutionPayload>
+        }
+        aggregate: {
+          args: Prisma.ZapRunExecutionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateZapRunExecution>
+        }
+        groupBy: {
+          args: Prisma.ZapRunExecutionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ZapRunExecutionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ZapRunExecutionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ZapRunExecutionCountAggregateOutputType> | number
+        }
+      }
+    }
     ZapRunOutBox: {
       payload: Prisma.$ZapRunOutBoxPayload<ExtArgs>
       fields: Prisma.ZapRunOutBoxFieldRefs
@@ -1109,6 +1184,17 @@ export const ZapRunScalarFieldEnum = {
 export type ZapRunScalarFieldEnum = (typeof ZapRunScalarFieldEnum)[keyof typeof ZapRunScalarFieldEnum]
 
 
+export const ZapRunExecutionScalarFieldEnum = {
+  id: 'id',
+  zapRunId: 'zapRunId',
+  stepOrder: 'stepOrder',
+  status: 'status',
+  message: 'message'
+} as const
+
+export type ZapRunExecutionScalarFieldEnum = (typeof ZapRunExecutionScalarFieldEnum)[keyof typeof ZapRunExecutionScalarFieldEnum]
+
+
 export const ZapRunOutBoxScalarFieldEnum = {
   id: 'id',
   zapRunId: 'zapRunId'
@@ -1210,6 +1296,20 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'Status'
+ */
+export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
+    
+
+
+/**
+ * Reference to a field of type 'Status[]'
+ */
+export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
     
 
 
@@ -1328,6 +1428,7 @@ export type GlobalOmitConfig = {
   availableTrigger?: Prisma.AvailableTriggerOmit
   avaialableAction?: Prisma.AvaialableActionOmit
   zapRun?: Prisma.ZapRunOmit
+  zapRunExecution?: Prisma.ZapRunExecutionOmit
   zapRunOutBox?: Prisma.ZapRunOutBoxOmit
 }
 
