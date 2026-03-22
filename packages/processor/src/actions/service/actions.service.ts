@@ -35,7 +35,6 @@ export async function sendEmail({
       to: [toEmail],
       subject: subject,
       text: bodyTemplate,
-      html: '<strong>It works!</strong>',
     })
     if (error) {
       console.log('Error in resend function ' + error)
