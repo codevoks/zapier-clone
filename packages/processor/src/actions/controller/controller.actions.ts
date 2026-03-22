@@ -1,4 +1,4 @@
-import { Status } from '@repo/db'
+import { Status, upsertZapRunExecution } from '@repo/db'
 import type { ActionItem, ExecutionContext } from '../types/processor.types'
 import { executeAction } from '../service/processor.actions'
 
@@ -12,12 +12,26 @@ export async function processActions(
         z => z.stepOrder === actionItem.order
       )
       if (executionState?.status === Status.SUCCESS) {
+        executionContext.stepResults[actionItem.order] = { success: true }
         continue
       }
       const result = await executeAction(actionItem, executionContext)
+      if (result && result.success) {
+        await upsertZapRunExecution({
+          zapRunId: executionContext.zapRunId,
+          stepOrder: actionItem.order,
+          status: Status.SUCCESS,
+        })
+      }
       executionContext.stepResults[actionItem.order] = result ?? {}
       if (!result || !result.success) {
-        return { success: false, error: result.error }
+        await upsertZapRunExecution({
+          zapRunId: executionContext.zapRunId,
+          stepOrder: actionItem.order,
+          status: Status.FAIL,
+          message: String(result?.error ?? ''),
+        })
+        return { success: false, error: result?.error }
       }
     }
     return { success: true }
