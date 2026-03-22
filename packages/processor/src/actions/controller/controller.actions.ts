@@ -1,5 +1,6 @@
+import { Status } from '@repo/db'
 import type { ActionItem, ExecutionContext } from '../types/processor.types'
-import { ACTION_HANDLERS, executeAction } from '../service/processor.actions'
+import { executeAction } from '../service/processor.actions'
 
 export async function processActions(
   actionItems: ActionItem[],
@@ -10,7 +11,7 @@ export async function processActions(
       const executionState = executionContext.zapRunExecutions.find(
         z => z.stepOrder === actionItem.order
       )
-      if (executionState?.status === 'SUCCESS') {
+      if (executionState?.status === Status.SUCCESS) {
         continue
       }
       const result = await executeAction(actionItem, executionContext)
