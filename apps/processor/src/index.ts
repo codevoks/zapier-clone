@@ -116,7 +116,17 @@ async function main() {
             triggerPayload: zapRun.metadata as Record<string, unknown>,
             stepResults: [] as Record<string, unknown>[],
           }
-          await processActions(executionPlan, executionContext)
+          const actionsResult = await processActions(
+            executionPlan,
+            executionContext
+          )
+          if (!actionsResult.success) {
+            if (actionsResult.error instanceof Error) {
+              console.log(actionsResult.error.message)
+            } else {
+              console.log(actionsResult.error)
+            }
+          }
           console.log({
             partition,
             offset: message.offset,
