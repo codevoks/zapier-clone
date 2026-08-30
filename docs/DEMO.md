@@ -8,7 +8,7 @@ this — it's a script to follow. Uses the zero-signup **HTTP action** against
 
 1. `cp .env.example .env` (already done if you've run this before).
 2. `docker compose up -d` — Postgres + Kafka.
-3. `pnpm install && pnpm --filter @repo/db exec prisma migrate deploy && pnpm --filter @repo/db run seed`
+3. `pnpm install && pnpm --filter @repo/db exec prisma generate && pnpm --filter @repo/db exec prisma migrate deploy && pnpm --filter @repo/db run seed`
 4. `pnpm dev` — starts web (`:3000`), hooks (`:4000`), outbox-processor, and
    the worker together.
 5. Open [webhook.site](https://webhook.site) in a browser tab and copy its
@@ -79,16 +79,33 @@ curl -i -X POST http://localhost:4000/hooks/catch/<userId>/<zapId> \
 
 Skip the Kafka UI tab entirely — the webhook.site tab landing a request a
 second or two after the `curl` is sufficient proof of asynchronous
-processing on its own. You can also `docker compose logs -f outbox-processor
-processor` in a terminal pane to show the structured JSON log lines
-(`"msg":"Published outbox batch"`, `"msg":"zapRun succeeded"`) scrolling by
-in near-real-time as an alternative to the UI.
+processing on its own. The `pnpm dev` terminal itself is also live proof:
+outbox-processor and worker logs are already scrolling there, prefixed
+`outbox-processor:dev:` / `processor:dev:` (they run via Turborepo, not
+Docker — there's no separate `docker compose logs` for them). Look for
+`"msg":"Published outbox batch"` and `"msg":"zapRun succeeded"` in that
+terminal as an alternative to the UI.
+
+## Troubleshooting (in case something misbehaves live)
+
+- **webhook.site doesn't show the request within ~5 seconds** — it updates
+  over a websocket and can occasionally miss a push; manually refresh the
+  tab once. If it's still not there after a refresh, check the `pnpm dev`
+  terminal for `"msg":"HTTP action succeeded"` — that confirms the worker
+  did send it.
+- **Want a receiver that doesn't depend on an external site at all** — run
+  a one-off local echo server instead of webhook.site:
+  `node -e "require('http').createServer((q,r)=>{let b='';q.on('data',c=>b+=c);q.on('end',()=>{console.log(b);r.end('{}')})}).listen(5050)"`
+  then point the HTTP action at `http://localhost:5050`. Requests print
+  directly in that terminal — no browser tab needed.
+- **`docker compose ps` doesn't show postgres/kafka as healthy** — give it
+  another few seconds after `docker compose up -d`; Kafka in particular
+  takes a little longer to report healthy than Postgres.
 
 ## Notes for whoever records this
 
 - Total runtime target: 2–3 minutes. The script above is paced for that;
   cut the failure-path section first if running long.
-- `apps/hooks/vitest.setup.ts` and friends aren't part of the demo — this is
-  a product/architecture walkthrough, not a test-suite tour. If asked "is
-  this tested," mention `pnpm test` runs 60+ tests including real-Postgres
-  concurrency tests for the outbox claim logic, and leave it there.
+- If asked "is this tested," mention `pnpm test` runs 62 tests — including
+  real-Postgres concurrency tests for the outbox claim logic — and leave it
+  there. This is a product/architecture walkthrough, not a test-suite tour.

@@ -6,32 +6,6 @@ is the hero: a webhook trigger durably recorded, published through a
 **transactional outbox**, processed asynchronously over **Kafka**, and
 executed by a **worker** with **idempotent, resumable** step execution.
 
-## Key engineering highlights
-
-- **Transactional outbox** — the webhook write and its outbox row are
-  committed atomically; publishing claims rows with `SELECT ... FOR UPDATE
-  SKIP LOCKED` so multiple processor instances can run concurrently without
-  double-claiming.
-- **At-least-once Kafka delivery, made explicit** — the true crash window
-  (publish succeeds, transaction never commits) is documented and handled by
-  idempotent, resumable consumption rather than pretended away.
-- **Resumable, idempotent workflow execution** — each step's result is
-  persisted (`ZapRunExecution`, unique on `zapRunId+stepOrder`); redelivery
-  skips already-succeeded steps instead of re-running them.
-- **Retry/backoff + dead-lettering** on the outbox side; **bounded infra
-  retries** + a documented poison-message policy on the worker side.
-- **Durable workflow state** — a `ZapRun` carries its own
-  `PENDING → RUNNING → SUCCESS/FAIL` status independent of its steps.
-- **Webhook ingestion hardening** — zap-existence check, optional
-  per-trigger secret, body-size cap, clean JSON error handling, basic rate
-  limiting.
-- **Real tests, not padding** — Postgres-backed integration tests for the
-  outbox's concurrency/retry/dead-letter behavior, the webhook route, and
-  route authorization; mocked-boundary unit tests for the Kafka event
-  contract and workflow execution logic.
-- **CI** — lint, type-check, test (against a real Postgres service
-  container), and build on every push.
-
 ## Architecture
 
 ```mermaid
@@ -44,6 +18,7 @@ flowchart LR
     Kafka -->|consume, groupId: zap-worker| Worker[Worker / Processor]
     Worker -->|load ZapRun + steps| PG
     Worker -->|execute email / http / solana| Actions[Action Handlers]
+    Actions -->|outbound HTTP / email / devnet tx| External[External HTTP Target / Resend / Solana RPC]
     Worker -->|persist ZapRunExecution + ZapRun.status| PG
     WebApp[Next.js Web App] -->|create/edit zaps, view run history| PG
 ```
@@ -77,6 +52,42 @@ sequenceDiagram
     W->>DB: update ZapRun.status = SUCCESS | FAIL
     W->>K: commitOffsets
 ```
+
+## Key engineering highlights
+
+- **Transactional outbox** — the webhook write and its outbox row are
+  committed atomically; publishing claims rows with `SELECT ... FOR UPDATE
+  SKIP LOCKED` so multiple processor instances can run concurrently without
+  double-claiming.
+- **At-least-once Kafka delivery, made explicit** — the true crash window
+  (publish succeeds, transaction never commits) is documented and handled by
+  idempotent, resumable consumption rather than pretended away.
+- **Resumable, idempotent workflow execution** — each step's result is
+  persisted (`ZapRunExecution`, unique on `zapRunId+stepOrder`); redelivery
+  skips already-succeeded steps instead of re-running them.
+- **Retry/backoff + dead-lettering** on the outbox side; **bounded infra
+  retries** + a documented poison-message policy on the worker side.
+- **Durable workflow state** — a `ZapRun` carries its own
+  `PROCESSING → SUCCESS/FAIL` status, independent of its per-step state.
+- **Zero-signup HTTP action** — the worker can make an outbound HTTP call
+  (native `fetch`, `AbortController` timeout, best-effort `Idempotency-Key`
+  header) with no API keys or funded accounts required; email (Resend) and
+  a Solana devnet transfer are also implemented as actions.
+- **Webhook ingestion hardening** — zap-existence check, optional
+  per-trigger secret, body-size cap, clean JSON error handling, basic rate
+  limiting.
+- **Real tests, not padding** — Postgres-backed integration tests for the
+  outbox's concurrency/retry/dead-letter behavior, the webhook route, and
+  route authorization; mocked-boundary unit tests for the Kafka event
+  contract and workflow execution logic.
+- **CI** — lint, type-check, test (against a real Postgres service
+  container), and build on every push.
+
+## Demo
+
+See [`docs/DEMO.md`](docs/DEMO.md) for a scripted ~2–3 minute walkthrough —
+exact commands, URLs, what to show on screen, and a fallback path if
+anything misbehaves during recording.
 
 ## Transactional outbox
 
@@ -158,22 +169,6 @@ disappearing or retrying forever.
 | Outbox publish failure | Bounded retries with backoff, then dead-lettered | `apps/outbox-processor` |
 | Webhook abuse | Per-process rate limit (single-instance only — see Limitations) | `apps/hooks` |
 
-## Security
-
-- Passwords hashed with bcrypt; JWT auth with a single `JWT_SECRET` sourced
-  from the environment (previously hardcoded and duplicated across six
-  files — fixed).
-- Real Next.js middleware (`apps/web/lib/middleware/auth.middleware.ts`)
-  gates protected pages/API routes server-side, in addition to each route's
-  own check.
-- Every zap-scoped API route filters by `userId` — one user cannot read,
-  edit, or delete another user's zap (`404`, not `403`, to avoid confirming
-  existence).
-- Webhook trigger URLs are unguessable UUIDs; an optional per-trigger
-  `secret`, checked via the `x-zap-secret` header, adds defense in depth
-  without forcing auth onto what's meant to be a public webhook endpoint.
-- No secrets are committed; `.env.example` documents every variable.
-
 ## Tech stack
 
 Next.js 16 / React 19, Express 5, KafkaJS, Prisma 7 + PostgreSQL, Zod,
@@ -208,6 +203,7 @@ Requires Docker and Node 22 (see `.nvmrc`).
 cp .env.example .env
 docker compose up -d
 pnpm install
+pnpm --filter @repo/db exec prisma generate
 pnpm --filter @repo/db exec prisma migrate deploy
 pnpm --filter @repo/db run seed
 pnpm dev
@@ -218,7 +214,7 @@ processor, and worker together via Turborepo. Sign up, create a zap with a
 **Web Hook** trigger and an **HTTP Request** action pointed at
 [webhook.site](https://webhook.site) (or any URL that echoes requests), then
 `curl` the webhook URL shown in the dashboard. See [`docs/DEMO.md`](docs/DEMO.md)
-for the full walkthrough.
+for the full walkthrough, including what a successful run looks like.
 
 Optional: `docker compose --profile ui up -d` also starts a Kafka UI at
 `:8080` for inspecting the topic while you work.
@@ -232,6 +228,30 @@ pnpm check-types
 pnpm build
 ```
 
+62 tests across 9 packages, all currently passing. Coverage focus, not a
+padded count:
+
+- **Outbox** ([`claimAndPublish.test.ts`](apps/outbox-processor/src/claimAndPublish.test.ts),
+  5 tests, real Postgres): successful claim-and-publish deletes rows, a
+  failed publish backs off without deleting, exceeding `OUTBOX_MAX_ATTEMPTS`
+  dead-letters a row and it's never reclaimed, and two concurrent claimers
+  never claim the same row (`FOR UPDATE SKIP LOCKED` proof).
+- **Webhook ingestion** ([`app.test.ts`](apps/hooks/src/app.test.ts), 6
+  tests, real Postgres via `supertest`): accepted → 202 + real `ZapRun`/
+  `ZapRunOutBox` rows, unknown zap → 404, secret mismatch → 401, malformed
+  JSON → 400.
+- **Worker/action logic** (18 tests, mocked boundary): step ordering,
+  stop-on-first-failure, resume-from-partial-run, idempotent no-op on an
+  already-succeeded redelivery, and per-action validation (email/http/
+  solana).
+- **Kafka event contract** (5 tests): `safeParseZapEvent` rejects malformed/
+  missing-field/wrong-version payloads as poison messages.
+- **Web authorization** (10 tests, real Postgres): cross-user access to a
+  zap returns 404, unauthenticated protected routes return 401, and the
+  `ZapRun`/`ZapRunExecution`/`ZapRunOutBox` cascade-delete regression.
+- **Auth primitives** (6 tests): JWT round-trip/tamper/wrong-secret
+  rejection, bcrypt hash/verify.
+
 Kafka interactions are tested with a mocked producer/consumer at the logic
 boundary (fast, deterministic, no broker needed in CI); Postgres
 interactions — including the outbox's concurrent-claim and retry/dead-letter
@@ -241,10 +261,27 @@ package test suites serially (`turbo run test --concurrency=1`) rather than
 in parallel — deliberately trading a bit of wall-clock time for determinism
 instead of standing up per-suite databases/schemas.
 
-## Demo
+## Docs
 
-See [`docs/DEMO.md`](docs/DEMO.md) for a scripted ~2–3 minute walkthrough
-(prepared for recording; no video is included here).
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — service responsibilities,
+  schema, the Kafka event contract, concurrency, and every failure scenario
+  in more depth than fits here.
+- [`docs/DEMO.md`](docs/DEMO.md) — the recording script above.
+
+## Security
+
+- Passwords hashed with bcrypt; JWT auth with a single `JWT_SECRET` sourced
+  from the environment.
+- Real Next.js middleware (`apps/web/lib/middleware/auth.middleware.ts`)
+  gates protected pages/API routes server-side, in addition to each route's
+  own check.
+- Every zap-scoped API route filters by `userId` — one user cannot read,
+  edit, or delete another user's zap (`404`, not `403`, to avoid confirming
+  existence).
+- Webhook trigger URLs are unguessable UUIDs; an optional per-trigger
+  `secret`, checked via the `x-zap-secret` header, adds defense in depth
+  without forcing auth onto what's meant to be a public webhook endpoint.
+- No secrets are committed; `.env.example` documents every variable.
 
 ## Limitations / trade-offs
 
