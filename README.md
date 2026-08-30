@@ -35,7 +35,10 @@ sequenceDiagram
     participant W as Worker
 
     C->>H: POST /hooks/catch/:userId/:zapId
-    H->>DB: BEGIN; create ZapRun; create ZapRunOutBox; COMMIT
+    H->>DB: BEGIN transaction
+    H->>DB: create ZapRun
+    H->>DB: create ZapRunOutBox
+    H->>DB: COMMIT
     H-->>C: 202 Accepted { zapRunId }
 
     loop poll every OUTBOX_POLL_INTERVAL_MS
