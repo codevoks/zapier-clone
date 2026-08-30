@@ -192,7 +192,7 @@ export type ZapRunExecutionGroupByOutputType = {
   _max: ZapRunExecutionMaxAggregateOutputType | null
 }
 
-type GetZapRunExecutionGroupByPayload<T extends ZapRunExecutionGroupByArgs> = Prisma.PrismaPromise<
+export type GetZapRunExecutionGroupByPayload<T extends ZapRunExecutionGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ZapRunExecutionGroupByOutputType, T['by']> &
       {
@@ -407,14 +407,6 @@ export type ZapRunExecutionUncheckedUpdateManyWithoutZapRunNestedInput = {
   update?: Prisma.ZapRunExecutionUpdateWithWhereUniqueWithoutZapRunInput | Prisma.ZapRunExecutionUpdateWithWhereUniqueWithoutZapRunInput[]
   updateMany?: Prisma.ZapRunExecutionUpdateManyWithWhereWithoutZapRunInput | Prisma.ZapRunExecutionUpdateManyWithWhereWithoutZapRunInput[]
   deleteMany?: Prisma.ZapRunExecutionScalarWhereInput | Prisma.ZapRunExecutionScalarWhereInput[]
-}
-
-export type EnumStatusFieldUpdateOperationsInput = {
-  set?: $Enums.Status
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
 }
 
 export type ZapRunExecutionCreateWithoutZapRunInput = {
@@ -1180,6 +1172,11 @@ export type ZapRunExecutionFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Skip the first `n` ZapRunExecutions.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ZapRunExecutions.
+   */
   distinct?: Prisma.ZapRunExecutionScalarFieldEnum | Prisma.ZapRunExecutionScalarFieldEnum[]
 }
 

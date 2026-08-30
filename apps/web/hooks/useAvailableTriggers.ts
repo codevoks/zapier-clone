@@ -1,6 +1,7 @@
 import { getRequest } from '../apiService'
 
-export async function useAvailableTriggers() {
+// Not a React hook despite the historical filename - a plain fetch helper.
+export async function fetchAvailableTriggers() {
   try {
     const availableTriggers = await getRequest({
       path: 'zap/trigger/available',
@@ -9,7 +10,7 @@ export async function useAvailableTriggers() {
     if (availableTriggers.status == 200) {
       return availableTriggers.data.availableTriggers
     }
-  } catch (error) {
+  } catch {
     console.log('Error getting available triggers')
   }
 }

@@ -22,4 +22,8 @@ export const METADATA_FORM_CONFIG: Record<string, MetadataField[]> = {
     { name: 'toAddress', label: 'To Address', type: 'text' },
     { name: 'solanaAmount', label: 'Amount', type: 'number' },
   ],
+  'HTTP Request': [
+    { name: 'url', label: 'URL', type: 'url' },
+    { name: 'bodyTemplate', label: 'Body (JSON, supports {{payload.x}})', type: 'text' },
+  ],
 }

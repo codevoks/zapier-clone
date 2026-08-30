@@ -27,17 +27,32 @@ export type AggregateZapRun = {
 export type ZapRunMinAggregateOutputType = {
   id: string | null
   zapId: string | null
+  status: $Enums.Status | null
+  createdAt: Date | null
+  startedAt: Date | null
+  completedAt: Date | null
+  error: string | null
 }
 
 export type ZapRunMaxAggregateOutputType = {
   id: string | null
   zapId: string | null
+  status: $Enums.Status | null
+  createdAt: Date | null
+  startedAt: Date | null
+  completedAt: Date | null
+  error: string | null
 }
 
 export type ZapRunCountAggregateOutputType = {
   id: number
   zapId: number
   metadata: number
+  status: number
+  createdAt: number
+  startedAt: number
+  completedAt: number
+  error: number
   _all: number
 }
 
@@ -45,17 +60,32 @@ export type ZapRunCountAggregateOutputType = {
 export type ZapRunMinAggregateInputType = {
   id?: true
   zapId?: true
+  status?: true
+  createdAt?: true
+  startedAt?: true
+  completedAt?: true
+  error?: true
 }
 
 export type ZapRunMaxAggregateInputType = {
   id?: true
   zapId?: true
+  status?: true
+  createdAt?: true
+  startedAt?: true
+  completedAt?: true
+  error?: true
 }
 
 export type ZapRunCountAggregateInputType = {
   id?: true
   zapId?: true
   metadata?: true
+  status?: true
+  createdAt?: true
+  startedAt?: true
+  completedAt?: true
+  error?: true
   _all?: true
 }
 
@@ -135,12 +165,17 @@ export type ZapRunGroupByOutputType = {
   id: string
   zapId: string
   metadata: runtime.JsonValue
+  status: $Enums.Status
+  createdAt: Date
+  startedAt: Date | null
+  completedAt: Date | null
+  error: string | null
   _count: ZapRunCountAggregateOutputType | null
   _min: ZapRunMinAggregateOutputType | null
   _max: ZapRunMaxAggregateOutputType | null
 }
 
-type GetZapRunGroupByPayload<T extends ZapRunGroupByArgs> = Prisma.PrismaPromise<
+export type GetZapRunGroupByPayload<T extends ZapRunGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ZapRunGroupByOutputType, T['by']> &
       {
@@ -162,6 +197,11 @@ export type ZapRunWhereInput = {
   id?: Prisma.StringFilter<"ZapRun"> | string
   zapId?: Prisma.StringFilter<"ZapRun"> | string
   metadata?: Prisma.JsonFilter<"ZapRun">
+  status?: Prisma.EnumStatusFilter<"ZapRun"> | $Enums.Status
+  createdAt?: Prisma.DateTimeFilter<"ZapRun"> | Date | string
+  startedAt?: Prisma.DateTimeNullableFilter<"ZapRun"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"ZapRun"> | Date | string | null
+  error?: Prisma.StringNullableFilter<"ZapRun"> | string | null
   zap?: Prisma.XOR<Prisma.ZapScalarRelationFilter, Prisma.ZapWhereInput>
   zapRunOutBox?: Prisma.XOR<Prisma.ZapRunOutBoxNullableScalarRelationFilter, Prisma.ZapRunOutBoxWhereInput> | null
   zapRunExecutions?: Prisma.ZapRunExecutionListRelationFilter
@@ -171,6 +211,11 @@ export type ZapRunOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  error?: Prisma.SortOrderInput | Prisma.SortOrder
   zap?: Prisma.ZapOrderByWithRelationInput
   zapRunOutBox?: Prisma.ZapRunOutBoxOrderByWithRelationInput
   zapRunExecutions?: Prisma.ZapRunExecutionOrderByRelationAggregateInput
@@ -183,6 +228,11 @@ export type ZapRunWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ZapRunWhereInput | Prisma.ZapRunWhereInput[]
   zapId?: Prisma.StringFilter<"ZapRun"> | string
   metadata?: Prisma.JsonFilter<"ZapRun">
+  status?: Prisma.EnumStatusFilter<"ZapRun"> | $Enums.Status
+  createdAt?: Prisma.DateTimeFilter<"ZapRun"> | Date | string
+  startedAt?: Prisma.DateTimeNullableFilter<"ZapRun"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"ZapRun"> | Date | string | null
+  error?: Prisma.StringNullableFilter<"ZapRun"> | string | null
   zap?: Prisma.XOR<Prisma.ZapScalarRelationFilter, Prisma.ZapWhereInput>
   zapRunOutBox?: Prisma.XOR<Prisma.ZapRunOutBoxNullableScalarRelationFilter, Prisma.ZapRunOutBoxWhereInput> | null
   zapRunExecutions?: Prisma.ZapRunExecutionListRelationFilter
@@ -192,6 +242,11 @@ export type ZapRunOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  error?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ZapRunCountOrderByAggregateInput
   _max?: Prisma.ZapRunMaxOrderByAggregateInput
   _min?: Prisma.ZapRunMinOrderByAggregateInput
@@ -204,11 +259,21 @@ export type ZapRunScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"ZapRun"> | string
   zapId?: Prisma.StringWithAggregatesFilter<"ZapRun"> | string
   metadata?: Prisma.JsonWithAggregatesFilter<"ZapRun">
+  status?: Prisma.EnumStatusWithAggregatesFilter<"ZapRun"> | $Enums.Status
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"ZapRun"> | Date | string
+  startedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ZapRun"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ZapRun"> | Date | string | null
+  error?: Prisma.StringNullableWithAggregatesFilter<"ZapRun"> | string | null
 }
 
 export type ZapRunCreateInput = {
   id?: string
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.Status
+  createdAt?: Date | string
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  error?: string | null
   zap: Prisma.ZapCreateNestedOneWithoutZapRunsInput
   zapRunOutBox?: Prisma.ZapRunOutBoxCreateNestedOneWithoutZapRunInput
   zapRunExecutions?: Prisma.ZapRunExecutionCreateNestedManyWithoutZapRunInput
@@ -218,6 +283,11 @@ export type ZapRunUncheckedCreateInput = {
   id?: string
   zapId: string
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.Status
+  createdAt?: Date | string
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  error?: string | null
   zapRunOutBox?: Prisma.ZapRunOutBoxUncheckedCreateNestedOneWithoutZapRunInput
   zapRunExecutions?: Prisma.ZapRunExecutionUncheckedCreateNestedManyWithoutZapRunInput
 }
@@ -225,6 +295,11 @@ export type ZapRunUncheckedCreateInput = {
 export type ZapRunUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   zap?: Prisma.ZapUpdateOneRequiredWithoutZapRunsNestedInput
   zapRunOutBox?: Prisma.ZapRunOutBoxUpdateOneWithoutZapRunNestedInput
   zapRunExecutions?: Prisma.ZapRunExecutionUpdateManyWithoutZapRunNestedInput
@@ -234,6 +309,11 @@ export type ZapRunUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   zapRunOutBox?: Prisma.ZapRunOutBoxUncheckedUpdateOneWithoutZapRunNestedInput
   zapRunExecutions?: Prisma.ZapRunExecutionUncheckedUpdateManyWithoutZapRunNestedInput
 }
@@ -242,17 +322,32 @@ export type ZapRunCreateManyInput = {
   id?: string
   zapId: string
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.Status
+  createdAt?: Date | string
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  error?: string | null
 }
 
 export type ZapRunUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ZapRunUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ZapRunListRelationFilter = {
@@ -269,16 +364,31 @@ export type ZapRunCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
+  error?: Prisma.SortOrder
 }
 
 export type ZapRunMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
+  error?: Prisma.SortOrder
 }
 
 export type ZapRunMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   zapId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
+  error?: Prisma.SortOrder
 }
 
 export type ZapRunScalarRelationFilter = {
@@ -328,6 +438,22 @@ export type ZapRunUncheckedUpdateManyWithoutZapNestedInput = {
   deleteMany?: Prisma.ZapRunScalarWhereInput | Prisma.ZapRunScalarWhereInput[]
 }
 
+export type EnumStatusFieldUpdateOperationsInput = {
+  set?: $Enums.Status
+}
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type ZapRunCreateNestedOneWithoutZapRunExecutionsInput = {
   create?: Prisma.XOR<Prisma.ZapRunCreateWithoutZapRunExecutionsInput, Prisma.ZapRunUncheckedCreateWithoutZapRunExecutionsInput>
   connectOrCreate?: Prisma.ZapRunCreateOrConnectWithoutZapRunExecutionsInput
@@ -359,6 +485,11 @@ export type ZapRunUpdateOneRequiredWithoutZapRunOutBoxNestedInput = {
 export type ZapRunCreateWithoutZapInput = {
   id?: string
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.Status
+  createdAt?: Date | string
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  error?: string | null
   zapRunOutBox?: Prisma.ZapRunOutBoxCreateNestedOneWithoutZapRunInput
   zapRunExecutions?: Prisma.ZapRunExecutionCreateNestedManyWithoutZapRunInput
 }
@@ -366,6 +497,11 @@ export type ZapRunCreateWithoutZapInput = {
 export type ZapRunUncheckedCreateWithoutZapInput = {
   id?: string
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.Status
+  createdAt?: Date | string
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  error?: string | null
   zapRunOutBox?: Prisma.ZapRunOutBoxUncheckedCreateNestedOneWithoutZapRunInput
   zapRunExecutions?: Prisma.ZapRunExecutionUncheckedCreateNestedManyWithoutZapRunInput
 }
@@ -403,11 +539,21 @@ export type ZapRunScalarWhereInput = {
   id?: Prisma.StringFilter<"ZapRun"> | string
   zapId?: Prisma.StringFilter<"ZapRun"> | string
   metadata?: Prisma.JsonFilter<"ZapRun">
+  status?: Prisma.EnumStatusFilter<"ZapRun"> | $Enums.Status
+  createdAt?: Prisma.DateTimeFilter<"ZapRun"> | Date | string
+  startedAt?: Prisma.DateTimeNullableFilter<"ZapRun"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"ZapRun"> | Date | string | null
+  error?: Prisma.StringNullableFilter<"ZapRun"> | string | null
 }
 
 export type ZapRunCreateWithoutZapRunExecutionsInput = {
   id?: string
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.Status
+  createdAt?: Date | string
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  error?: string | null
   zap: Prisma.ZapCreateNestedOneWithoutZapRunsInput
   zapRunOutBox?: Prisma.ZapRunOutBoxCreateNestedOneWithoutZapRunInput
 }
@@ -416,6 +562,11 @@ export type ZapRunUncheckedCreateWithoutZapRunExecutionsInput = {
   id?: string
   zapId: string
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.Status
+  createdAt?: Date | string
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  error?: string | null
   zapRunOutBox?: Prisma.ZapRunOutBoxUncheckedCreateNestedOneWithoutZapRunInput
 }
 
@@ -438,6 +589,11 @@ export type ZapRunUpdateToOneWithWhereWithoutZapRunExecutionsInput = {
 export type ZapRunUpdateWithoutZapRunExecutionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   zap?: Prisma.ZapUpdateOneRequiredWithoutZapRunsNestedInput
   zapRunOutBox?: Prisma.ZapRunOutBoxUpdateOneWithoutZapRunNestedInput
 }
@@ -446,12 +602,22 @@ export type ZapRunUncheckedUpdateWithoutZapRunExecutionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   zapRunOutBox?: Prisma.ZapRunOutBoxUncheckedUpdateOneWithoutZapRunNestedInput
 }
 
 export type ZapRunCreateWithoutZapRunOutBoxInput = {
   id?: string
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.Status
+  createdAt?: Date | string
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  error?: string | null
   zap: Prisma.ZapCreateNestedOneWithoutZapRunsInput
   zapRunExecutions?: Prisma.ZapRunExecutionCreateNestedManyWithoutZapRunInput
 }
@@ -460,6 +626,11 @@ export type ZapRunUncheckedCreateWithoutZapRunOutBoxInput = {
   id?: string
   zapId: string
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.Status
+  createdAt?: Date | string
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  error?: string | null
   zapRunExecutions?: Prisma.ZapRunExecutionUncheckedCreateNestedManyWithoutZapRunInput
 }
 
@@ -482,6 +653,11 @@ export type ZapRunUpdateToOneWithWhereWithoutZapRunOutBoxInput = {
 export type ZapRunUpdateWithoutZapRunOutBoxInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   zap?: Prisma.ZapUpdateOneRequiredWithoutZapRunsNestedInput
   zapRunExecutions?: Prisma.ZapRunExecutionUpdateManyWithoutZapRunNestedInput
 }
@@ -490,17 +666,32 @@ export type ZapRunUncheckedUpdateWithoutZapRunOutBoxInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapId?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   zapRunExecutions?: Prisma.ZapRunExecutionUncheckedUpdateManyWithoutZapRunNestedInput
 }
 
 export type ZapRunCreateManyZapInput = {
   id?: string
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.Status
+  createdAt?: Date | string
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  error?: string | null
 }
 
 export type ZapRunUpdateWithoutZapInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   zapRunOutBox?: Prisma.ZapRunOutBoxUpdateOneWithoutZapRunNestedInput
   zapRunExecutions?: Prisma.ZapRunExecutionUpdateManyWithoutZapRunNestedInput
 }
@@ -508,6 +699,11 @@ export type ZapRunUpdateWithoutZapInput = {
 export type ZapRunUncheckedUpdateWithoutZapInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   zapRunOutBox?: Prisma.ZapRunOutBoxUncheckedUpdateOneWithoutZapRunNestedInput
   zapRunExecutions?: Prisma.ZapRunExecutionUncheckedUpdateManyWithoutZapRunNestedInput
 }
@@ -515,6 +711,11 @@ export type ZapRunUncheckedUpdateWithoutZapInput = {
 export type ZapRunUncheckedUpdateManyWithoutZapInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -552,6 +753,11 @@ export type ZapRunSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   zapId?: boolean
   metadata?: boolean
+  status?: boolean
+  createdAt?: boolean
+  startedAt?: boolean
+  completedAt?: boolean
+  error?: boolean
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
   zapRunOutBox?: boolean | Prisma.ZapRun$zapRunOutBoxArgs<ExtArgs>
   zapRunExecutions?: boolean | Prisma.ZapRun$zapRunExecutionsArgs<ExtArgs>
@@ -562,6 +768,11 @@ export type ZapRunSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   zapId?: boolean
   metadata?: boolean
+  status?: boolean
+  createdAt?: boolean
+  startedAt?: boolean
+  completedAt?: boolean
+  error?: boolean
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["zapRun"]>
 
@@ -569,6 +780,11 @@ export type ZapRunSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   zapId?: boolean
   metadata?: boolean
+  status?: boolean
+  createdAt?: boolean
+  startedAt?: boolean
+  completedAt?: boolean
+  error?: boolean
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["zapRun"]>
 
@@ -576,9 +792,14 @@ export type ZapRunSelectScalar = {
   id?: boolean
   zapId?: boolean
   metadata?: boolean
+  status?: boolean
+  createdAt?: boolean
+  startedAt?: boolean
+  completedAt?: boolean
+  error?: boolean
 }
 
-export type ZapRunOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "zapId" | "metadata", ExtArgs["result"]["zapRun"]>
+export type ZapRunOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "zapId" | "metadata" | "status" | "createdAt" | "startedAt" | "completedAt" | "error", ExtArgs["result"]["zapRun"]>
 export type ZapRunInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   zap?: boolean | Prisma.ZapDefaultArgs<ExtArgs>
   zapRunOutBox?: boolean | Prisma.ZapRun$zapRunOutBoxArgs<ExtArgs>
@@ -603,6 +824,11 @@ export type $ZapRunPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     id: string
     zapId: string
     metadata: runtime.JsonValue
+    status: $Enums.Status
+    createdAt: Date
+    startedAt: Date | null
+    completedAt: Date | null
+    error: string | null
   }, ExtArgs["result"]["zapRun"]>
   composites: {}
 }
@@ -1032,6 +1258,11 @@ export interface ZapRunFieldRefs {
   readonly id: Prisma.FieldRef<"ZapRun", 'String'>
   readonly zapId: Prisma.FieldRef<"ZapRun", 'String'>
   readonly metadata: Prisma.FieldRef<"ZapRun", 'Json'>
+  readonly status: Prisma.FieldRef<"ZapRun", 'Status'>
+  readonly createdAt: Prisma.FieldRef<"ZapRun", 'DateTime'>
+  readonly startedAt: Prisma.FieldRef<"ZapRun", 'DateTime'>
+  readonly completedAt: Prisma.FieldRef<"ZapRun", 'DateTime'>
+  readonly error: Prisma.FieldRef<"ZapRun", 'String'>
 }
     
 
@@ -1228,6 +1459,11 @@ export type ZapRunFindManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Skip the first `n` ZapRuns.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ZapRuns.
+   */
   distinct?: Prisma.ZapRunScalarFieldEnum | Prisma.ZapRunScalarFieldEnum[]
 }
 

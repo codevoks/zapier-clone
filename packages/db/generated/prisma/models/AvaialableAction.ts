@@ -144,7 +144,7 @@ export type AvaialableActionGroupByOutputType = {
   _max: AvaialableActionMaxAggregateOutputType | null
 }
 
-type GetAvaialableActionGroupByPayload<T extends AvaialableActionGroupByArgs> = Prisma.PrismaPromise<
+export type GetAvaialableActionGroupByPayload<T extends AvaialableActionGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AvaialableActionGroupByOutputType, T['by']> &
       {
@@ -1024,6 +1024,11 @@ export type AvaialableActionFindManyArgs<ExtArgs extends runtime.Types.Extension
    * Skip the first `n` AvaialableActions.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of AvaialableActions.
+   */
   distinct?: Prisma.AvaialableActionScalarFieldEnum | Prisma.AvaialableActionScalarFieldEnum[]
 }
 

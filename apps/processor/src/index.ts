@@ -1,150 +1,195 @@
 import { Kafka } from 'kafkajs'
-import { prisma } from '@repo/db'
+import { prisma, Status } from '@repo/db'
 import { processActions } from '@repo/processor'
 import type { ActionItem } from '@repo/processor'
 import type { ZapRunType } from '@repo/db'
+import { safeParseZapEvent } from '@repo/validation'
+import { createLogger } from '@repo/logger'
+import { config } from './config'
 
-const TOPIC_NAME = 'zap-events'
+const logger = createLogger('processor')
 
-const kafka = new Kafka({
-  clientId: 'outbox-processor',
-  brokers: ['localhost:9092'],
-})
+function buildExecutionPlan(zapRun: ZapRunType): ActionItem[] {
+  return [...zapRun.zap.actions]
+    .sort((a, b) => a.sortingOrder - b.sortingOrder)
+    .map(entry => ({
+      // entry.type.id is the canonical action id ('email'/'solana'/'http'),
+      // seeded lowercase - unlike entry.type.name (the display label,
+      // e.g. "HTTP Request"), it doesn't depend on the label staying a
+      // single word that happens to lowercase into a valid handler key.
+      type: entry.type.id as ActionItem['type'],
+      metadata: entry.metadata as unknown as JSON,
+      payload: zapRun.metadata as unknown as JSON,
+      order: entry.sortingOrder,
+    }))
+}
 
-function buildExecutionPlan(zapRun: ZapRunType) {
-  const actionItems: ActionItem[] = zapRun.zap.actions
-    .sort((a: ActionItem, b: ActionItem) => a.sortingOrder - b.sortingOrder)
-    .map(
-      (entry: ActionItem) =>
-        ({
-          type: entry.type.name,
-          metadata: entry.metadata,
-          payload: zapRun.metadata,
-          order: entry.sortingOrder,
-        }) as ActionItem
-    )
-  return actionItems
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+type ProcessOutcome = { poison: boolean }
+
+/**
+ * Loads a zap run and drives it to completion. Terminal runs (already
+ * SUCCESS/FAIL) are a cheap no-op so Kafka redelivery of an
+ * already-finished run doesn't re-touch every step. Missing runs are
+ * treated as poison (nothing sensible to retry).
+ */
+async function processZapRun(zapRunId: string, eventId: string): Promise<ProcessOutcome> {
+  const zapRun = await prisma.zapRun.findUnique({
+    where: { id: zapRunId },
+    include: {
+      zapRunExecutions: true,
+      zap: {
+        include: {
+          trigger: { include: { type: true } },
+          actions: { include: { type: true } },
+        },
+      },
+    },
+  })
+
+  if (!zapRun) {
+    logger.warn('zapRun not found - poison message', { zapRunId, eventId })
+    return { poison: true }
+  }
+
+  if (zapRun.status === Status.SUCCESS || zapRun.status === Status.FAIL) {
+    logger.info('zapRun already terminal - skipping redelivery', {
+      zapRunId,
+      eventId,
+      status: zapRun.status,
+    })
+    return { poison: false }
+  }
+
+  if (!zapRun.startedAt) {
+    await prisma.zapRun.update({ where: { id: zapRunId }, data: { startedAt: new Date() } })
+  }
+
+  const executionPlan = buildExecutionPlan(zapRun)
+  const executionContext = {
+    triggerPayload: zapRun.metadata as Record<string, unknown>,
+    stepResults: [] as Record<string, unknown>[],
+    zapRunId: zapRun.id,
+    zapRunExecutions: zapRun.zapRunExecutions,
+  }
+
+  logger.info('Processing zap run', {
+    zapRunId,
+    eventId,
+    zapId: zapRun.zap.id,
+    steps: executionPlan.length,
+  })
+
+  const actionsResult = await processActions(executionPlan, executionContext)
+
+  if (actionsResult.success) {
+    await prisma.zapRun.update({
+      where: { id: zapRunId },
+      data: { status: Status.SUCCESS, completedAt: new Date(), error: null },
+    })
+    logger.info('zapRun succeeded', { zapRunId, eventId })
+  } else {
+    const message =
+      actionsResult.error instanceof Error
+        ? actionsResult.error.message
+        : String(actionsResult.error ?? 'Unknown action failure')
+    await prisma.zapRun.update({
+      where: { id: zapRunId },
+      data: { status: Status.FAIL, completedAt: new Date(), error: message },
+    })
+    logger.warn('zapRun failed', { zapRunId, eventId, error: message })
+  }
+
+  return { poison: false }
 }
 
 async function main() {
-  try {
-    const consumer = kafka.consumer({ groupId: 'main-worker' })
-    await consumer.connect()
+  const kafka = new Kafka({ clientId: config.kafkaClientId, brokers: config.kafkaBrokers })
+  const consumer = kafka.consumer({ groupId: config.consumerGroup })
+  await consumer.connect()
+  await consumer.subscribe({ topic: config.kafkaTopic, fromBeginning: config.fromBeginning })
+  logger.info('Processor subscribed', { topic: config.kafkaTopic, group: config.consumerGroup })
 
-    await consumer.subscribe({ topic: TOPIC_NAME, fromBeginning: true })
-    console.log('Processor consumer subscribed to topic', TOPIC_NAME)
+  await consumer.run({
+    autoCommit: false,
+    eachMessage: async ({ partition, message }) => {
+      const commit = async () => {
+        await consumer.commitOffsets([
+          { topic: config.kafkaTopic, partition, offset: (parseInt(message.offset, 10) + 1).toString() },
+        ])
+      }
 
-    await consumer.run({
-      autoCommit: false,
-      eachMessage: async ({ topic, partition, message }) => {
-        const commit = async () => {
-          await consumer.commitOffsets([
-            {
-              topic: TOPIC_NAME,
-              partition,
-              offset: (parseInt(message.offset) + 1).toString(),
-            },
-          ])
-        }
-        const rawValue = message.value?.toString()
-        console.log({
+      const parsed = safeParseZapEvent(message.value?.toString())
+      if (!parsed.success) {
+        logger.warn('Poison message - failed to parse, committing without retry', {
           partition,
           offset: message.offset,
-          value: rawValue,
+          error: parsed.error,
         })
-        if (!rawValue) {
-          console.log('Empty message received, skipping')
-          await commit()
-          return
-        }
+        await commit()
+        return
+      }
+      const event = parsed.data
 
-        console.log('Message received:', rawValue)
-        let parsedValue: { zapRunId?: string; stage?: number }
+      let attempt = 0
+      while (true) {
+        attempt += 1
         try {
-          parsedValue = JSON.parse(rawValue)
+          await processZapRun(event.zapRunId, event.eventId)
+          await commit()
+          return
         } catch (error) {
-          console.log('Error parsing raw value ' + error)
-          await commit()
-          return
-        }
-        const zapRunId = parsedValue.zapRunId
-        const stage = parsedValue.stage
-        if (!zapRunId) {
-          console.log(' No zapRunId received')
-          await commit()
-          return
-        }
-        try {
-          const zapRun = await prisma.zapRun.findUnique({
-            where: { id: zapRunId },
-            include: {
-              zapRunExecutions: true,
-              zap: {
-                include: {
-                  trigger: {
-                    include: { type: true },
-                  },
-                  actions: {
-                    include: { type: true },
-                  },
+          if (attempt >= config.maxInfraRetries) {
+            logger.error('Exhausted retries processing zap run; recording failure and committing', {
+              zapRunId: event.zapRunId,
+              eventId: event.eventId,
+              attempt,
+              error,
+            })
+            await prisma.zapRun
+              .update({
+                where: { id: event.zapRunId },
+                data: {
+                  status: Status.FAIL,
+                  completedAt: new Date(),
+                  error: `Worker error after ${attempt} attempts: ${error instanceof Error ? error.message : String(error)}`,
                 },
-              },
-            },
-          })
-          if (!zapRun) {
-            console.log('zapRun not found')
+              })
+              .catch((updateError: unknown) => {
+                logger.error('Failed to record terminal failure state', {
+                  zapRunId: event.zapRunId,
+                  error: updateError,
+                })
+              })
             await commit()
             return
           }
-          console.log('ZapRun PAYLOAD => ' + JSON.stringify(zapRun.metadata))
-          console.log('EXECUTION CONTEXT', {
-            zapRunId: zapRunId,
-            zapId: zapRun.zap.id,
-            trigger: {
-              type: zapRun.zap.trigger.type.name,
-              metadata: zapRun.zap.trigger.metadata,
-            },
-            actions: zapRun.zap.actions.map((a: ActionItem) => ({
-              id: a.id,
-              type: a.type.name,
-              sortingOrder: a.sortingOrder,
-              metadata: a.metadata,
-            })),
+          logger.warn('Transient error processing zap run - retrying', {
+            zapRunId: event.zapRunId,
+            eventId: event.eventId,
+            attempt,
+            error,
           })
-          const executionPlan = buildExecutionPlan(zapRun)
-          console.log('EXECUTION PLAN => ' + JSON.stringify(executionPlan))
-          const executionContext = {
-            triggerPayload: zapRun.metadata as Record<string, unknown>,
-            stepResults: [] as Record<string, unknown>[],
-            zapRunId: zapRun.id,
-            zapRunExecutions: zapRun.zapRunExecutions,
-          }
-          const actionsResult = await processActions(
-            executionPlan,
-            executionContext
-          )
-          if (!actionsResult.success) {
-            if (actionsResult.error instanceof Error) {
-              console.log(actionsResult.error.message)
-            } else {
-              console.log(actionsResult.error)
-            }
-          }
-          console.log({
-            partition,
-            offset: message.offset,
-            value: message.value?.toString(),
-          })
-          await commit()
-        } catch (error) {
-          console.error('Error in each message ' + error)
-          await commit()
+          await sleep(config.infraRetryBaseDelayMs * attempt)
         }
-      },
-    })
-  } catch (error) {
-    console.error('Error in processor ' + error)
+      }
+    },
+  })
+
+  const shutdown = async (signal: string) => {
+    logger.info('Shutting down processor', { signal })
+    await consumer.disconnect()
+    await prisma.$disconnect()
+    process.exit(0)
   }
+  process.on('SIGTERM', () => void shutdown('SIGTERM'))
+  process.on('SIGINT', () => void shutdown('SIGINT'))
 }
 
-main()
+main().catch(error => {
+  logger.error('Fatal error starting processor', { error })
+  process.exit(1)
+})

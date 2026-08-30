@@ -1,6 +1,9 @@
 import { Status, upsertZapRunExecution } from '@repo/db'
+import { createLogger } from '@repo/logger'
 import type { ActionItem, ExecutionContext } from '../types/processor.types'
 import { executeAction } from '../service/processor.actions'
+
+const logger = createLogger('processor:controller')
 
 export async function processActions(
   actionItems: ActionItem[],
@@ -19,7 +22,11 @@ export async function processActions(
             )
           } catch (error) {
             executionContext.stepResults[actionItem.order] = { success: true }
-            console.log('Error while parsing ' + error)
+            logger.warn('Could not parse stored step result; continuing', {
+              zapRunId: executionContext.zapRunId,
+              stepOrder: actionItem.order,
+              error,
+            })
           }
         } else {
           executionContext.stepResults[actionItem.order] = { success: true }
@@ -48,7 +55,7 @@ export async function processActions(
     }
     return { success: true }
   } catch (error) {
-    console.log('Error in processActions=> ' + error)
+    logger.error('processActions failed', { zapRunId: executionContext.zapRunId, error })
     return { success: false, error: error }
   }
 }

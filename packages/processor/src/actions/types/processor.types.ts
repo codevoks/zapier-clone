@@ -1,7 +1,7 @@
 import type { ZapRunExecution } from '@repo/db'
 
 export type ActionItem = {
-  type: 'email' | 'solana'
+  type: 'email' | 'solana' | 'http'
   metadata: JSON
   payload: JSON
   order: number

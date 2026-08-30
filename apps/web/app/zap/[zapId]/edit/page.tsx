@@ -48,6 +48,10 @@ export default function EditZap() {
       }
     }
     getZap(params.zapId as string)
+    // navigateTo (from useNavigate) is a new function identity every render
+    // and isn't memoized - including it here would re-run this effect
+    // constantly instead of only when the zap id changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.zapId])
   return (
     <ZapForm

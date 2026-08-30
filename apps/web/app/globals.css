@@ -343,4 +343,29 @@
   .zaps-table-wrap tbody tr:hover {
     background-color: color-mix(in srgb, var(--color-secondary-light) 30%, transparent);
   }
+
+  /* Execution status badges */
+  .status-badge {
+    @apply inline-block rounded-full;
+    padding: 0.15rem 0.65rem;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .status-badge-success {
+    background-color: color-mix(in srgb, #16a34a 25%, transparent);
+    color: #4ade80;
+  }
+
+  .status-badge-fail {
+    background-color: color-mix(in srgb, #dc2626 25%, transparent);
+    color: #f87171;
+  }
+
+  .status-badge-processing {
+    background-color: color-mix(in srgb, var(--color-tertiary) 25%, transparent);
+    color: var(--color-tertiary-light);
+  }
 }

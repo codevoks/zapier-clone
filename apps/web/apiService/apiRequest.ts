@@ -5,7 +5,7 @@ export const postRequest = async ({
   data,
 }: {
   path: string
-  data: any
+  data: Record<string, unknown>
 }) => {
   return await api.post(path, data)
 }
@@ -15,7 +15,7 @@ export const getRequest = async ({
   data,
 }: {
   path: string
-  data: any
+  data: Record<string, unknown>
 }) => {
   return await api.get(path, { params: data })
 }
@@ -25,7 +25,7 @@ export const updateRequest = async ({
   data,
 }: {
   path: string
-  data: any
+  data: Record<string, unknown>
 }) => {
   return await api.put(path, data)
 }
@@ -35,7 +35,7 @@ export const deleteRequest = async ({
   data,
 }: {
   path: string
-  data: any
+  data: Record<string, unknown>
 }) => {
   return await api.delete(path, { params: data })
 }

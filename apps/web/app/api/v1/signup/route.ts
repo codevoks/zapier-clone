@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { safeParseSignUp } from '@repo/validation'
 import { hashPassword, signJwt } from '@repo/auth'
 import { findUser, createUser } from '@repo/db'
+import { JWT_SECRET } from '../../../../lib/env'
 
 const SALT_ROUNDS = 10
-const JWT_SECRET = 'shallom'
 
 export async function POST(Request: NextRequest) {
   try {
@@ -51,7 +51,7 @@ export async function POST(Request: NextRequest) {
       maxAge: 60 * 60,
     })
     return response
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Error while signing up' },
       { status: 400 }

@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyJwt } from '@repo/auth'
 import { findUserById } from '@repo/db'
-
-const JWT_SECRET = 'shallom'
+import { JWT_SECRET } from '../../../../lib/env'
 
 export async function GET(request: NextRequest) {
   try {
@@ -29,7 +28,7 @@ export async function GET(request: NextRequest) {
       name: userInfo.name,
       email: userInfo.email,
     })
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Error in me route' }, { status: 500 })
   }
 }

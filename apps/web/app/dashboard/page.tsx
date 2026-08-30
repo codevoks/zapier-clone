@@ -18,7 +18,7 @@ export default function Dashboard() {
     try {
       setLoadingZaps(true)
       getZaps()
-    } catch (error) {
+    } catch {
       console.error('Error getting Zaps')
     } finally {
       setLoadingZaps(false)

@@ -1,0 +1,20 @@
+{
+  "name": "@repo/logger",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Minimal structured logger shared by the backend services.",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

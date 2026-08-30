@@ -2,10 +2,10 @@
   "name": "hooks",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
+  "description": "Webhook ingestion service: durably records an incoming trigger as a ZapRun + transactional outbox row.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
     "build": "tsc -b",
     "dev": "tsx watch --env-file ../../.env src/index.ts"
   },
@@ -14,12 +14,17 @@
   "license": "ISC",
   "dependencies": {
     "@repo/db": "workspace:*",
-    "@prisma/client": "^7.2.0",
-    "express": "^5.2.1"
+    "@repo/logger": "workspace:*",
+    "@prisma/client": "^7.10.0",
+    "express": "^5.2.1",
+    "express-rate-limit": "^7.5.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
+    "@types/supertest": "^6.0.2",
+    "supertest": "^7.0.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   }
 }

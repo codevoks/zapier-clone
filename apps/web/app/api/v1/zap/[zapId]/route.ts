@@ -5,8 +5,7 @@ import {
   safeParseZapCreteSchema,
   safeParseTriggersAndActions,
 } from '@repo/validation'
-
-const JWT_SECRET = 'shallom'
+import { JWT_SECRET } from '../../../../../lib/env'
 
 export async function GET(
   Request: NextRequest,
@@ -48,7 +47,7 @@ export async function GET(
       return NextResponse.json({ error: 'Zap not found.' }, { status: 404 })
     }
     return NextResponse.json({ zap }, { status: 200 })
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Error while fetching Zaps' },
       { status: 500 }
@@ -115,7 +114,7 @@ export async function PUT(
     })
 
     return NextResponse.json({ zap: newZap }, { status: 200 })
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Error while updating Zaps' },
       { status: 500 }
@@ -149,7 +148,7 @@ export async function DELETE(
     })
 
     return NextResponse.json({ zap: zap }, { status: 200 })
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Error while deleting Zap' },
       { status: 500 }

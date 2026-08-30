@@ -20,7 +20,7 @@ export default function ZapTable({
                 'ID',
                 'Created at',
                 'Webhook URL',
-                'Go',
+                'Runs',
                 'Edit',
                 'Delete',
               ]}

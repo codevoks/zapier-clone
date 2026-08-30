@@ -178,7 +178,7 @@ export type ZapGroupByOutputType = {
   _max: ZapMaxAggregateOutputType | null
 }
 
-type GetZapGroupByPayload<T extends ZapGroupByArgs> = Prisma.PrismaPromise<
+export type GetZapGroupByPayload<T extends ZapGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ZapGroupByOutputType, T['by']> &
       {
@@ -1372,6 +1372,11 @@ export type ZapFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Skip the first `n` Zaps.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Zaps.
+   */
   distinct?: Prisma.ZapScalarFieldEnum | Prisma.ZapScalarFieldEnum[]
 }
 

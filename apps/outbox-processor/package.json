@@ -1,0 +1,27 @@
+{
+  "name": "outbox-processor",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Transactional outbox publisher: claims ZapRunOutBox rows and publishes them to Kafka.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch --env-file ../../.env src/index.ts",
+    "build": "tsc -b",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.10.0",
+    "@repo/db": "workspace:*",
+    "@repo/logger": "workspace:*",
+    "@repo/validation": "workspace:*",
+    "kafkajs": "^2.2.4",
+    "tsx": "^4.19.0"
+  }
+}

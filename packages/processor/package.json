@@ -8,15 +8,20 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@repo/db": "workspace:*",
+    "@repo/logger": "workspace:*",
     "@solana/web3.js": "^1.98.4",
     "bs58": "^6.0.0",
-    "resend": "^6.9.3",
-    "@repo/db": "workspace:*"
+    "resend": "^6.25.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vitest": "^3.2.4"
   }
 }

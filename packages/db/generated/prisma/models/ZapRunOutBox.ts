@@ -20,40 +20,94 @@ export type ZapRunOutBoxModel = runtime.Types.Result.DefaultSelection<Prisma.$Za
 
 export type AggregateZapRunOutBox = {
   _count: ZapRunOutBoxCountAggregateOutputType | null
+  _avg: ZapRunOutBoxAvgAggregateOutputType | null
+  _sum: ZapRunOutBoxSumAggregateOutputType | null
   _min: ZapRunOutBoxMinAggregateOutputType | null
   _max: ZapRunOutBoxMaxAggregateOutputType | null
+}
+
+export type ZapRunOutBoxAvgAggregateOutputType = {
+  attempts: number | null
+}
+
+export type ZapRunOutBoxSumAggregateOutputType = {
+  attempts: number | null
 }
 
 export type ZapRunOutBoxMinAggregateOutputType = {
   id: string | null
   zapRunId: string | null
+  createdAt: Date | null
+  attempts: number | null
+  lastError: string | null
+  nextAttemptAt: Date | null
+  lockedAt: Date | null
+  deadLetteredAt: Date | null
 }
 
 export type ZapRunOutBoxMaxAggregateOutputType = {
   id: string | null
   zapRunId: string | null
+  createdAt: Date | null
+  attempts: number | null
+  lastError: string | null
+  nextAttemptAt: Date | null
+  lockedAt: Date | null
+  deadLetteredAt: Date | null
 }
 
 export type ZapRunOutBoxCountAggregateOutputType = {
   id: number
   zapRunId: number
+  createdAt: number
+  attempts: number
+  lastError: number
+  nextAttemptAt: number
+  lockedAt: number
+  deadLetteredAt: number
   _all: number
 }
 
 
+export type ZapRunOutBoxAvgAggregateInputType = {
+  attempts?: true
+}
+
+export type ZapRunOutBoxSumAggregateInputType = {
+  attempts?: true
+}
+
 export type ZapRunOutBoxMinAggregateInputType = {
   id?: true
   zapRunId?: true
+  createdAt?: true
+  attempts?: true
+  lastError?: true
+  nextAttemptAt?: true
+  lockedAt?: true
+  deadLetteredAt?: true
 }
 
 export type ZapRunOutBoxMaxAggregateInputType = {
   id?: true
   zapRunId?: true
+  createdAt?: true
+  attempts?: true
+  lastError?: true
+  nextAttemptAt?: true
+  lockedAt?: true
+  deadLetteredAt?: true
 }
 
 export type ZapRunOutBoxCountAggregateInputType = {
   id?: true
   zapRunId?: true
+  createdAt?: true
+  attempts?: true
+  lastError?: true
+  nextAttemptAt?: true
+  lockedAt?: true
+  deadLetteredAt?: true
   _all?: true
 }
 
@@ -95,6 +149,18 @@ export type ZapRunOutBoxAggregateArgs<ExtArgs extends runtime.Types.Extensions.I
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ZapRunOutBoxAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ZapRunOutBoxSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ZapRunOutBoxMinAggregateInputType
@@ -125,6 +191,8 @@ export type ZapRunOutBoxGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   _count?: ZapRunOutBoxCountAggregateInputType | true
+  _avg?: ZapRunOutBoxAvgAggregateInputType
+  _sum?: ZapRunOutBoxSumAggregateInputType
   _min?: ZapRunOutBoxMinAggregateInputType
   _max?: ZapRunOutBoxMaxAggregateInputType
 }
@@ -132,12 +200,20 @@ export type ZapRunOutBoxGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type ZapRunOutBoxGroupByOutputType = {
   id: string
   zapRunId: string
+  createdAt: Date
+  attempts: number
+  lastError: string | null
+  nextAttemptAt: Date
+  lockedAt: Date | null
+  deadLetteredAt: Date | null
   _count: ZapRunOutBoxCountAggregateOutputType | null
+  _avg: ZapRunOutBoxAvgAggregateOutputType | null
+  _sum: ZapRunOutBoxSumAggregateOutputType | null
   _min: ZapRunOutBoxMinAggregateOutputType | null
   _max: ZapRunOutBoxMaxAggregateOutputType | null
 }
 
-type GetZapRunOutBoxGroupByPayload<T extends ZapRunOutBoxGroupByArgs> = Prisma.PrismaPromise<
+export type GetZapRunOutBoxGroupByPayload<T extends ZapRunOutBoxGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ZapRunOutBoxGroupByOutputType, T['by']> &
       {
@@ -158,12 +234,24 @@ export type ZapRunOutBoxWhereInput = {
   NOT?: Prisma.ZapRunOutBoxWhereInput | Prisma.ZapRunOutBoxWhereInput[]
   id?: Prisma.StringFilter<"ZapRunOutBox"> | string
   zapRunId?: Prisma.StringFilter<"ZapRunOutBox"> | string
+  createdAt?: Prisma.DateTimeFilter<"ZapRunOutBox"> | Date | string
+  attempts?: Prisma.IntFilter<"ZapRunOutBox"> | number
+  lastError?: Prisma.StringNullableFilter<"ZapRunOutBox"> | string | null
+  nextAttemptAt?: Prisma.DateTimeFilter<"ZapRunOutBox"> | Date | string
+  lockedAt?: Prisma.DateTimeNullableFilter<"ZapRunOutBox"> | Date | string | null
+  deadLetteredAt?: Prisma.DateTimeNullableFilter<"ZapRunOutBox"> | Date | string | null
   zapRun?: Prisma.XOR<Prisma.ZapRunScalarRelationFilter, Prisma.ZapRunWhereInput>
 }
 
 export type ZapRunOutBoxOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   zapRunId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  attempts?: Prisma.SortOrder
+  lastError?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextAttemptAt?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deadLetteredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   zapRun?: Prisma.ZapRunOrderByWithRelationInput
 }
 
@@ -173,15 +261,29 @@ export type ZapRunOutBoxWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ZapRunOutBoxWhereInput | Prisma.ZapRunOutBoxWhereInput[]
   OR?: Prisma.ZapRunOutBoxWhereInput[]
   NOT?: Prisma.ZapRunOutBoxWhereInput | Prisma.ZapRunOutBoxWhereInput[]
+  createdAt?: Prisma.DateTimeFilter<"ZapRunOutBox"> | Date | string
+  attempts?: Prisma.IntFilter<"ZapRunOutBox"> | number
+  lastError?: Prisma.StringNullableFilter<"ZapRunOutBox"> | string | null
+  nextAttemptAt?: Prisma.DateTimeFilter<"ZapRunOutBox"> | Date | string
+  lockedAt?: Prisma.DateTimeNullableFilter<"ZapRunOutBox"> | Date | string | null
+  deadLetteredAt?: Prisma.DateTimeNullableFilter<"ZapRunOutBox"> | Date | string | null
   zapRun?: Prisma.XOR<Prisma.ZapRunScalarRelationFilter, Prisma.ZapRunWhereInput>
 }, "id" | "zapRunId">
 
 export type ZapRunOutBoxOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   zapRunId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  attempts?: Prisma.SortOrder
+  lastError?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextAttemptAt?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deadLetteredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ZapRunOutBoxCountOrderByAggregateInput
+  _avg?: Prisma.ZapRunOutBoxAvgOrderByAggregateInput
   _max?: Prisma.ZapRunOutBoxMaxOrderByAggregateInput
   _min?: Prisma.ZapRunOutBoxMinOrderByAggregateInput
+  _sum?: Prisma.ZapRunOutBoxSumOrderByAggregateInput
 }
 
 export type ZapRunOutBoxScalarWhereWithAggregatesInput = {
@@ -190,40 +292,88 @@ export type ZapRunOutBoxScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ZapRunOutBoxScalarWhereWithAggregatesInput | Prisma.ZapRunOutBoxScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ZapRunOutBox"> | string
   zapRunId?: Prisma.StringWithAggregatesFilter<"ZapRunOutBox"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"ZapRunOutBox"> | Date | string
+  attempts?: Prisma.IntWithAggregatesFilter<"ZapRunOutBox"> | number
+  lastError?: Prisma.StringNullableWithAggregatesFilter<"ZapRunOutBox"> | string | null
+  nextAttemptAt?: Prisma.DateTimeWithAggregatesFilter<"ZapRunOutBox"> | Date | string
+  lockedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ZapRunOutBox"> | Date | string | null
+  deadLetteredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ZapRunOutBox"> | Date | string | null
 }
 
 export type ZapRunOutBoxCreateInput = {
   id?: string
+  createdAt?: Date | string
+  attempts?: number
+  lastError?: string | null
+  nextAttemptAt?: Date | string
+  lockedAt?: Date | string | null
+  deadLetteredAt?: Date | string | null
   zapRun: Prisma.ZapRunCreateNestedOneWithoutZapRunOutBoxInput
 }
 
 export type ZapRunOutBoxUncheckedCreateInput = {
   id?: string
   zapRunId: string
+  createdAt?: Date | string
+  attempts?: number
+  lastError?: string | null
+  nextAttemptAt?: Date | string
+  lockedAt?: Date | string | null
+  deadLetteredAt?: Date | string | null
 }
 
 export type ZapRunOutBoxUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextAttemptAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadLetteredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   zapRun?: Prisma.ZapRunUpdateOneRequiredWithoutZapRunOutBoxNestedInput
 }
 
 export type ZapRunOutBoxUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapRunId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextAttemptAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadLetteredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ZapRunOutBoxCreateManyInput = {
   id?: string
   zapRunId: string
+  createdAt?: Date | string
+  attempts?: number
+  lastError?: string | null
+  nextAttemptAt?: Date | string
+  lockedAt?: Date | string | null
+  deadLetteredAt?: Date | string | null
 }
 
 export type ZapRunOutBoxUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextAttemptAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadLetteredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ZapRunOutBoxUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   zapRunId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextAttemptAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadLetteredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ZapRunOutBoxNullableScalarRelationFilter = {
@@ -234,16 +384,42 @@ export type ZapRunOutBoxNullableScalarRelationFilter = {
 export type ZapRunOutBoxCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   zapRunId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  attempts?: Prisma.SortOrder
+  lastError?: Prisma.SortOrder
+  nextAttemptAt?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrder
+  deadLetteredAt?: Prisma.SortOrder
+}
+
+export type ZapRunOutBoxAvgOrderByAggregateInput = {
+  attempts?: Prisma.SortOrder
 }
 
 export type ZapRunOutBoxMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   zapRunId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  attempts?: Prisma.SortOrder
+  lastError?: Prisma.SortOrder
+  nextAttemptAt?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrder
+  deadLetteredAt?: Prisma.SortOrder
 }
 
 export type ZapRunOutBoxMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   zapRunId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  attempts?: Prisma.SortOrder
+  lastError?: Prisma.SortOrder
+  nextAttemptAt?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrder
+  deadLetteredAt?: Prisma.SortOrder
+}
+
+export type ZapRunOutBoxSumOrderByAggregateInput = {
+  attempts?: Prisma.SortOrder
 }
 
 export type ZapRunOutBoxCreateNestedOneWithoutZapRunInput = {
@@ -280,10 +456,22 @@ export type ZapRunOutBoxUncheckedUpdateOneWithoutZapRunNestedInput = {
 
 export type ZapRunOutBoxCreateWithoutZapRunInput = {
   id?: string
+  createdAt?: Date | string
+  attempts?: number
+  lastError?: string | null
+  nextAttemptAt?: Date | string
+  lockedAt?: Date | string | null
+  deadLetteredAt?: Date | string | null
 }
 
 export type ZapRunOutBoxUncheckedCreateWithoutZapRunInput = {
   id?: string
+  createdAt?: Date | string
+  attempts?: number
+  lastError?: string | null
+  nextAttemptAt?: Date | string
+  lockedAt?: Date | string | null
+  deadLetteredAt?: Date | string | null
 }
 
 export type ZapRunOutBoxCreateOrConnectWithoutZapRunInput = {
@@ -304,10 +492,22 @@ export type ZapRunOutBoxUpdateToOneWithWhereWithoutZapRunInput = {
 
 export type ZapRunOutBoxUpdateWithoutZapRunInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextAttemptAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadLetteredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ZapRunOutBoxUncheckedUpdateWithoutZapRunInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextAttemptAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadLetteredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -315,27 +515,51 @@ export type ZapRunOutBoxUncheckedUpdateWithoutZapRunInput = {
 export type ZapRunOutBoxSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   zapRunId?: boolean
+  createdAt?: boolean
+  attempts?: boolean
+  lastError?: boolean
+  nextAttemptAt?: boolean
+  lockedAt?: boolean
+  deadLetteredAt?: boolean
   zapRun?: boolean | Prisma.ZapRunDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["zapRunOutBox"]>
 
 export type ZapRunOutBoxSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   zapRunId?: boolean
+  createdAt?: boolean
+  attempts?: boolean
+  lastError?: boolean
+  nextAttemptAt?: boolean
+  lockedAt?: boolean
+  deadLetteredAt?: boolean
   zapRun?: boolean | Prisma.ZapRunDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["zapRunOutBox"]>
 
 export type ZapRunOutBoxSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   zapRunId?: boolean
+  createdAt?: boolean
+  attempts?: boolean
+  lastError?: boolean
+  nextAttemptAt?: boolean
+  lockedAt?: boolean
+  deadLetteredAt?: boolean
   zapRun?: boolean | Prisma.ZapRunDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["zapRunOutBox"]>
 
 export type ZapRunOutBoxSelectScalar = {
   id?: boolean
   zapRunId?: boolean
+  createdAt?: boolean
+  attempts?: boolean
+  lastError?: boolean
+  nextAttemptAt?: boolean
+  lockedAt?: boolean
+  deadLetteredAt?: boolean
 }
 
-export type ZapRunOutBoxOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "zapRunId", ExtArgs["result"]["zapRunOutBox"]>
+export type ZapRunOutBoxOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "zapRunId" | "createdAt" | "attempts" | "lastError" | "nextAttemptAt" | "lockedAt" | "deadLetteredAt", ExtArgs["result"]["zapRunOutBox"]>
 export type ZapRunOutBoxInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   zapRun?: boolean | Prisma.ZapRunDefaultArgs<ExtArgs>
 }
@@ -354,6 +578,12 @@ export type $ZapRunOutBoxPayload<ExtArgs extends runtime.Types.Extensions.Intern
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     zapRunId: string
+    createdAt: Date
+    attempts: number
+    lastError: string | null
+    nextAttemptAt: Date
+    lockedAt: Date | null
+    deadLetteredAt: Date | null
   }, ExtArgs["result"]["zapRunOutBox"]>
   composites: {}
 }
@@ -780,6 +1010,12 @@ export interface Prisma__ZapRunOutBoxClient<T, Null = never, ExtArgs extends run
 export interface ZapRunOutBoxFieldRefs {
   readonly id: Prisma.FieldRef<"ZapRunOutBox", 'String'>
   readonly zapRunId: Prisma.FieldRef<"ZapRunOutBox", 'String'>
+  readonly createdAt: Prisma.FieldRef<"ZapRunOutBox", 'DateTime'>
+  readonly attempts: Prisma.FieldRef<"ZapRunOutBox", 'Int'>
+  readonly lastError: Prisma.FieldRef<"ZapRunOutBox", 'String'>
+  readonly nextAttemptAt: Prisma.FieldRef<"ZapRunOutBox", 'DateTime'>
+  readonly lockedAt: Prisma.FieldRef<"ZapRunOutBox", 'DateTime'>
+  readonly deadLetteredAt: Prisma.FieldRef<"ZapRunOutBox", 'DateTime'>
 }
     
 
@@ -976,6 +1212,11 @@ export type ZapRunOutBoxFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Skip the first `n` ZapRunOutBoxes.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ZapRunOutBoxes.
+   */
   distinct?: Prisma.ZapRunOutBoxScalarFieldEnum | Prisma.ZapRunOutBoxScalarFieldEnum[]
 }
 

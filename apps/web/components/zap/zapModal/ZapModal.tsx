@@ -1,7 +1,6 @@
 'use client'
 import { AvaialableAction, AvailableTrigger } from '@repo/db'
 import { ZapModalEntry } from './ZapModalEntry'
-import { useState } from 'react'
 
 export const ZapModal = ({
   index,

@@ -11,3 +11,10 @@ export const ActionSolanaSchema = z.object({
   toAddress: z.string(),
   solanaAmount: z.number(),
 })
+
+export const ActionHttpSchema = z.object({
+  url: z.url(),
+  method: z.enum(['GET', 'POST', 'PUT', 'PATCH']).default('POST'),
+  headers: z.record(z.string(), z.string()).optional(),
+  bodyTemplate: z.string().optional(),
+})

@@ -54,10 +54,14 @@ export default function ZapsBar({ cells, zap, onZapDeleted }: ZapsBarProps) {
           nameCell ?? '—',
           zap.id,
           '—', // Created at
-          `${baseWebHookURL}/${zap.userId}/${zap.id}`,
-          '—', // Go
-          <PrimaryButton title="Edit" path={`/zap/${zap.id}/edit`} />,
-          <TertiaryButton title="Delete" onClick={() => deleteZap(zap.id)} />,
+          `${baseWebHookURL}/hooks/catch/${zap.userId}/${zap.id}`,
+          <TertiaryButton key="runs" title="Runs" path={`/zap/${zap.id}/runs`} />,
+          <PrimaryButton key="edit" title="Edit" path={`/zap/${zap.id}/edit`} />,
+          <TertiaryButton
+            key="delete"
+            title="Delete"
+            onClick={() => deleteZap(zap.id)}
+          />,
         ]
       : [])
 

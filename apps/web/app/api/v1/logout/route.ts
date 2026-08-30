@@ -9,7 +9,7 @@ export async function POST(Request: NextRequest) {
       maxAge: 0,
     })
     return response
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Error while logging out' },
       { status: 500 }

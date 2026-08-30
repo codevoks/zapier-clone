@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  DATABASE_URL: postgresql://zapier:zapier@localhost:5432/zapier?schema=public
+  JWT_SECRET: ci-only-secret-not-used-anywhere-real
+  KAFKA_BROKERS: localhost:9092
+  KAFKA_TOPIC: zap-events
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: zapier
+          POSTGRES_PASSWORD: zapier
+          POSTGRES_DB: zapier
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U zapier"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # apps/web's dev/build/start scripts load a root .env via dotenv-cli
+      # (Next.js only reads .env files from its own app directory otherwise).
+      # Mirrors local dev's single-root-.env convention.
+      - name: Create .env for the build
+        run: |
+          cat > .env <<EOF
+          DATABASE_URL=${DATABASE_URL}
+          JWT_SECRET=${JWT_SECRET}
+          KAFKA_BROKERS=${KAFKA_BROKERS}
+          KAFKA_TOPIC=${KAFKA_TOPIC}
+          EOF
+
+      - name: Generate Prisma client
+        run: pnpm --filter @repo/db exec prisma generate --schema prisma/schema.prisma
+
+      - name: Apply database migrations
+        run: pnpm --filter @repo/db exec prisma migrate deploy --schema prisma/schema.prisma
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type-check
+        run: pnpm check-types
+
+      # Kafka interactions are unit-tested with a mocked producer/consumer;
+      # Postgres-backed tests run against the real service container above.
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build

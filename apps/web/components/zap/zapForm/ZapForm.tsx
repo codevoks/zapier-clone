@@ -7,8 +7,8 @@ import { MetadataModal } from '../../../components/zap/metadataModal/MetadataMod
 import { TertiaryButton } from '../../../components/buttons/TertiaryButton'
 import {
   useNavigate,
-  useAvailableTriggers,
-  useAvailableActions,
+  fetchAvailableTriggers,
+  fetchAvailableActions,
 } from '../../../hooks'
 import type { AvailableTrigger, AvaialableAction } from '@repo/db'
 import {
@@ -62,14 +62,14 @@ export function ZapForm({
   }, [initialTrigger, initialActions])
   useEffect(() => {
     const getAvailableTriggers = async () => {
-      const response = await useAvailableTriggers()
+      const response = await fetchAvailableTriggers()
       if (response) {
         setAvailableTriggers(response)
       }
     }
 
     const getAvailableActions = async () => {
-      const response = await useAvailableActions()
+      const response = await fetchAvailableActions()
       if (response) {
         setAvailableActions(response)
       }

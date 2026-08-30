@@ -28,6 +28,11 @@ const availableActions = [
     name: 'Solana',
     image: 'https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png',
   },
+  {
+    id: 'http',
+    name: 'HTTP Request',
+    image: 'https://cdn-icons-png.flaticon.com/512/2222/2222051.png',
+  },
 ]
 
 async function main() {

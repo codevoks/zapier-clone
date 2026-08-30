@@ -5,8 +5,7 @@ import {
 } from '@repo/validation'
 import { prisma } from '@repo/db'
 import { verifyJwt } from '@repo/auth'
-
-const JWT_SECRET = 'shallom'
+import { JWT_SECRET } from '../../../../lib/env'
 
 export async function POST(Request: NextRequest) {
   try {
@@ -65,7 +64,7 @@ export async function POST(Request: NextRequest) {
       return zap
     })
     return NextResponse.json({ zapId: newZap.id }, { status: 201 })
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Error while creating Zap' },
       { status: 500 }
@@ -105,7 +104,7 @@ export async function GET(Request: NextRequest) {
       },
     })
     return NextResponse.json({ zaps }, { status: 200 })
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Error while fetching Zaps' },
       { status: 500 }

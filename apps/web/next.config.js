@@ -1,11 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    // Only hostnames are allowed here, not full URLs
-    domains: [
-      'nordicapis.com',
-      'cdn-icons-png.flaticon.com',
-      'upload.wikimedia.org',
+    remotePatterns: [
+      { protocol: 'https', hostname: 'nordicapis.com' },
+      { protocol: 'https', hostname: 'cdn-icons-png.flaticon.com' },
+      { protocol: 'https', hostname: 'upload.wikimedia.org' },
     ],
   },
 }

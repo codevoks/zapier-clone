@@ -1,6 +1,7 @@
 import { getRequest } from '../apiService'
 
-export async function useAvailableActions() {
+// Not a React hook despite the historical filename - a plain fetch helper.
+export async function fetchAvailableActions() {
   try {
     const availableActions = await getRequest({
       path: 'zap/action/available',
@@ -9,7 +10,7 @@ export async function useAvailableActions() {
     if (availableActions.status == 200) {
       return availableActions.data.availableActions
     }
-  } catch (error) {
-    console.log('Error getting available triggers')
+  } catch {
+    console.log('Error getting available actions')
   }
 }

@@ -147,7 +147,7 @@ export type TriggerGroupByOutputType = {
   _max: TriggerMaxAggregateOutputType | null
 }
 
-type GetTriggerGroupByPayload<T extends TriggerGroupByArgs> = Prisma.PrismaPromise<
+export type GetTriggerGroupByPayload<T extends TriggerGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<TriggerGroupByOutputType, T['by']> &
       {
@@ -1168,6 +1168,11 @@ export type TriggerFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Skip the first `n` Triggers.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Triggers.
+   */
   distinct?: Prisma.TriggerScalarFieldEnum | Prisma.TriggerScalarFieldEnum[]
 }
 

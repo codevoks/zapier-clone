@@ -69,16 +69,23 @@ model ZapRun {
   id String @id @default(uuid())
   zapId String
   metadata Json
+  status Status @default(PROCESSING)
+  createdAt DateTime @default(now())
+  startedAt DateTime?
+  completedAt DateTime?
+  error String?
   zap Zap @relation(fields: [zapId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   zapRunOutBox ZapRunOutBox?
   zapRunExecutions ZapRunExecution []
+
+  @@index([zapId, createdAt])
 }
 
 model ZapRunExecution{
   id String @id @default(uuid())
   zapRunId String
   stepOrder Int
-  zapRun ZapRun @relation(fields: [zapRunId], references: [id])
+  zapRun ZapRun @relation(fields: [zapRunId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   status Status
   message String?
   @@unique([zapRunId,stepOrder])
@@ -87,7 +94,15 @@ model ZapRunExecution{
 model ZapRunOutBox {
   id String @id @default(uuid())
   zapRunId String @unique
-  zapRun ZapRun @relation(fields: [zapRunId], references: [id])
+  zapRun ZapRun @relation(fields: [zapRunId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime @default(now())
+  attempts Int @default(0)
+  lastError String?
+  nextAttemptAt DateTime @default(now())
+  lockedAt DateTime?
+  deadLetteredAt DateTime?
+
+  @@index([deadLetteredAt, nextAttemptAt])
 }
 
 enum Status {

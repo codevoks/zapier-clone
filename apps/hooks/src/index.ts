@@ -1,36 +1,7 @@
-import express from 'express'
-import { prisma, Prisma } from '@repo/db'
+import { createApp } from './app'
+import { createLogger } from '@repo/logger'
 
-const app = express()
-
-app.use(express.json())
-
-app.post('/hooks/catch/:userid/:zapid', async (req, res) => {
-  const userId = req.params.userid
-  const zapId = req.params.zapid
-  const body = req.body
-
-  if (!userId || !zapId) {
-    return res.status(400).json({ error: 'Missing params' })
-  }
-
-  await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-    const run = await tx.zapRun.create({
-      data: {
-        zapId: zapId,
-        metadata: body,
-      },
-    })
-
-    await tx.zapRunOutBox.create({
-      data: {
-        zapRunId: run.id,
-      },
-    })
-  })
-  res.json({
-    message: 'Webhook Received',
-  })
-})
-
-app.listen('4000')
+const logger = createLogger('hooks')
+const app = createApp()
+const port = Number(process.env.HOOKS_PORT) || 4000
+app.listen(port, () => logger.info('Hooks service listening', { port }))

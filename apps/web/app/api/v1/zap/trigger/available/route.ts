@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@repo/db'
 import { verifyJwt } from '@repo/auth'
-
-const JWT_SECRET = 'shallom'
+import { JWT_SECRET } from '../../../../../../lib/env'
 
 export async function GET(Request: NextRequest) {
   try {
@@ -22,7 +21,7 @@ export async function GET(Request: NextRequest) {
       { availableTriggers: availableTriggers },
       { status: 200 }
     )
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Error while fetching available triggers.' },
       { status: 500 }

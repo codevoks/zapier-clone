@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { safeParseLogIn } from '@repo/validation'
 import { verifyPassword, signJwt } from '@repo/auth'
 import { findUser } from '@repo/db'
-
-const JWT_SECRET = 'shallom'
+import { JWT_SECRET } from '../../../../lib/env'
 
 export async function POST(Request: NextRequest) {
   try {
@@ -49,7 +48,7 @@ export async function POST(Request: NextRequest) {
       maxAge: 60 * 60,
     })
     return response
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Error while logging in' },
       { status: 400 }
