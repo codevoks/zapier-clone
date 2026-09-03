@@ -6,6 +6,12 @@ is the hero: a webhook trigger durably recorded, published through a
 **transactional outbox**, processed asynchronously over **Kafka**, and
 executed by a **worker** with **idempotent, resumable** step execution.
 
+![Left: the HTTP action's destination receiving the real POST payload. Right: the app's execution history showing the same run as SUCCESS.](docs/assets/workflow-execution-proof.png)
+
+*Real capture, not a mock: left is the actual HTTP receiver that the worker
+called, right is the app's own execution-history page for that same run —
+same `zapRunId`, same timestamps, one webhook call apart.*
+
 ## Architecture
 
 ```mermaid
